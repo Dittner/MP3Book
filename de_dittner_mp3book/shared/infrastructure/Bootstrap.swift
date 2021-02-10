@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class RootVM {
+class Bootstrap {
     init() {
         logAbout()
         addDemoFileIfNeeded()
@@ -35,7 +35,6 @@ class RootVM {
     }
 
     func addDemoFileIfNeeded() {
-        UserDefaults.standard.set(false, forKey: "demoFileShown")
         if !UserDefaults.standard.bool(forKey: "demoFileShown") {
             let service = DemoFileAppService()
 

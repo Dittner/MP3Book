@@ -21,8 +21,12 @@ struct DocumentsContent {
 
 class DocumentsAppService {
     let documentsURL: URL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    
+    func read() throws -> DocumentsContent {
+        return try readFrom(dirUrl: documentsURL)
+    }
 
-    public func readFrom(dirUrl: URL, title: String? = nil, parentFolderName: String? = nil, depth: Int = 0) throws -> DocumentsContent {
+    private func readFrom(dirUrl: URL, title: String? = nil, parentFolderName: String? = nil, depth: Int = 0) throws -> DocumentsContent {
         var files: [File] = []
         var folders: [Folder] = []
         var totalDuration: Int = 0

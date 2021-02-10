@@ -12,7 +12,7 @@ enum FileSource: Int16 {
     case iPodLibrary
 }
 
-struct Folder {
+struct Folder: Identifiable {
     init(folderPath: String, title: String, parentFolderName: String?, totalDuration: Int, files: [File], depth: Int) {
         source = FileSource.documents
         id = folderPath

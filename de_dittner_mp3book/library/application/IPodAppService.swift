@@ -9,7 +9,7 @@ import Foundation
 import MediaPlayer
 
 class IPodAppService {
-    public func readPlaylists() -> [Folder] {
+    public func read() -> [Folder] {
         if let hasAccess = hasAccessToMediaLibrary() {
             return hasAccess ? fetchPlaylists() : []
         } else {
