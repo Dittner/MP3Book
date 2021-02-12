@@ -14,21 +14,17 @@ enum DemoFileIOError: DetailedError {
 }
 
 class DemoFileAppService {
-    
-
-    func copyDemoFileToDocumentsFolder(srcFileName:String, destFolderName:String) throws {
-        // Move the folder with demo record from bundle to documents folder
+    func copyDemoFile(srcFileName:String, to:URL) throws {
+        // Move the folder with demo record from bundle to documents (folder)
+        let destFolderURL = to
         let fileManager = FileManager.default
-        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-
-        let destDemoFolderURL = documentsURL.appendingPathComponent(destFolderName)
-        let destDemoFileUrl = destDemoFolderURL.appendingPathComponent(srcFileName)
+        let destDemoFileUrl = destFolderURL.appendingPathComponent(srcFileName)
 
         if !((try? destDemoFileUrl.checkResourceIsReachable()) ?? false) {
             logger.info("Demo file is copied...")
 
             do {
-                try FileManager.default.createDirectory(atPath: destDemoFolderURL.path, withIntermediateDirectories: true, attributes: nil)
+                try FileManager.default.createDirectory(atPath: destFolderURL.path, withIntermediateDirectories: true, attributes: nil)
             } catch {
                 throw DemoFileIOError.demoFolderNotCreated(details: error.localizedDescription)
                 // logger.info("Unable to create demo folder \(error.localizedDescription)")

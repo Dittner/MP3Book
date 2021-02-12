@@ -7,10 +7,6 @@
 
 import UIKit
 extension UIDevice {
-    var documentsURL: URL {
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    }
-    
     var isSimulator: Bool {
         #if targetEnvironment(simulator)
         return true

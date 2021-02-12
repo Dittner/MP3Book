@@ -39,8 +39,8 @@ struct LibraryView: View {
                 .navigationViewTheme(themeObservable.theme)
                 .navigationBarTheme(themeObservable.theme)
                 .edgesIgnoringSafeArea(.bottom)
-                
-        }.onAppear{
+
+        }.onAppear {
             vm.loadFiles()
         }
     }
@@ -49,15 +49,40 @@ struct LibraryView: View {
 struct LibraryContent: View {
     @Environment(\.presentationMode) var presentation
     @ObservedObject var vm: LibraryVM
+    @ObservedObject var themeObservable = ThemeObservable.shared
 
     var body: some View {
         if vm.isLoading {
             ActivityIndicator(isAnimating: $vm.isLoading)
         } else {
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 1) {
-                    ForEach(vm.folders) { folder in
-                        FolderCell(data: folder)
+                LazyVStack(alignment: .center, spacing: 1) {
+                    if vm.wrappedFolders.count > 0 {
+                        Text("Documents")
+                            .font(Font.custom(.helveticaNeue, size: 11))
+                            .lineLimit(1)
+                            .foregroundColor(themeObservable.theme.text.color)
+                            .frame(height: 20, alignment: .center)
+
+                        SeparatorView()
+
+                        ForEach(vm.wrappedFolders) { wrappedFolder in
+                            WrapperFolderCell(w: wrappedFolder)
+                        }
+
+                        if vm.wrappedPlaylists.count > 0 {
+                            Text("iPod Library")
+                                .font(Font.custom(.helveticaNeue, size: 11))
+                                .lineLimit(1)
+                                .foregroundColor(themeObservable.theme.text.color)
+                                .frame(height: 20, alignment: .center)
+
+                            SeparatorView()
+
+                            ForEach(vm.wrappedPlaylists) { wrappedPlaylist in
+                                WrapperPlaylistCell(w: wrappedPlaylist)
+                            }
+                        }
                     }
                 }
             }
@@ -66,57 +91,83 @@ struct LibraryContent: View {
     }
 }
 
-struct FolderCell: View {
-    @ObservedObject var themeObservable = ThemeObservable.shared
-    @ObservedObject var data: FolderWrapper
+struct WrapperFolderCell: View {
+    @ObservedObject var wrappedFolder:Wrapper<Folder>
     let title: String
     let subTitle: String
 
-    init(data: FolderWrapper) {
-        self.data = data
-        title = data.folder.title
-        subTitle = String(data.folder.files.count) + " files" + ", " + DateTimeUtils.secToHHMMSS(data.folder.totalDuration)
+    init(w: Wrapper<Folder>) {
+        self.wrappedFolder = w
+        title = w.data.title
+        subTitle = String(w.data.files.count) + " files" + ", " + DateTimeUtils.secToHHMMSS(w.data.totalDuration)
+        
+    }
+    
+    var body: some View {
+        ListCell(title: title, subTitle: subTitle, selected: $wrappedFolder.selected)
+    }
+}
+
+struct WrapperPlaylistCell: View {
+    @ObservedObject var wrappedFolder:Wrapper<Playlist>
+    let title: String
+    let subTitle: String
+
+    init(w: Wrapper<Playlist>) {
+        self.wrappedFolder = w
+        title = w.data.title
+        subTitle = String(w.data.files.count) + " files" + ", " + DateTimeUtils.secToHHMMSS(w.data.totalDuration)
+        
     }
 
+    var body: some View {
+        ListCell(title: title, subTitle: subTitle, selected: $wrappedFolder.selected)
+    }
+}
+
+struct ListCell: View {
+    @ObservedObject var themeObservable = ThemeObservable.shared
+    
+    let title: String
+    let subTitle: String
+    @Binding var selected:Bool
+    
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
             Image("folder")
                 .renderingMode(.template)
                 .allowsHitTesting(false)
                 .frame(width: 50)
-                
 
-            VStack {
+            VStack(alignment: .center, spacing: 2) {
                 Spacer()
-                
+
                 Text(title)
                     .font(Font.custom(.helveticaNeue, size: 17))
-                    .minimumScaleFactor(12 / 17)
-                    .lineLimit(1)
+                    .minimumScaleFactor(11 / 17)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
 
                 Text(subTitle)
                     .font(Font.custom(.helveticaNeue, size: 12))
                     .lineLimit(1)
 
                 Spacer()
-                
-                Separator()
-                    .stroke(lineWidth: 0.5)
-                    .fill(themeObservable.theme.separator.color)
-                    .padding(.horizontal, -50)
+
+                SeparatorView()
 
             }.frame(maxWidth: .infinity)
 
-            Image(data.selected ? "checkBoxSelected" : "checkBox")
+            Image(selected ? "checkBoxSelected" : "checkBox")
                 .renderingMode(.template)
                 .allowsHitTesting(false)
                 .frame(width: 50)
         }
-        .frame(height: 50)
-        .background(data.selected ? themeObservable.theme.listCellBg.color : Color.clear)
-        .foregroundColor(data.selected ? themeObservable.theme.selectedText.color : themeObservable.theme.text.color)
+        .frame(height: 70)
+        .background(selected ? themeObservable.theme.listCellBg.color : themeObservable.theme.transparent.color)
+        .foregroundColor(selected ? themeObservable.theme.selectedText.color : themeObservable.theme.text.color)
         .onTapGesture {
-            data.selected.toggle()
+            selected.toggle()
         }
     }
 }

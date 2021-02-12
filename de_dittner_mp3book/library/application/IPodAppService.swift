@@ -9,11 +9,23 @@ import Foundation
 import MediaPlayer
 
 class IPodAppService {
-    public func read() -> [Folder] {
-        if let hasAccess = hasAccessToMediaLibrary() {
-            return hasAccess ? fetchPlaylists() : []
+    public func read(_ complete: @escaping ([Playlist]) -> Void) {
+        let needRequestToMediaLibrary = !UIDevice.current.isSimulator && hasAccessToMediaLibrary() == nil
+        if needRequestToMediaLibrary {
+            logInfo(msg: "IPodLibrary.requestAccessToMediaLibrary")
+            requestAccessToMediaLibrary { result in
+                if result == .authorized || result == .restricted {
+                    DispatchQueue.main.async {
+                        complete(self.fetchPlaylists())
+                    }
+                }
+            }
         } else {
-            return []
+            if let hasAccess = hasAccessToMediaLibrary() {
+                complete(hasAccess ? fetchPlaylists() : [])
+            } else {
+                complete([])
+            }
         }
     }
 
@@ -26,6 +38,7 @@ class IPodAppService {
             hasAccess = true
         case .notDetermined:
             hasAccess = nil
+            logWarn(msg: "IPodLibrary.hasAccessToMediaLibrary notDetermined")
         case .denied:
             hasAccess = false
             logWarn(msg: "IPodLibrary.hasAccessToMediaLibrary denied")
@@ -40,25 +53,25 @@ class IPodAppService {
         MPMediaLibrary.requestAuthorization(handler)
     }
 
-    private func fetchPlaylists() -> [Folder] {
-        var res: [Folder] = []
+    private func fetchPlaylists() -> [Playlist] {
+        var res: [Playlist] = []
 
         let playlistQuery = MPMediaQuery.playlists()
-        let playlists = playlistQuery.collections
-        for playlist in playlists! {
-            if let folder = playlistToFolder(playlist) {
-                res.append(folder)
+        let playlistColl = playlistQuery.collections
+        for playlistItem in playlistColl! {
+            if let playlist = createPlaylist(playlistItem) {
+                res.append(playlist)
             }
         }
-        return res.sorted(by: { $0 < $1 })
+        return res
     }
 
-    private func playlistToFolder(_ playlist: MPMediaItemCollection) -> Folder? {
-        var files: [File] = []
+    private func createPlaylist(_ playlist: MPMediaItemCollection) -> Playlist? {
+        var files: [PlaylistFile] = []
         var totalDuration: Int = 0
         for item in playlist.items {
             if item.mediaType == .music {
-                let file = File(mediaItem: item)
+                let file = PlaylistFile(mediaItem: item)
                 totalDuration += Int(item.playbackDuration)
                 files.append(file)
             }
@@ -66,26 +79,26 @@ class IPodAppService {
 
         if files.count > 0 {
             let title = playlist.value(forProperty: MPMediaPlaylistPropertyName) as! String
-            let folder = Folder(playlistPersistentID: playlist.persistentID, title: title, totalDuration: totalDuration, files: files, depth: 0)
+            let res = Playlist(playlistPersistentID: playlist.persistentID, title: title, totalDuration: totalDuration, files: files)
 
-            return folder
+            return res
         }
         return nil
     }
 
-    private func getPlaylist(persistentID id: UInt64) -> Folder? {
+    private func getPlaylist(persistentID id: UInt64) -> Playlist? {
         guard let hasAccess = hasAccessToMediaLibrary() else { return nil }
         guard hasAccess else { return nil }
 
         let filter = MPMediaPropertyPredicate(value: id,
-                                                 forProperty: MPMediaItemPropertyPersistentID)
+                                              forProperty: MPMediaItemPropertyPersistentID)
         let playlistQuery = MPMediaQuery.playlists()
         playlistQuery.addFilterPredicate(filter)
-        let playlists = playlistQuery.collections
+        let playlistColl = playlistQuery.collections
 
-        let firstFoundPlaylist = playlists != nil && playlists!.count > 0 ? playlists![0] : nil
-        guard let playlist = firstFoundPlaylist else { return nil }
+        let firstFoundPlaylistItem = playlistColl != nil && playlistColl!.count > 0 ? playlistColl![0] : nil
+        guard let playlistItem = firstFoundPlaylistItem else { return nil }
 
-        return playlistToFolder(playlist)
+        return createPlaylist(playlistItem)
     }
 }

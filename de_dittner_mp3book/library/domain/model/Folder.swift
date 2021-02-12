@@ -7,17 +7,10 @@
 
 import Foundation
 
-enum FileSource: Int16 {
-    case documents = 0
-    case iPodLibrary
-}
-
 struct Folder: Identifiable {
-    init(folderPath: String, title: String, parentFolderName: String?, totalDuration: Int, files: [File], depth: Int) {
-        source = FileSource.documents
+    init(folderPath: String, title: String, parentFolderName: String?, totalDuration: Int, files: [FolderFile], depth: Int) {
         id = folderPath
-        self.folderPath = folderPath
-        playlistPersistentID = nil
+        path = folderPath
         self.title = title
         isSubfolder = parentFolderName != nil
         self.parentFolderName = parentFolderName ?? ""
@@ -26,27 +19,11 @@ struct Folder: Identifiable {
         self.depth = depth
     }
 
-    init(playlistPersistentID: UInt64, title: String, totalDuration: Int, files: [File], depth: Int) {
-        source = FileSource.iPodLibrary
-        self.playlistPersistentID = playlistPersistentID
-        folderPath = nil
-        self.title = title
-        id = self.playlistPersistentID!.description + "-" + self.title
-        isSubfolder = false
-        parentFolderName = ""
-        self.totalDuration = totalDuration
-        self.files = files
-        self.depth = depth
-    }
-
-    let suid: SUID = SUID()
-    let id: String
-    let folderPath: String?
-    let playlistPersistentID: UInt64?
+    let id: ID
+    let path: String?
     let title: String
-    let source: FileSource
     let totalDuration: Int
-    let files: [File]
+    let files: [FolderFile]
     let isSubfolder: Bool
     let parentFolderName: String
     let depth: Int

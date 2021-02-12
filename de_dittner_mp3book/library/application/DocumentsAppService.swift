@@ -15,19 +15,17 @@ enum DocumentsAppServiceError: DetailedError {
 
 struct DocumentsContent {
     var folders: [Folder]
-    var files: [File]
+    var files: [FolderFile]
     var totalDuration: Int
 }
 
 class DocumentsAppService {
-    let documentsURL: URL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    
     func read() throws -> DocumentsContent {
-        return try readFrom(dirUrl: documentsURL)
+        return try readFrom(dirUrl: URLS.documentsURL)
     }
 
-    private func readFrom(dirUrl: URL, title: String? = nil, parentFolderName: String? = nil, depth: Int = 0) throws -> DocumentsContent {
-        var files: [File] = []
+    func readFrom(dirUrl: URL, title: String? = nil, parentFolderName: String? = nil, depth: Int = 0) throws -> DocumentsContent {
+        var files: [FolderFile] = []
         var folders: [Folder] = []
         var totalDuration: Int = 0
         let fileManager = FileManager.default
@@ -50,7 +48,7 @@ class DocumentsAppService {
                         let path = urlToRelativePathFromDocuments(url)
                         let fileName: String = title != nil ? title! + "/" + attributes.name! : attributes.name!
                         let duration: Int = Int(mp3File.duration.seconds.rounded(.up))
-                        let f: File = File(filePath: path, name: fileName, duration: duration)
+                        let f: FolderFile = FolderFile(filePath: path, name: fileName, duration: duration)
                         totalDuration += f.duration
                         files.append(f)
                     }

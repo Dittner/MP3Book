@@ -26,7 +26,7 @@ class Bootstrap {
         aboutLog += "os: " + device.systemName + " " + device.systemVersion + "\n"
         #if DEBUG
             aboutLog += "debug mode\n"
-            aboutLog += "docs folder: \\" + device.documentsURL.description
+            aboutLog += "docs folder: \\" + URLS.documentsURL.description
         #else
             aboutLog += "release mode\n"
         #endif
@@ -39,7 +39,8 @@ class Bootstrap {
             let service = DemoFileAppService()
 
             do {
-                try service.copyDemoFileToDocumentsFolder(srcFileName: "record.mp3", destFolderName: "Demo – Three Laws of Robotics")
+                let destDemoFolderURL = URLS.documentsURL.appendingPathComponent("Demo – Three Laws of Robotics")
+                try service.copyDemoFile(srcFileName: "record.mp3", to: destDemoFolderURL)
                 UserDefaults.standard.set(true, forKey: "demoFileShown")
             } catch {
                 logErr(msg: error.localizedDescription)

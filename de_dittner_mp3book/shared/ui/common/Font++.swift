@@ -5,6 +5,12 @@
 //  Created by Alexander Dittner on 10.02.2021.
 //
 
+//
+//    Text("Title")
+//        .font(Font.custom(.helveticaNeue, size: 17))
+//        .minimumScaleFactor(12 / 17)
+//        .lineLimit(1)
+
 import SwiftUI
 
 enum FontName: String {
@@ -19,9 +25,9 @@ extension UIFont {
 }
 
 extension Font {
-    public static let m3b = (navigationTitle: Font.custom(.helveticaNeue, size: 17),
-                             cancelButton: Font.custom(.helveticaNeue, size: 17),
-                             applyButton: Font.custom(.helveticaNeueBold, size: 17))
+    public static let m3b = (navigationTitle: Font.custom(.helveticaNeueBold, size: 17),
+                             cancelButton: Font.custom(.helveticaNeue, size: 14),
+                             applyButton: Font.custom(.helveticaNeueBold, size: 14))
 
     static func custom(_ name: FontName, size: CGFloat) -> Font {
         Font.custom(name.rawValue, size: size)

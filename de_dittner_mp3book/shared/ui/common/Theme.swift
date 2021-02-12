@@ -11,6 +11,7 @@ import UIKit
 
 protocol Theme {
     var id: String { get }
+    var transparent: UIColor { get }
     var tint: UIColor { get }
     var toolbarColors: [Color] { get }
     var appBgColors: [Color] { get }
@@ -22,24 +23,26 @@ protocol Theme {
 
 struct LightTheme: Theme {
     let id: String = "light"
+    let transparent: UIColor = UIColor(rgb: 0, alpha: 0.001)
     let tint: UIColor = UIColor(rgb: 0x5A595C)
     let toolbarColors = [Color.black.opacity(0), Color.black.opacity(0.05)]
     let appBgColors = [Color(rgb: 0xebeae3), Color(rgb: 0xebeae3), Color(rgb: 0xe3d2cf)]
     let text: UIColor = UIColor(rgb: 0x5A595C)
     let selectedText: UIColor = UIColor(rgb: 0x5A595C)
-    let separator: UIColor = UIColor(rgb: 0, alpha: 0.2)
+    let separator: UIColor = UIColor(rgb: 0, alpha: 0.1)
     let listCellBg: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.5)
 }
 
 struct DarkTheme: Theme {
     let id: String = "dark"
+    let transparent: UIColor = UIColor(rgb: 0, alpha: 0.001)
     let tint: UIColor = UIColor(rgb: 0xB2B1A8)
     let toolbarColors = [Color.white.opacity(0), Color.white.opacity(0.05)]
     let appBgColors = [Color(rgb: 0x101011), Color(rgb: 0x131414), Color(rgb: 0x181213)]
     let text: UIColor = UIColor(rgb: 0x5A595C)
     let selectedText: UIColor = UIColor(rgb: 0xEBEAE3)
-    let separator: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.2)
-    let listCellBg: UIColor = UIColor.clear
+    let separator: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.1)
+    let listCellBg: UIColor = UIColor(rgb: 0, alpha: 0.001)
 }
 
 class ThemeObservable: ObservableObject {

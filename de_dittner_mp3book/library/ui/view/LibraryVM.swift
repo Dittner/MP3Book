@@ -12,8 +12,8 @@ class LibraryVM: ObservableObject {
     static var shared: LibraryVM = LibraryVM()
 
     @Published var isLoading = false
-    @Published var folders: [FolderWrapper] = []
-    @Published var playlists: [FolderWrapper] = []
+    @Published var wrappedFolders: [Wrapper<Folder>] = []
+    @Published var wrappedPlaylists: [Wrapper<Playlist>] = []
 
     private let context: LibraryContext
     init() {
@@ -22,19 +22,21 @@ class LibraryVM: ObservableObject {
     }
 
     func loadFiles() {
-        if isLoading {return}
-        
+        if isLoading { return }
+
         isLoading = true
         logInfo(msg: "LibraryVM loadFiles")
-        Async.background {
+        Thread.background {
             do {
                 let docsContent = try self.context.documentsAppService.read()
-                let processedFolders = docsContent.folders.filter { $0.depth < 3 }.sorted(by: { $0 < $1 }).map { FolderWrapper($0) }
-                let processedPlaylists = self.context.iPodAppService.read().sorted(by: { $0 < $1 }).map { FolderWrapper($0) }
-                Async.main {
-                    self.folders = processedFolders
-                    self.playlists = processedPlaylists
-                    self.isLoading = false
+                let processedFolders = docsContent.folders.filter { $0.depth < 3 }.sorted(by: { $0 < $1 }).map { Wrapper<Folder>($0) }
+                Thread.main {
+                    self.wrappedFolders = processedFolders
+
+                    self.context.iPodAppService.read { playlists in
+                        self.wrappedPlaylists = playlists.sorted(by: { $0 < $1 }).map { Wrapper<Playlist>($0) }
+                        self.isLoading = false
+                    }
                 }
             } catch {
                 logErr(msg: error.localizedDescription)
@@ -44,16 +46,18 @@ class LibraryVM: ObservableObject {
     }
 
     func apply() {
-        context.selectedFolders = folders.filter { $0.selected }.map { $0.folder }
+        context.foldersPort.write(wrappedFolders.filter { $0.selected }.map { $0.data })
+        context.playlistsPort.write(wrappedPlaylists.filter { $0.selected }.map { $0.data })
     }
 }
 
-class FolderWrapper: ObservableObject, Identifiable {
+class Wrapper<Element: Identifiable>: ObservableObject, Identifiable {
     @Published var selected = false
-    let folder: Folder
-    let id: String
-    init(_ f: Folder) {
-        folder = f
-        id = folder.id
+    let data: Element
+    let id: ID
+
+    init(_ e: Element) {
+        data = e
+        id = e.id as! ID
     }
 }

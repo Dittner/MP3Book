@@ -14,8 +14,7 @@ class DocumentsAppServiceTests: XCTestCase {
 
     //remove test folder with mp3 files
     override func tearDownWithError() throws {
-        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let destDemoFolderURL = documentsURL.appendingPathComponent(destFolderName)
+        let destDemoFolderURL = URLS.documentsURL.appendingPathComponent(destFolderName)
         let fileManager = FileManager.default
         if fileManager.fileExists(atPath: destDemoFolderURL.path) {
             try fileManager.removeItem(atPath: destDemoFolderURL.path)
@@ -26,14 +25,12 @@ class DocumentsAppServiceTests: XCTestCase {
     }
 
     func testCopyDemoFileToDocuments() throws {
-        let fileManager = FileManager.default
-        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let destDemoFolderURL = documentsURL.appendingPathComponent(destFolderName)
+        let destDemoFolderURL = URLS.documentsURL.appendingPathComponent(destFolderName)
         let copyService = DemoFileAppService()
-        try copyService.copyDemoFileToDocumentsFolder(srcFileName: srcFolderName, destFolderName: destFolderName)
+        try copyService.copyDemoFile(srcFileName: srcFolderName, to: destDemoFolderURL)
         
         let docsService = DocumentsAppService()
-        let content = docsService.readFrom(dirUrl: destDemoFolderURL)
+        let content = try docsService.readFrom(dirUrl: destDemoFolderURL)
 
         XCTAssertEqual(content.folders.count, 4)
         XCTAssertEqual(content.files.count, 8)

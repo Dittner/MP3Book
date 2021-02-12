@@ -19,7 +19,8 @@ struct MP3BookApp: App {
         UITableView.appearance().backgroundColor = .clear
         UITableViewCell.appearance().backgroundColor = .clear
         UIScrollView.appearance().backgroundColor = .clear
-         UIView.appearance().backgroundColor = .clear
+        // set backgroundColor to clear makes unable to use background in child views
+        //UIView.appearance().backgroundColor = .clear
 
         ThemeObservable.shared.$theme
             .sink { theme in

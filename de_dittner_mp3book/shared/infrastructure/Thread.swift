@@ -8,18 +8,18 @@
 import Foundation
 import Foundation
 
-typealias Async = DispatchQueue
+typealias Thread = DispatchQueue
 
-extension Async {
+extension Thread {
 
     static func background(_ task: @escaping () -> ()) {
-        Async.global(qos: .background).async {
+        Thread.global(qos: .background).async {
             task()
         }
     }
 
     static func main(_ task: @escaping () -> ()) {
-        Async.main.async {
+        Thread.main.async {
             task()
         }
     }
