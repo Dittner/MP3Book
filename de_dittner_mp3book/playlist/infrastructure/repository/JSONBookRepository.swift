@@ -12,12 +12,13 @@ enum JSONBookRepositoryError: DetailedError {
     case createStorageDirFailed(details: String)
     case writeBookToDiscFailed(bookTitle: String, details: String)
     case readBooksFromDiscFailed(details: String)
+    case removeBookFromDiscFailed(details: String)
     case jsonSerializationFailed(bookTitle: String, details: String)
     case jsonDeserializationFailed(url: String, details: String)
 }
 
 class JSONBookRepository: IBookRepository {
-    let value = CurrentValueSubject<[Book], Never>([])
+    let subject = CurrentValueSubject<[Book], Never>([])
 
     private let url: URL
     private var hash: [ID: Book] = [:]
@@ -26,10 +27,11 @@ class JSONBookRepository: IBookRepository {
     init(serializer: IBookSerializer, storeTo: URL) throws {
         logInfo(msg: "JSONBookRepository init, url: \(storeTo)")
         self.serializer = serializer
-        url = storeTo.appendingPathComponent("book")
+        url = storeTo
 
         try createStorageIfNeeded()
         try readBooksFromDisc()
+        subscribeToDispatcher()
     }
 
     private func createStorageIfNeeded() throws {
@@ -50,15 +52,62 @@ class JSONBookRepository: IBookRepository {
                 let data = try Data(contentsOf: fileURL)
                 let dict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
                 let b = try serializer.deserialize(data: dict)
-                hash[b.id] = b
-                books.append(b)
+                if bookSourceExists(b) {
+                    hash[b.id] = b
+                    books.append(b)
+                } else {
+                    try destroyBook(b)
+                }
             }
             if books.count > 0 {
-                value.send(books)
+                subject.send(books)
             }
         } catch {
             throw JSONBookRepositoryError.readBooksFromDiscFailed(details: error.localizedDescription)
         }
+    }
+
+    private func bookSourceExists(_ b: Book) -> Bool {
+        return FileManager.default.fileExists(atPath: URLS.documentsURL.appendingPathComponent(b.folderPath).path)
+    }
+
+    private func destroyBook(_ b: Book) throws {
+        let storeURL = getBookStoreURL(b)
+        if FileManager.default.fileExists(atPath: storeURL.path) {
+            do {
+                try FileManager.default.removeItem(atPath: storeURL.path)
+                logInfo(msg: "Book «\(b.title)» has been destroyed")
+            } catch {
+                throw JSONBookRepositoryError.removeBookFromDiscFailed(details: error.localizedDescription)
+            }
+        }
+    }
+
+    private var disposeBag: Set<AnyCancellable> = []
+    private func subscribeToDispatcher() {
+        PlaylistDomainEventDispatcher.shared.model
+            .debounce(for: 0.2, scheduler: RunLoop.main)
+            .sink { event in
+                do {
+                    switch event {
+                    case let .audioFileStateChanged(file):
+                        if self.has(file.book.id) {
+                            try self.store(file.book)
+                        }
+                    case let .bookStateChanged(book):
+                        if self.has(book.id) {
+                            try self.store(book)
+                        }
+                    }
+                } catch {
+                    logErr(msg: error.localizedDescription)
+                }
+            }
+            .store(in: &disposeBag)
+    }
+
+    func getBookStoreURL(_ b: Book) -> URL {
+        return url.appendingPathComponent(b.uid.description + ".m3b")
     }
 
     func has(_ bookID: ID) -> Bool {
@@ -70,23 +119,33 @@ class JSONBookRepository: IBookRepository {
     }
 
     func write(_ books: [Book]) throws {
+        var newBooks: [Book] = []
         for b in books {
-            let fileUrl = url.appendingPathComponent(b.uid.description + ".m3b")
-            let dict = serializer.serialize(b)
-
-            do {
-                let data = try JSONSerialization.data(withJSONObject: dict, options: .fragmentsAllowed)
-                do {
-                    try data.write(to: fileUrl)
-                    hash[b.id] = b
-                    value.value.append(b)
-                    // value.send(value.value.append(b))
-                } catch {
-                    throw JSONBookRepositoryError.writeBookToDiscFailed(bookTitle: b.title, details: error.localizedDescription)
-                }
-            } catch {
-                throw JSONBookRepositoryError.jsonSerializationFailed(bookTitle: b.title, details: error.localizedDescription)
+            if !has(b.id) {
+                try store(b)
+                hash[b.id] = b
+                newBooks.append(b)
             }
+        }
+
+        if newBooks.count > 0 {
+            subject.send(subject.value + newBooks)
+        }
+    }
+
+    private func store(_ b: Book) throws {
+        do {
+            let fileUrl = getBookStoreURL(b)
+            let dict = serializer.serialize(b)
+            let data = try JSONSerialization.data(withJSONObject: dict, options: .fragmentsAllowed)
+            do {
+                try data.write(to: fileUrl)
+
+            } catch {
+                throw JSONBookRepositoryError.writeBookToDiscFailed(bookTitle: b.title, details: error.localizedDescription)
+            }
+        } catch {
+            throw JSONBookRepositoryError.jsonSerializationFailed(bookTitle: b.title, details: error.localizedDescription)
         }
     }
 }

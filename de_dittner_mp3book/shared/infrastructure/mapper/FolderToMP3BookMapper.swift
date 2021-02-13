@@ -13,9 +13,9 @@ class FolderToMP3BookMapper {
         self.repo = repo
     }
 
-    func convert(_ folders: [Folder]) -> [Book] {
+    func convert(from: [Folder]) -> [Book] {
         var newBooks: [Book] = []
-        for folder in folders {
+        for folder in from {
             if let b = repo.read(folder.id) {
                 newBooks.append(b)
             } else {
@@ -27,12 +27,11 @@ class FolderToMP3BookMapper {
 
         return newBooks
     }
-    
+
     func convert(_ files: [FolderFile]) -> [AudioFile] {
         var res = [AudioFile]()
         for (index, f) in files.enumerated() {
-            let fileURL = URL(fileURLWithPath: f.path, relativeTo: URLS.documentsURL)
-            let audioFile = AudioFile(id: f.id, name: f.name, source: .documents, url: fileURL, duration: f.duration, index: index)
+            let audioFile = AudioFile(id: f.id, name: f.name, source: .documents, path: f.path, duration: f.duration, index: index)
             res.append(audioFile)
         }
         return res

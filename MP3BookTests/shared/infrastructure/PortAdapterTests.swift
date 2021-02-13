@@ -16,7 +16,7 @@ class PortAdapterTests: XCTestCase {
         var isFirstRequestProcessed = false
         var isSecondRequestProcessed = false
         
-        let subscription = port.value.sink { persons in
+        let subscription = port.subject.sink { persons in
             if !isFirstRequestProcessed {
                 isFirstRequestProcessed = true
                 XCTAssertEqual(persons.count, 0)

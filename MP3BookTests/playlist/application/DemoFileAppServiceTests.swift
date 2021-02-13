@@ -9,7 +9,7 @@
 import XCTest
 
 class DemoFileAppServiceTests: XCTestCase {
-    let destFolderName: String = "test"
+    let destFolderName: String = "Test"
     let srcFileName: String = "test.mp3"
 
     override func tearDownWithError() throws {

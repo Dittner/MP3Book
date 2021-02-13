@@ -13,9 +13,9 @@ class PlaylistToMP3BookMapper {
         self.repo = repo
     }
 
-    func convert(_ playlists: [Playlist]) -> [Book] {
+    func convert(from: [Playlist]) -> [Book] {
         var newBooks: [Book] = []
-        for playlist in playlists {
+        for playlist in from {
             if let b = repo.read(playlist.id) {
                 newBooks.append(b)
             } else {
@@ -27,12 +27,12 @@ class PlaylistToMP3BookMapper {
 
         return newBooks
     }
-    
+
     func convert(_ files: [PlaylistFile]) -> [AudioFile] {
         var res = [AudioFile]()
         for (index, f) in files.enumerated() {
-            let fileURL = f.playlistItem!.assetURL!
-            let audioFile = AudioFile(id: f.id, name: f.name, source: .iPodLibrary, url: fileURL, duration: f.duration, index: index)
+            let playlistID = f.playlistItem!.persistentID.description
+            let audioFile = AudioFile(id: f.id, name: f.name, source: .iPodLibrary, playlistID: playlistID, duration: f.duration, index: index)
             res.append(audioFile)
         }
         return res

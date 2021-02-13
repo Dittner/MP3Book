@@ -25,7 +25,7 @@ class BookSerializer: IBookSerializer {
         dict["title"] = b.title
         dict["folderPath"] = b.folderPath
         dict["playlistID"] = b.playlistID
-        dict["pendingToRemove"] = b.pendingToRemove
+        dict["addedToPlaylist"] = b.addedToPlaylist
         dict["progress"] = b.progress
         dict["curFileIndex"] = b.curFileIndex
 
@@ -64,10 +64,10 @@ class BookSerializer: IBookSerializer {
         }
         
         
-        guard let pendingToRemove = data["pendingToRemove"] as? Bool else { throw BookSerializerError.propertyNotFound(name: "pendingToRemove", bookTitle: title) }
+        guard let addedToPlaylist = data["addedToPlaylist"] as? Bool else { throw BookSerializerError.propertyNotFound(name: "addedToPlaylist", bookTitle: title) }
         guard let progress = data["progress"] as? Int else { throw BookSerializerError.propertyNotFound(name: "progress", bookTitle: title) }
         guard let curFileIndex = data["curFileIndex"] as? Int else { throw BookSerializerError.propertyNotFound(name: "curFileIndex", bookTitle: title) }
-        res.pendingToRemove = pendingToRemove
+        res.addedToPlaylist = addedToPlaylist
         res.curFileIndex = curFileIndex
         res.progress = progress
         

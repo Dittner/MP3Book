@@ -20,7 +20,8 @@ class AudioFileSerializer:IAudioFileSerializer {
         dict["index"] = f.index
         dict["duration"] = f.duration
         dict["source"] = f.source.rawValue
-        dict["url"] = f.url.absoluteString
+        dict["path"] = f.path
+        dict["playlistID"] = f.playlistID
         
         return dict
     }
@@ -31,8 +32,13 @@ class AudioFileSerializer:IAudioFileSerializer {
         guard let index = data["index"] as? Int else {throw AudioFileSerializerError.propertyNotFound(name: "index", fileId: id) }
         guard let duration = data["duration"] as? Int else {throw AudioFileSerializerError.propertyNotFound(name: "duration", fileId: id) }
         guard let sourceInt = data["source"] as? Int, let source = AudioFileSource(rawValue: sourceInt) else {throw AudioFileSerializerError.propertyNotFound(name: "source", fileId: id) }
-        guard let urlStr = data["url"] as? String, urlStr.count > 0, let url = URL(string: urlStr) else {throw AudioFileSerializerError.propertyNotFound(name: "url",  fileId: id) }
-        
-        return AudioFile(id: id, name: name, source: source, url: url, duration: duration, index: index)
+
+        if source == .documents {
+            guard let path = data["path"] as? String, path.count > 0 else {throw AudioFileSerializerError.propertyNotFound(name: "path", fileId: id) }
+            return AudioFile(id: id, name: name, source: source, path: path, duration: duration, index: index)
+        } else {
+            guard let playlistID = data["playlistID"] as? String, playlistID.count > 0 else {throw AudioFileSerializerError.propertyNotFound(name: "playlistID", fileId: id) }
+            return AudioFile(id: id, name: name, source: source, playlistID: playlistID, duration: duration, index: index)
+        }
     }
 }

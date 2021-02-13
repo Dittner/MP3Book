@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol IBookRepository {
-    var value: CurrentValueSubject<[Book], Never> { get }
+    var subject: CurrentValueSubject<[Book], Never> { get }
     func has(_ bookID: ID) -> Bool
     func read(_ bookID: ID) -> Book?
     func write(_ books: [Book]) throws

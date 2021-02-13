@@ -10,56 +10,81 @@ import Combine
 import XCTest
 
 class BookRepositoryTests: XCTestCase {
-    var book: Book!
+    let destFolderName: String = "Test"
+    let srcFileName: String = "test.mp3"
+
+    var realFolder: Folder!
+    var fakeFolder: Folder!
+    var fakeBook: Book!
     var storageURL: URL!
 
     override func setUpWithError() throws {
-        let file1 = AudioFile(id: "file1", name: "file1", source: .documents, url: URLS.documentsURL, duration: 300, index: 0)
-        let file2 = AudioFile(id: "file2", name: "file2", source: .documents, url: URLS.documentsURL, duration: 200, index: 1)
-        book = Book(uid: UID(), folderPath: "documents/1984", title: "1984", files: [file1, file2])
+        storageURL = URLS.libraryURL.appendingPathComponent("Test/book")
+        try copyTestFilesToDocuments()
+    }
 
-        storageURL = URLS.libraryURL.appendingPathComponent("Test")
+    func copyTestFilesToDocuments() throws {
+        let destDemoFolderURL = URLS.documentsURL.appendingPathComponent(destFolderName)
+        let service = DemoFileAppService()
+        try service.copyDemoFile(srcFileName: srcFileName, to: destDemoFolderURL)
+
+        let file = FolderFile(filePath: destFolderName + "/" + srcFileName, name: srcFileName, duration: 60)
+        realFolder = Folder(folderPath: destFolderName, title: destFolderName, parentFolderName: nil, totalDuration: 60, files: [file], depth: 0)
+        fakeFolder = Folder(folderPath: "fakeFolder", title: "NoName", parentFolderName: nil, totalDuration: 60, files: [file], depth: 0)
     }
 
     override func tearDownWithError() throws {
+        try removeTestStorage()
+        try removeTestFiles()
+    }
+
+    func removeTestStorage() throws {
         let fileManager = FileManager.default
         if fileManager.fileExists(atPath: storageURL.path) {
-           try fileManager.removeItem(atPath: storageURL.path)
+            try fileManager.removeItem(atPath: storageURL.path)
         }
     }
-    
+
+    func removeTestFiles() throws {
+        let destDemoFolderURL = URLS.documentsURL.appendingPathComponent(destFolderName)
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: destDemoFolderURL.path) {
+            try fileManager.removeItem(atPath: destDemoFolderURL.path)
+            print("Demo folder has been removed")
+        } else {
+            print("Demo folder does not exist")
+        }
+    }
+
     func test() throws {
-        try runBookSerializer()
-        try updateBooks()
-        try readBooks()
-    }
-    
-    func runBookSerializer() throws {
-        let audioFileSerializer = AudioFileSerializer()
-        let bookSerializer = BookSerializer(fileSerializer: audioFileSerializer)
-
-        let serializedData = bookSerializer.serialize(book)
-        let deserializedBook = try bookSerializer.deserialize(data: serializedData)
-
-        XCTAssertTrue(equals(b1: book, b2: deserializedBook))
+        try convertFoldersAndAddBooksToRepo()
+        try readBooksFromRepo()
     }
 
-    func updateBooks() throws {
+    func convertFoldersAndAddBooksToRepo() throws {
         let audioFileSerializer = AudioFileSerializer()
         let bookSerializer = BookSerializer(fileSerializer: audioFileSerializer)
-        let bookRepository = try JSONBookRepository(serializer: bookSerializer, storeTo: storageURL)
+        let bookRepository = try! JSONBookRepository(serializer: bookSerializer, storeTo: storageURL)
+        let addBooksToPlaylistDomainService = AddBooksToPlaylistDomainService(repo: bookRepository)
+        let foldersToBooksMapper = FolderToMP3BookMapper(repo: bookRepository)
 
         var isFirstRequestProcessed = false
         var isSecondRequestProcessed = false
+        var isThirdRequestProcessed = false
 
-        let subscription = bookRepository.value.sink { books in
+        let subscription = bookRepository.subject.sink { books in
             if !isFirstRequestProcessed {
                 isFirstRequestProcessed = true
                 XCTAssertEqual(books.count, 0)
             } else if !isSecondRequestProcessed {
                 isSecondRequestProcessed = true
                 XCTAssertEqual(books.count, 1)
-                XCTAssertEqual(books[0].title, self.book.title)
+                XCTAssertEqual(books[0].title, self.realFolder.title)
+            } else if !isThirdRequestProcessed {
+                isThirdRequestProcessed = true
+                XCTAssertEqual(books.count, 2)
+                XCTAssertEqual(books[1].title, self.fakeFolder.title)
+
             } else {
                 XCTFail()
             }
@@ -67,26 +92,45 @@ class BookRepositoryTests: XCTestCase {
 
         XCTAssertTrue(isFirstRequestProcessed)
 
-        try bookRepository.write([book])
+        let realBooks = foldersToBooksMapper.convert(from: [realFolder])
+        try addBooksToPlaylistDomainService.add(realBooks, from: .documents)
 
         XCTAssertTrue(isSecondRequestProcessed)
 
+        let fakeBooks = foldersToBooksMapper.convert(from: [fakeFolder])
+        fakeBook = fakeBooks[0]
+        try addBooksToPlaylistDomainService.add(fakeBooks, from: .documents)
+        
+
+        XCTAssertTrue(isThirdRequestProcessed)
+
         subscription.cancel()
 
-        XCTAssertTrue(bookRepository.has(book.id))
-        XCTAssertFalse(bookRepository.read(book.id)!.pendingToRemove)
+        
+        
+        XCTAssertTrue(bookRepository.has(realFolder.id))
+        XCTAssertTrue(bookRepository.has(fakeFolder.id))
+        XCTAssertFalse(bookRepository.read(realFolder.id)!.addedToPlaylist)
+        XCTAssertTrue(bookRepository.read(fakeFolder.id)!.addedToPlaylist)
+        
     }
 
-    func readBooks() throws {
+    func readBooksFromRepo() throws {
+        //Waiting for the storing books
+        waitSec(duration: 1)
+
         let audioFileSerializer = AudioFileSerializer()
         let bookSerializer = BookSerializer(fileSerializer: audioFileSerializer)
         let bookRepository = try JSONBookRepository(serializer: bookSerializer, storeTo: storageURL)
 
         var isFirstRequestProcessed = false
-        let subscription = bookRepository.value.sink { books in
+        let subscription = bookRepository.subject.sink { books in
             isFirstRequestProcessed = true
             if books.count == 1 {
-                XCTAssertTrue(self.equals(b1: books[0], b2: self.book))
+                XCTAssertEqual(books[0].title, self.realFolder.title)
+                // repo must subscribe to books changes and store books
+                // addedToPlaylist prop has been changed after processing of addBooksToPlaylistDomainService
+                XCTAssertFalse(books[0].addedToPlaylist)
             } else {
                 XCTFail()
             }
@@ -94,31 +138,9 @@ class BookRepositoryTests: XCTestCase {
 
         XCTAssertTrue(isFirstRequestProcessed)
 
+        // repo must destroy fake books, that have no source
+        XCTAssertFalse(FileManager.default.fileExists(atPath: bookRepository.getBookStoreURL(fakeBook).path))
+
         subscription.cancel()
-        
-        if let b = bookRepository.read(book.id) {
-            XCTAssertFalse(b.pendingToRemove)
-        } else {
-            XCTFail()
-        }
-    }
-
-    func equals(b1: Book, b2: Book) -> Bool {
-        if b1.id != b2.id { return false }
-        if b1.title != b2.title { return false }
-        if b1.folderPath != b2.folderPath { return false }
-        if b1.files.count != b2.files.count { return false }
-        for (index, b1file) in b1.files.enumerated() {
-            let b2file = b2.files[index]
-
-            if b1file.id != b2file.id { return false }
-            if b1file.name != b2file.name { return false }
-            if b1file.source != b2file.source { return false }
-            if b1file.url != b2file.url { return false }
-            if b1file.duration != b2file.duration { return false }
-            if b1file.index != b2file.index { return false }
-        }
-
-        return true
     }
 }
