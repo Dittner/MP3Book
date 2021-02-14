@@ -49,9 +49,10 @@
 		5B9EA87E25CC5C5F009B14A5 /* readme_screenshoots.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5B9EA87B25CC5C5F009B14A5 /* readme_screenshoots.jpg */; };
 		5B9EA87F25CC5C5F009B14A5 /* appStoreIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 5B9EA87C25CC5C5F009B14A5 /* appStoreIcon.svg */; };
 		5B9EA88425CC5F16009B14A5 /* DetailedError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9EA88325CC5F16009B14A5 /* DetailedError.swift */; };
+		5BBD49B225D94DF7009480B4 /* PlaylistDomainEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBD49B125D94DF7009480B4 /* PlaylistDomainEntity.swift */; };
 		5BD0EF4B25D80A00006CF6B0 /* AddBooksToPlaylistDomainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0EF4A25D80A00006CF6B0 /* AddBooksToPlaylistDomainService.swift */; };
 		5BD0EF5825D821F8006CF6B0 /* BookSerializerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0EF5725D821F8006CF6B0 /* BookSerializerTests.swift */; };
-		5BD0EF5D25D82F49006CF6B0 /* PlaylistDomainEventDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0EF5C25D82F46006CF6B0 /* PlaylistDomainEventDispatcher.swift */; };
+		5BD0EF5D25D82F49006CF6B0 /* DomainEventDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0EF5C25D82F46006CF6B0 /* DomainEventDispatcher.swift */; };
 		5BD0EF7025D83748006CF6B0 /* SharedContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0EF6F25D83748006CF6B0 /* SharedContext.swift */; };
 		5BD0EF7A25D83A13006CF6B0 /* FolderToMP3BookMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B15E3CF25D73CA50033E4FB /* FolderToMP3BookMapper.swift */; };
 		5BD0EF8125D83A18006CF6B0 /* PlaylistToMP3BookMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B15E3D725D73CC50033E4FB /* PlaylistToMP3BookMapper.swift */; };
@@ -60,7 +61,6 @@
 		5BE8CAB425C8993C00834AD6 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE8CAB325C8993C00834AD6 /* LibraryView.swift */; };
 		5BE8CAB625C8993D00834AD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5BE8CAB525C8993D00834AD6 /* Assets.xcassets */; };
 		5BE8CAB925C8993D00834AD6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5BE8CAB825C8993D00834AD6 /* Preview Assets.xcassets */; };
-		5BE8CAC425C8993D00834AD6 /* MP3BookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE8CAC325C8993D00834AD6 /* MP3BookTests.swift */; };
 		5BE8CACF25C8993D00834AD6 /* MP3BookUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE8CACE25C8993D00834AD6 /* MP3BookUITests.swift */; };
 		5BF7530A25CDBC5900C3F1E0 /* test.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5BF7530625CDBC2700C3F1E0 /* test.mp3 */; };
 		5BF7532925CDBDC000C3F1E0 /* George Orwell – 1984 in Resources */ = {isa = PBXBuildFile; fileRef = 5BF7532825CDBDBF00C3F1E0 /* George Orwell – 1984 */; };
@@ -133,9 +133,10 @@
 		5B9EA87B25CC5C5F009B14A5 /* readme_screenshoots.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = readme_screenshoots.jpg; sourceTree = "<group>"; };
 		5B9EA87C25CC5C5F009B14A5 /* appStoreIcon.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = appStoreIcon.svg; sourceTree = "<group>"; };
 		5B9EA88325CC5F16009B14A5 /* DetailedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedError.swift; sourceTree = "<group>"; };
+		5BBD49B125D94DF7009480B4 /* PlaylistDomainEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistDomainEntity.swift; sourceTree = "<group>"; };
 		5BD0EF4A25D80A00006CF6B0 /* AddBooksToPlaylistDomainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBooksToPlaylistDomainService.swift; sourceTree = "<group>"; };
 		5BD0EF5725D821F8006CF6B0 /* BookSerializerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookSerializerTests.swift; sourceTree = "<group>"; };
-		5BD0EF5C25D82F46006CF6B0 /* PlaylistDomainEventDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistDomainEventDispatcher.swift; sourceTree = "<group>"; };
+		5BD0EF5C25D82F46006CF6B0 /* DomainEventDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainEventDispatcher.swift; sourceTree = "<group>"; };
 		5BD0EF6F25D83748006CF6B0 /* SharedContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedContext.swift; sourceTree = "<group>"; };
 		5BD0EF8825D852FD006CF6B0 /* XCTestCase++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase++.swift"; sourceTree = "<group>"; };
 		5BE8CAAE25C8993C00834AD6 /* MP3Book.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MP3Book.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,7 +146,6 @@
 		5BE8CAB825C8993D00834AD6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5BE8CABA25C8993D00834AD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5BE8CABF25C8993D00834AD6 /* MP3BookTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MP3BookTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5BE8CAC325C8993D00834AD6 /* MP3BookTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MP3BookTests.swift; sourceTree = "<group>"; };
 		5BE8CAC525C8993D00834AD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5BE8CACA25C8993D00834AD6 /* MP3BookUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MP3BookUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BE8CACE25C8993D00834AD6 /* MP3BookUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MP3BookUITests.swift; sourceTree = "<group>"; };
@@ -244,7 +244,8 @@
 				5BD0EF4925D809DD006CF6B0 /* service */,
 				5B6382CC25D5CEFA00B86CAC /* repository */,
 				5B39F0E925C89F4D00BC132C /* model */,
-				5BD0EF5C25D82F46006CF6B0 /* PlaylistDomainEventDispatcher.swift */,
+				5BD0EF5C25D82F46006CF6B0 /* DomainEventDispatcher.swift */,
+				5BBD49B125D94DF7009480B4 /* PlaylistDomainEntity.swift */,
 			);
 			path = domain;
 			sourceTree = "<group>";
@@ -444,11 +445,10 @@
 		5BE8CAC225C8993D00834AD6 /* MP3BookTests */ = {
 			isa = PBXGroup;
 			children = (
-				5BD0EF8825D852FD006CF6B0 /* XCTestCase++.swift */,
 				5B6382BE25D576A100B86CAC /* shared */,
 				5BF7534B25CDCA7F00C3F1E0 /* library */,
 				5BF7534A25CDCA6F00C3F1E0 /* playlist */,
-				5BE8CAC325C8993D00834AD6 /* MP3BookTests.swift */,
+				5BD0EF8825D852FD006CF6B0 /* XCTestCase++.swift */,
 				5BE8CAC525C8993D00834AD6 /* Info.plist */,
 			);
 			path = MP3BookTests;
@@ -722,7 +722,7 @@
 				5B15E3BC25D6FBF90033E4FB /* Playlist.swift in Sources */,
 				5BD0EF7025D83748006CF6B0 /* SharedContext.swift in Sources */,
 				5B62198425D132B4000412EB /* NavigationBarModifier.swift in Sources */,
-				5BD0EF5D25D82F49006CF6B0 /* PlaylistDomainEventDispatcher.swift in Sources */,
+				5BD0EF5D25D82F49006CF6B0 /* DomainEventDispatcher.swift in Sources */,
 				5B15E3B425D6EC950033E4FB /* UID.swift in Sources */,
 				5B6382CE25D5CF2400B86CAC /* IBookRepository.swift in Sources */,
 				5BE8CAB225C8993C00834AD6 /* MP3BookApp.swift in Sources */,
@@ -742,6 +742,7 @@
 				5B6382E125D5D5B500B86CAC /* BookSerializer.swift in Sources */,
 				5B15E3C425D6FC6D0033E4FB /* PlaylistFile.swift in Sources */,
 				5B94D8EB25D00D3D0054B23C /* BookListView.swift in Sources */,
+				5BBD49B225D94DF7009480B4 /* PlaylistDomainEntity.swift in Sources */,
 				5B1C3DC025D3E0B800B6F15A /* ActivityIndicator.swift in Sources */,
 				5B9EA84D25CC1AC4009B14A5 /* DateTimeUtils.swift in Sources */,
 				5BF7535925CDD12D00C3F1E0 /* IPodAppService.swift in Sources */,
@@ -770,7 +771,6 @@
 				5BF7534E25CDCB0200C3F1E0 /* DocumentsAppServiceTests.swift in Sources */,
 				5B6382C825D576E300B86CAC /* PortAdapterTests.swift in Sources */,
 				5BD0EF8925D852FD006CF6B0 /* XCTestCase++.swift in Sources */,
-				5BE8CAC425C8993D00834AD6 /* MP3BookTests.swift in Sources */,
 				5BD0EF5825D821F8006CF6B0 /* BookSerializerTests.swift in Sources */,
 				5B15E38F25D6A5610033E4FB /* BookRepositoryTests.swift in Sources */,
 			);

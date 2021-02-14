@@ -9,7 +9,7 @@ import Combine
 import Foundation
 import MediaPlayer
 
-class AudioFile: ObservableObject, Identifiable {
+class AudioFile: PlaylistDomainEntity, ObservableObject, Identifiable {
     let id: ID
     let source: AudioFileSource
     let path: String
@@ -21,7 +21,7 @@ class AudioFile: ObservableObject, Identifiable {
     
     @Published var state: PlayState = .stopped
     
-    init(id: ID, name: String, source:AudioFileSource, path:String, duration: Int, index: Int) {
+    init(id: ID, name: String, source:AudioFileSource, path:String, duration: Int, index: Int, dispatcher: PlaylistDispatcher) {
         self.id = id
         self.name = name
         self.duration = duration
@@ -29,9 +29,11 @@ class AudioFile: ObservableObject, Identifiable {
         self.source = source
         self.path = path
         self.playlistID = ""
+        
+        super.init(dispatcher: dispatcher)
     }
     
-    init(id: ID, name: String, source:AudioFileSource, playlistID:String, duration: Int, index: Int) {
+    init(id: ID, name: String, source:AudioFileSource, playlistID:String, duration: Int, index: Int, dispatcher: PlaylistDispatcher) {
         self.id = id
         self.name = name
         self.duration = duration
@@ -39,6 +41,8 @@ class AudioFile: ObservableObject, Identifiable {
         self.source = source
         self.path = ""
         self.playlistID = playlistID
+        
+        super.init(dispatcher: dispatcher)
     }
 
     var description: String {

@@ -11,6 +11,7 @@ import SwiftUI
 @main
 struct MP3BookApp: App {
     let b: Bootstrap
+    @ObservedObject var themeObservable = ThemeObservable.shared
 
     private var disposeBag: Set<AnyCancellable> = []
     init() {
@@ -41,7 +42,7 @@ struct MP3BookApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().accentColor(themeObservable.theme.tint.color)
         }
     }
 }

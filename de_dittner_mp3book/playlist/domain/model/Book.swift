@@ -26,12 +26,13 @@ enum AudioFileSource: Int {
 
 typealias ID = String
 
-class Book: ObservableObject {
+class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
     let uid: UID
     let id: ID
     let folderPath: String
     let playlistID: String
     let title: String
+    let totalDuration: Int
     let files: [AudioFile]
     let source: AudioFileSource
 
@@ -43,25 +44,31 @@ class Book: ObservableObject {
 
     private(set) var sortType: AudioFilesSortType = .none
 
-    init(uid: UID, playlistPersistentID: UInt64, title: String, files: [AudioFile]) {
+    init(uid: UID, playlistPersistentID: UInt64, title: String, files: [AudioFile], totalDuration: Int, dispatcher: PlaylistDispatcher) {
         self.uid = uid
         id = playlistPersistentID.description
         self.title = title
+        self.totalDuration = totalDuration
         source = .iPodLibrary
         playlistID = playlistPersistentID.description
         folderPath = ""
         self.files = files
+
+        super.init(dispatcher: dispatcher)
         notifyStateChanged()
     }
 
-    init(uid: UID, folderPath: String, title: String, files: [AudioFile]) {
+    init(uid: UID, folderPath: String, title: String, files: [AudioFile], totalDuration: Int, dispatcher: PlaylistDispatcher) {
         self.uid = uid
         id = folderPath
         self.folderPath = folderPath
         playlistID = ""
         self.title = title
+        self.totalDuration = totalDuration
         source = .documents
         self.files = files
+
+        super.init(dispatcher: dispatcher)
         notifyStateChanged()
     }
 
@@ -71,7 +78,7 @@ class Book: ObservableObject {
             .removeDuplicates()
             .dropFirst()
             .sink { _ in
-                PlaylistDomainEventDispatcher.shared.model.send(PlaylistDomainEvent.bookStateChanged(book: self))
+                self.dispatcher.subject.send(PlaylistDomainEvent.bookStateChanged(book: self))
             }
             .store(in: &disposeBag)
 
@@ -79,19 +86,17 @@ class Book: ObservableObject {
             .removeDuplicates()
             .dropFirst()
             .sink { _ in
-                PlaylistDomainEventDispatcher.shared.model.send(PlaylistDomainEvent.bookStateChanged(book: self))
+                self.dispatcher.subject.send(PlaylistDomainEvent.bookStateChanged(book: self))
             }
             .store(in: &disposeBag)
 
         $addedToPlaylist
-                .removeDuplicates()
-                .dropFirst()
-                .sink { value in
-                    let isDamaged = self.isDamaged
-                    let added = self.addedToPlaylist
-                    PlaylistDomainEventDispatcher.shared.model.send(PlaylistDomainEvent.bookStateChanged(book: self))
-                }
-                .store(in: &disposeBag)
+            .removeDuplicates()
+            .dropFirst()
+            .sink { _ in
+                self.dispatcher.subject.send(PlaylistDomainEvent.bookStateChanged(book: self))
+            }
+            .store(in: &disposeBag)
     }
 
     func sort(_ sortType: AudioFilesSortType) {

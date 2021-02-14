@@ -6,20 +6,29 @@
 //
 
 import Foundation
-import Foundation
 
-typealias Thread = DispatchQueue
+typealias Async = DispatchQueue
 
-extension Thread {
-
-    static func background(_ task: @escaping () -> ()) {
-        Thread.global(qos: .background).async {
+extension Async {
+    static func background(_ task: @escaping () -> Void) {
+        Async.global(qos: .background).async {
             task()
         }
     }
 
-    static func main(_ task: @escaping () -> ()) {
-        Thread.main.async {
+    static func background(_ task: @escaping () throws -> Void, completion: @escaping (Error?) -> Void) {
+        Async.global(qos: .background).async {
+            do {
+                try task()
+                completion(nil)
+            } catch {
+                completion(error)
+            }
+        }
+    }
+
+    static func main(_ task: @escaping () -> Void) {
+        Async.main.async {
             task()
         }
     }

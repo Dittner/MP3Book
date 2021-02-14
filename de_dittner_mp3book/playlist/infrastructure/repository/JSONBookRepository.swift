@@ -23,14 +23,17 @@ class JSONBookRepository: IBookRepository {
     private let url: URL
     private var hash: [ID: Book] = [:]
     private let serializer: IBookSerializer
+    private let dispatcher: PlaylistDispatcher
+    private(set) var isReady: Bool = false
 
-    init(serializer: IBookSerializer, storeTo: URL) throws {
+    init(serializer: IBookSerializer, dispatcher: PlaylistDispatcher, storeTo: URL) throws {
         logInfo(msg: "JSONBookRepository init, url: \(storeTo)")
         self.serializer = serializer
+        self.dispatcher = dispatcher
         url = storeTo
 
         try createStorageIfNeeded()
-        try readBooksFromDisc()
+        readBooksFromDisc()
         subscribeToDispatcher()
     }
 
@@ -44,26 +47,42 @@ class JSONBookRepository: IBookRepository {
         }
     }
 
-    private func readBooksFromDisc() throws {
-        do {
+    private func readBooksFromDisc() {
+        Async.background {
             var books = [Book]()
-            let urls = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil).filter { $0.pathExtension == "m3b" }
-            for fileURL in urls {
-                let data = try Data(contentsOf: fileURL)
-                let dict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-                let b = try serializer.deserialize(data: dict)
-                if bookSourceExists(b) {
-                    hash[b.id] = b
-                    books.append(b)
-                } else {
-                    try destroyBook(b)
+            do {
+                let urls = try FileManager.default.contentsOfDirectory(at: self.url, includingPropertiesForKeys: nil).filter { $0.pathExtension == "m3b" }
+
+                for fileURL in urls {
+                    do {
+                        let data = try Data(contentsOf: fileURL)
+                        let dict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+                        let b = try self.serializer.deserialize(data: dict)
+                        if self.bookSourceExists(b) {
+                            self.hash[b.id] = b
+                            books.append(b)
+                        } else {
+                            do {
+                                try self.destroyBook(b)
+                            } catch {
+                                logErr(msg: "Failed to destroy book «\(b.title)», details: \(error.localizedDescription)")
+                            }
+                        }
+                    } catch {
+                        logErr(msg: "Failed to serialize book, url: \(fileURL), details: \(error.localizedDescription)")
+                    }
                 }
+            } catch {
+                logErr(msg: "Failed to read urls, details: \(error.localizedDescription)")
             }
-            if books.count > 0 {
-                subject.send(books)
+
+            Async.main {
+                if books.count > 0 {
+                    self.subject.send(books)
+                }
+                self.isReady = true
+                self.dispatcher.subject.send(.repositoryIsReady(repo: self))
             }
-        } catch {
-            throw JSONBookRepositoryError.readBooksFromDiscFailed(details: error.localizedDescription)
         }
     }
 
@@ -85,7 +104,7 @@ class JSONBookRepository: IBookRepository {
 
     private var disposeBag: Set<AnyCancellable> = []
     private func subscribeToDispatcher() {
-        PlaylistDomainEventDispatcher.shared.model
+        dispatcher.subject
             .debounce(for: 0.2, scheduler: RunLoop.main)
             .sink { event in
                 do {
@@ -98,6 +117,8 @@ class JSONBookRepository: IBookRepository {
                         if self.has(book.id) {
                             try self.store(book)
                         }
+                    default:
+                        break
                     }
                 } catch {
                     logErr(msg: error.localizedDescription)

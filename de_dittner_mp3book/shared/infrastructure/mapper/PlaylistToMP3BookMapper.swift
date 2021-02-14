@@ -9,8 +9,11 @@ import Foundation
 
 class PlaylistToMP3BookMapper {
     let repo: IBookRepository
-    init(repo: IBookRepository) {
+    let dispatcher: PlaylistDispatcher
+
+    init(repo: IBookRepository, dispatcher: PlaylistDispatcher) {
         self.repo = repo
+        self.dispatcher = dispatcher
     }
 
     func convert(from: [Playlist]) -> [Book] {
@@ -20,7 +23,7 @@ class PlaylistToMP3BookMapper {
                 newBooks.append(b)
             } else {
                 let files = convert(playlist.files)
-                let b = Book(uid: UID(), playlistPersistentID: playlist.playlistPersistentID!, title: playlist.title, files: files)
+                let b = Book(uid: UID(), playlistPersistentID: playlist.playlistPersistentID!, title: playlist.title, files: files, totalDuration: playlist.totalDuration, dispatcher: dispatcher)
                 newBooks.append(b)
             }
         }
@@ -32,7 +35,7 @@ class PlaylistToMP3BookMapper {
         var res = [AudioFile]()
         for (index, f) in files.enumerated() {
             let playlistID = f.playlistItem!.persistentID.description
-            let audioFile = AudioFile(id: f.id, name: f.name, source: .iPodLibrary, playlistID: playlistID, duration: f.duration, index: index)
+            let audioFile = AudioFile(id: f.id, name: f.name, source: .iPodLibrary, playlistID: playlistID, duration: f.duration, index: index, dispatcher: dispatcher)
             res.append(audioFile)
         }
         return res

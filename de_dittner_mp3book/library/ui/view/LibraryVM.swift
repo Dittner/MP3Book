@@ -26,11 +26,11 @@ class LibraryVM: ObservableObject {
 
         isLoading = true
         logInfo(msg: "LibraryVM loadFiles")
-        Thread.background {
+        Async.background {
             do {
                 let docsContent = try self.context.documentsAppService.read()
                 let processedFolders = docsContent.folders.filter { $0.depth < 3 }.sorted(by: { $0 < $1 }).map { Wrapper<Folder>($0) }
-                Thread.main {
+                Async.main {
                     self.wrappedFolders = processedFolders
 
                     self.context.iPodAppService.read { playlists in

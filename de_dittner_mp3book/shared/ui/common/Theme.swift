@@ -17,6 +17,7 @@ protocol Theme {
     var appBgColors: [Color] { get }
     var text: UIColor { get }
     var selectedText: UIColor { get }
+    var play: UIColor { get }
     var separator: UIColor { get }
     var listCellBg: UIColor { get }
 }
@@ -29,6 +30,7 @@ struct LightTheme: Theme {
     let appBgColors = [Color(rgb: 0xebeae3), Color(rgb: 0xebeae3), Color(rgb: 0xe3d2cf)]
     let text: UIColor = UIColor(rgb: 0x5A595C)
     let selectedText: UIColor = UIColor(rgb: 0x5A595C)
+    let play: UIColor = UIColor(rgb: 0xAB466A)
     let separator: UIColor = UIColor(rgb: 0, alpha: 0.1)
     let listCellBg: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.5)
 }
@@ -41,6 +43,7 @@ struct DarkTheme: Theme {
     let appBgColors = [Color(rgb: 0x101011), Color(rgb: 0x131414), Color(rgb: 0x181213)]
     let text: UIColor = UIColor(rgb: 0x5A595C)
     let selectedText: UIColor = UIColor(rgb: 0xEBEAE3)
+    let play: UIColor = UIColor(rgb: 0xFFDBA8)
     let separator: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.1)
     let listCellBg: UIColor = UIColor(rgb: 0, alpha: 0.001)
 }

@@ -24,6 +24,9 @@ class BookRepositoryTests: XCTestCase {
     }
 
     func copyTestFilesToDocuments() throws {
+        try removeTestStorage()
+        try removeTestFiles()
+        
         let destDemoFolderURL = URLS.documentsURL.appendingPathComponent(destFolderName)
         let service = DemoFileAppService()
         try service.copyDemoFile(srcFileName: srcFileName, to: destDemoFolderURL)
@@ -33,10 +36,8 @@ class BookRepositoryTests: XCTestCase {
         fakeFolder = Folder(folderPath: "fakeFolder", title: "NoName", parentFolderName: nil, totalDuration: 60, files: [file], depth: 0)
     }
 
-    override func tearDownWithError() throws {
-        try removeTestStorage()
-        try removeTestFiles()
-    }
+    
+
 
     func removeTestStorage() throws {
         let fileManager = FileManager.default
@@ -62,11 +63,14 @@ class BookRepositoryTests: XCTestCase {
     }
 
     func convertFoldersAndAddBooksToRepo() throws {
-        let audioFileSerializer = AudioFileSerializer()
-        let bookSerializer = BookSerializer(fileSerializer: audioFileSerializer)
-        let bookRepository = try! JSONBookRepository(serializer: bookSerializer, storeTo: storageURL)
+        let dispatcher = PlaylistDispatcher()
+        let audioFileSerializer = AudioFileSerializer(dispatcher: dispatcher)
+        let bookSerializer = BookSerializer(fileSerializer: audioFileSerializer, dispatcher: dispatcher)
+        let bookRepository = try JSONBookRepository(serializer: bookSerializer, dispatcher: dispatcher, storeTo: storageURL)
         let addBooksToPlaylistDomainService = AddBooksToPlaylistDomainService(repo: bookRepository)
-        let foldersToBooksMapper = FolderToMP3BookMapper(repo: bookRepository)
+        let foldersToBooksMapper = FolderToMP3BookMapper(repo: bookRepository, dispatcher: dispatcher)
+        
+        waitWhenRepoIsReady(repo: bookRepository, dispatcher: dispatcher)
 
         var isFirstRequestProcessed = false
         var isSecondRequestProcessed = false
@@ -100,47 +104,65 @@ class BookRepositoryTests: XCTestCase {
         let fakeBooks = foldersToBooksMapper.convert(from: [fakeFolder])
         fakeBook = fakeBooks[0]
         try addBooksToPlaylistDomainService.add(fakeBooks, from: .documents)
-        
 
         XCTAssertTrue(isThirdRequestProcessed)
 
-        subscription.cancel()
-
-        
-        
         XCTAssertTrue(bookRepository.has(realFolder.id))
         XCTAssertTrue(bookRepository.has(fakeFolder.id))
         XCTAssertFalse(bookRepository.read(realFolder.id)!.addedToPlaylist)
         XCTAssertTrue(bookRepository.read(fakeFolder.id)!.addedToPlaylist)
+
+        subscription.cancel()
         
+        // Waiting for the storing of books
+        waitSec(duration: 1)
+    }
+    
+    func waitWhenRepoIsReady(repo: JSONBookRepository, dispatcher: PlaylistDispatcher) {
+        let expectation = self.expectation(description: "Waiting for the deserializtion call to complete.")
+        if repo.isReady {
+            expectation.fulfill()
+        } else {
+            dispatcher.subject
+                .sink { event in
+                    switch event {
+                    case .repositoryIsReady:
+                        expectation.fulfill()
+                    default:
+                        break
+                    }
+                }.store(in: &disposeBag)
+        }
+        
+
+        waitForExpectations(timeout: 5)
     }
 
+    private var disposeBag: Set<AnyCancellable> = []
     func readBooksFromRepo() throws {
-        //Waiting for the storing books
-        waitSec(duration: 1)
+        let dispatcher = PlaylistDispatcher()
+        let audioFileSerializer = AudioFileSerializer(dispatcher: dispatcher)
+        let bookSerializer = BookSerializer(fileSerializer: audioFileSerializer, dispatcher: dispatcher)
+        let bookRepository = try JSONBookRepository(serializer: bookSerializer, dispatcher: dispatcher, storeTo: storageURL)
 
-        let audioFileSerializer = AudioFileSerializer()
-        let bookSerializer = BookSerializer(fileSerializer: audioFileSerializer)
-        let bookRepository = try JSONBookRepository(serializer: bookSerializer, storeTo: storageURL)
+        waitWhenRepoIsReady(repo: bookRepository, dispatcher: dispatcher)
 
         var isFirstRequestProcessed = false
-        let subscription = bookRepository.subject.sink { books in
+        bookRepository.subject.sink { books in
             isFirstRequestProcessed = true
             if books.count == 1 {
                 XCTAssertEqual(books[0].title, self.realFolder.title)
                 // repo must subscribe to books changes and store books
-                // addedToPlaylist prop has been changed after processing of addBooksToPlaylistDomainService
+                // addedToPlaylist prop has been changed after processing in the addBooksToPlaylistDomainService
                 XCTAssertFalse(books[0].addedToPlaylist)
             } else {
                 XCTFail()
             }
-        }
+        }.store(in: &disposeBag)
 
         XCTAssertTrue(isFirstRequestProcessed)
 
         // repo must destroy fake books, that have no source
         XCTAssertFalse(FileManager.default.fileExists(atPath: bookRepository.getBookStoreURL(fakeBook).path))
-
-        subscription.cancel()
     }
 }

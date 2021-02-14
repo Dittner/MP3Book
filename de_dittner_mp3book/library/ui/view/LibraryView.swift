@@ -35,12 +35,13 @@ struct LibraryView: View {
                         }
                     }
                 }
-                .navigationBarHidden(false)
                 .navigationViewTheme(themeObservable.theme)
                 .navigationBarTheme(themeObservable.theme)
                 .edgesIgnoringSafeArea(.bottom)
 
-        }.onAppear {
+        }
+        .navigationBarHidden(true)
+        .onAppear {
             vm.loadFiles()
         }
     }

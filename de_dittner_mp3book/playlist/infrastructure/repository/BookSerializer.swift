@@ -12,9 +12,11 @@ enum BookSerializerError: DetailedError {
 
 class BookSerializer: IBookSerializer {
     let fileSerializer: IAudioFileSerializer
+    let dispatcher: PlaylistDispatcher
 
-    init(fileSerializer: IAudioFileSerializer) {
+    init(fileSerializer: IAudioFileSerializer, dispatcher: PlaylistDispatcher) {
         self.fileSerializer = fileSerializer
+        self.dispatcher = dispatcher
     }
 
     func serialize(_ b: Book) -> [String: Any] {
@@ -24,6 +26,7 @@ class BookSerializer: IBookSerializer {
         dict["source"] = b.source.rawValue
         dict["title"] = b.title
         dict["folderPath"] = b.folderPath
+        dict["totalDuration"] = b.totalDuration
         dict["playlistID"] = b.playlistID
         dict["addedToPlaylist"] = b.addedToPlaylist
         dict["progress"] = b.progress
@@ -39,11 +42,13 @@ class BookSerializer: IBookSerializer {
     }
 
     func deserialize(data: [String: Any]) throws -> Book {
-        let res:Book
-        
+        let res: Book
+
         guard let title = data["title"] as? String, title.count > 0 else { throw BookSerializerError.propertyNotFound(name: "title", bookTitle: "") }
         guard let uid = data["uid"] as? UID else { throw BookSerializerError.propertyNotFound(name: "uid", bookTitle: title) }
         guard let sourceInt = data["source"] as? Int, let source = AudioFileSource(rawValue: sourceInt) else { throw BookSerializerError.propertyNotFound(name: "source", bookTitle: title) }
+        
+        guard let totalDuration = data["totalDuration"] as? Int, totalDuration > 0 else { throw BookSerializerError.propertyNotFound(name: "totalDuration", bookTitle: title) }
 
         var files: [AudioFile] = []
         if let fileList = data["files"] as? [[String: Any]], fileList.count > 0 {
@@ -56,21 +61,17 @@ class BookSerializer: IBookSerializer {
 
         if source == .documents {
             guard let folderPath = data["folderPath"] as? String, folderPath.count > 0 else { throw BookSerializerError.propertyNotFound(name: "folderPath", bookTitle: title) }
-            res =  Book(uid: uid, folderPath: folderPath, title: title, files: files)
+            res = Book(uid: uid, folderPath: folderPath, title: title, files: files, totalDuration: totalDuration, dispatcher: dispatcher)
         } else {
             guard let playlistID = data["playlistID"] as? UInt64 else { throw BookSerializerError.propertyNotFound(name: "playlistID", bookTitle: title) }
 
-            res = Book(uid: uid, playlistPersistentID: playlistID, title: title, files: files)
+            res = Book(uid: uid, playlistPersistentID: playlistID, title: title, files: files, totalDuration: totalDuration, dispatcher: dispatcher)
         }
-        
-        
-        guard let addedToPlaylist = data["addedToPlaylist"] as? Bool else { throw BookSerializerError.propertyNotFound(name: "addedToPlaylist", bookTitle: title) }
-        guard let progress = data["progress"] as? Int else { throw BookSerializerError.propertyNotFound(name: "progress", bookTitle: title) }
-        guard let curFileIndex = data["curFileIndex"] as? Int else { throw BookSerializerError.propertyNotFound(name: "curFileIndex", bookTitle: title) }
-        res.addedToPlaylist = addedToPlaylist
-        res.curFileIndex = curFileIndex
-        res.progress = progress
-        
+
+        res.addedToPlaylist = data["addedToPlaylist"] as? Bool ?? false
+        res.curFileIndex = data["curFileIndex"] as? Int ?? 0
+        res.progress = data["progress"] as? Int ?? 0
+
         return res
     }
 }

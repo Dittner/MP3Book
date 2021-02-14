@@ -19,16 +19,24 @@ class SharedContext {
         libraryContext = LibraryContext.shared
         playlistContext = PlaylistContext.shared
 
-        subscribeToFoldersPort()
-        subscribeToPlaylistsPort()
+        let foldersMapper = FolderToMP3BookMapper(repo: playlistContext.bookRepository, dispatcher: playlistContext.dispatcher)
+        subscribeToFoldersPort(foldersMapper)
+
+        let playlistMapper = PlaylistToMP3BookMapper(repo: playlistContext.bookRepository, dispatcher: playlistContext.dispatcher)
+        subscribeToPlaylistsPort(playlistMapper)
+    }
+    
+    func run() {
+        //call run to be sure SharedContext has been launched
+        logInfo(msg: "App has 3 modules: SharedContext, LibraryContext, PlaylistContext")
     }
 
     private var disposeBag: Set<AnyCancellable> = []
-    private func subscribeToFoldersPort() {
+    private func subscribeToFoldersPort(_ foldersMapper: FolderToMP3BookMapper) {
         LibraryContext.shared.foldersPort.subject
-            .filter { $0.count > 0 }
+            .dropFirst()
             .map { folders in
-                FolderToMP3BookMapper(repo: self.playlistContext.bookRepository).convert(from: folders)
+                foldersMapper.convert(from: folders)
             }
             .sink { books in
                 do {
@@ -40,11 +48,11 @@ class SharedContext {
             .store(in: &disposeBag)
     }
 
-    private func subscribeToPlaylistsPort() {
+    private func subscribeToPlaylistsPort(_ playlistMapper: PlaylistToMP3BookMapper) {
         LibraryContext.shared.playlistsPort.subject
-            .filter { $0.count > 0 }
+            .dropFirst()
             .map { playlists in
-                PlaylistToMP3BookMapper(repo: self.playlistContext.bookRepository).convert(from: playlists)
+                playlistMapper.convert(from: playlists)
             }
             .sink { books in
                 do {

@@ -12,6 +12,11 @@ enum AudioFileSerializerError: DetailedError {
 }
 
 class AudioFileSerializer:IAudioFileSerializer {
+    let dispatcher: PlaylistDispatcher
+    
+    init(dispatcher: PlaylistDispatcher) {
+        self.dispatcher = dispatcher
+    }
 
     func serialize(_ f: AudioFile) -> [String : Any] {
         var dict = [String : Any]()
@@ -35,10 +40,10 @@ class AudioFileSerializer:IAudioFileSerializer {
 
         if source == .documents {
             guard let path = data["path"] as? String, path.count > 0 else {throw AudioFileSerializerError.propertyNotFound(name: "path", fileId: id) }
-            return AudioFile(id: id, name: name, source: source, path: path, duration: duration, index: index)
+            return AudioFile(id: id, name: name, source: source, path: path, duration: duration, index: index, dispatcher: dispatcher)
         } else {
             guard let playlistID = data["playlistID"] as? String, playlistID.count > 0 else {throw AudioFileSerializerError.propertyNotFound(name: "playlistID", fileId: id) }
-            return AudioFile(id: id, name: name, source: source, playlistID: playlistID, duration: duration, index: index)
+            return AudioFile(id: id, name: name, source: source, playlistID: playlistID, duration: duration, index: index, dispatcher: dispatcher)
         }
     }
 }

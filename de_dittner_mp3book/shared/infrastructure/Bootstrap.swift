@@ -11,6 +11,7 @@ import UIKit
 class Bootstrap {
     init() {
         logAbout()
+        SharedContext.shared.run()
         addDemoFileIfNeeded()
     }
 
