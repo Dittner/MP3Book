@@ -22,11 +22,18 @@ class BookRepositoryTests: XCTestCase {
         storageURL = URLS.libraryURL.appendingPathComponent("Test/book")
         try copyTestFilesToDocuments()
     }
-
+    
+    override func tearDownWithError() throws {
+        let destDemoFolderURL = URLS.documentsURL.appendingPathComponent(destFolderName)
+        if FileManager.default.fileExists(atPath: destDemoFolderURL.path) {
+            try FileManager.default.removeItem(atPath: destDemoFolderURL.path)
+        }
+    }
+    
     func copyTestFilesToDocuments() throws {
         try removeTestStorage()
         try removeTestFiles()
-        
+
         let destDemoFolderURL = URLS.documentsURL.appendingPathComponent(destFolderName)
         let service = DemoFileAppService()
         try service.copyDemoFile(srcFileName: srcFileName, to: destDemoFolderURL)
@@ -35,9 +42,6 @@ class BookRepositoryTests: XCTestCase {
         realFolder = Folder(folderPath: destFolderName, title: destFolderName, parentFolderName: nil, totalDuration: 60, files: [file], depth: 0)
         fakeFolder = Folder(folderPath: "fakeFolder", title: "NoName", parentFolderName: nil, totalDuration: 60, files: [file], depth: 0)
     }
-
-    
-
 
     func removeTestStorage() throws {
         let fileManager = FileManager.default
@@ -69,7 +73,7 @@ class BookRepositoryTests: XCTestCase {
         let bookRepository = try JSONBookRepository(serializer: bookSerializer, dispatcher: dispatcher, storeTo: storageURL)
         let addBooksToPlaylistDomainService = AddBooksToPlaylistDomainService(repo: bookRepository)
         let foldersToBooksMapper = FolderToMP3BookMapper(repo: bookRepository, dispatcher: dispatcher)
-        
+
         waitWhenRepoIsReady(repo: bookRepository, dispatcher: dispatcher)
 
         var isFirstRequestProcessed = false
@@ -113,13 +117,12 @@ class BookRepositoryTests: XCTestCase {
         XCTAssertTrue(bookRepository.read(fakeFolder.id)!.addedToPlaylist)
 
         subscription.cancel()
-        
-        // Waiting for the storing of books
-        waitSec(duration: 1)
+
+        waitWhenRepoStoredBooks(repo: bookRepository, dispatcher: dispatcher)
     }
-    
+
     func waitWhenRepoIsReady(repo: JSONBookRepository, dispatcher: PlaylistDispatcher) {
-        let expectation = self.expectation(description: "Waiting for the deserializtion call to complete.")
+        let expectation = XCTestExpectation(description: "waitWhenRepoIsReady")
         if repo.isReady {
             expectation.fulfill()
         } else {
@@ -133,9 +136,26 @@ class BookRepositoryTests: XCTestCase {
                     }
                 }.store(in: &disposeBag)
         }
-        
 
-        waitForExpectations(timeout: 5)
+        wait(for: [expectation], timeout: 5.0)
+    }
+
+    func waitWhenRepoStoredBooks(repo: JSONBookRepository, dispatcher: PlaylistDispatcher) {
+        let expectation = XCTestExpectation(description: "waitWhenRepoStoredBooks")
+
+        dispatcher.subject
+            .sink { event in
+                switch event {
+                case .repositoryStoreComplete:
+                    expectation.fulfill()
+                default:
+                    break
+                }
+            }.store(in: &disposeBag)
+
+        repo.storeChanges()
+        
+        wait(for: [expectation], timeout: 5.0)
     }
 
     private var disposeBag: Set<AnyCancellable> = []

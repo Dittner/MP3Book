@@ -105,23 +105,20 @@ class JSONBookRepository: IBookRepository {
     private var disposeBag: Set<AnyCancellable> = []
     private func subscribeToDispatcher() {
         dispatcher.subject
-            .debounce(for: 0.2, scheduler: RunLoop.main)
             .sink { event in
-                do {
-                    switch event {
-                    case let .audioFileStateChanged(file):
-                        if self.has(file.book.id) {
-                            try self.store(file.book)
-                        }
-                    case let .bookStateChanged(book):
-                        if self.has(book.id) {
-                            try self.store(book)
-                        }
-                    default:
-                        break
+                switch event {
+                case let .audioFileStateChanged(file):
+                    if self.has(file.book.id) {
+                        self.pendingBooksToStore.append(file.book.id)
+                        self.storeChanges()
                     }
-                } catch {
-                    logErr(msg: error.localizedDescription)
+                case let .bookStateChanged(book):
+                    if self.has(book.id) {
+                        self.pendingBooksToStore.append(book.id)
+                        self.storeChanges()
+                    }
+                default:
+                    break
                 }
             }
             .store(in: &disposeBag)
@@ -139,22 +136,34 @@ class JSONBookRepository: IBookRepository {
         return hash[bookID]
     }
 
-    func write(_ books: [Book]) throws {
+    func write(_ books: [Book]) {
         var newBooks: [Book] = []
         for b in books {
             if !has(b.id) {
-                try store(b)
                 hash[b.id] = b
                 newBooks.append(b)
+                pendingBooksToStore.append(b.id)
+                storeChanges()
             }
         }
 
-        if newBooks.count > 0 {
-            subject.send(subject.value + newBooks)
+        subject.send(newBooks.count > 0 ? subject.value + newBooks : subject.value)
+    }
+
+    func storeChanges() {
+        Async.after(milliseconds: 1000) {
+            for bookID in self.pendingBooksToStore.removeDuplicates() {
+                if let book = self.read(bookID) {
+                    self.store(book)
+                }
+            }
+            self.pendingBooksToStore = []
+            self.dispatcher.subject.send(.repositoryStoreComplete(repo: self))
         }
     }
 
-    private func store(_ b: Book) throws {
+    private var pendingBooksToStore: [ID] = []
+    private func store(_ b: Book) {
         do {
             let fileUrl = getBookStoreURL(b)
             let dict = serializer.serialize(b)
@@ -163,10 +172,10 @@ class JSONBookRepository: IBookRepository {
                 try data.write(to: fileUrl)
 
             } catch {
-                throw JSONBookRepositoryError.writeBookToDiscFailed(bookTitle: b.title, details: error.localizedDescription)
+                logErr(msg: "Failed to write book «\(b.title)» on disc, details:  \(error.localizedDescription)")
             }
         } catch {
-            throw JSONBookRepositoryError.jsonSerializationFailed(bookTitle: b.title, details: error.localizedDescription)
+            logErr(msg: "Failed to serialize book «\(b.title)», details:  \(error.localizedDescription)")
         }
     }
 }

@@ -93,8 +93,9 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
         $addedToPlaylist
             .removeDuplicates()
             .dropFirst()
-            .sink { _ in
+            .sink { added in
                 self.dispatcher.subject.send(PlaylistDomainEvent.bookStateChanged(book: self))
+                self.dispatcher.subject.send(added ? PlaylistDomainEvent.bookToPlaylistAdded(book: self) : PlaylistDomainEvent.bookFromPlaylistRemoved(book: self))
             }
             .store(in: &disposeBag)
     }
@@ -105,3 +106,4 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
         }
     }
 }
+

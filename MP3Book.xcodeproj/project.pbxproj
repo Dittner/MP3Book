@@ -49,6 +49,8 @@
 		5B9EA87E25CC5C5F009B14A5 /* readme_screenshoots.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5B9EA87B25CC5C5F009B14A5 /* readme_screenshoots.jpg */; };
 		5B9EA87F25CC5C5F009B14A5 /* appStoreIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 5B9EA87C25CC5C5F009B14A5 /* appStoreIcon.svg */; };
 		5B9EA88425CC5F16009B14A5 /* DetailedError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9EA88325CC5F16009B14A5 /* DetailedError.swift */; };
+		5BA4553B25DA5E32001160CF /* PlaylistBooksToHashMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA4553A25DA5E32001160CF /* PlaylistBooksToHashMapper.swift */; };
+		5BA4554325DAA3A6001160CF /* Array++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA4554225DAA3A3001160CF /* Array++.swift */; };
 		5BBD49B225D94DF7009480B4 /* PlaylistDomainEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBD49B125D94DF7009480B4 /* PlaylistDomainEntity.swift */; };
 		5BD0EF4B25D80A00006CF6B0 /* AddBooksToPlaylistDomainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0EF4A25D80A00006CF6B0 /* AddBooksToPlaylistDomainService.swift */; };
 		5BD0EF5825D821F8006CF6B0 /* BookSerializerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0EF5725D821F8006CF6B0 /* BookSerializerTests.swift */; };
@@ -133,6 +135,8 @@
 		5B9EA87B25CC5C5F009B14A5 /* readme_screenshoots.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = readme_screenshoots.jpg; sourceTree = "<group>"; };
 		5B9EA87C25CC5C5F009B14A5 /* appStoreIcon.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = appStoreIcon.svg; sourceTree = "<group>"; };
 		5B9EA88325CC5F16009B14A5 /* DetailedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedError.swift; sourceTree = "<group>"; };
+		5BA4553A25DA5E32001160CF /* PlaylistBooksToHashMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistBooksToHashMapper.swift; sourceTree = "<group>"; };
+		5BA4554225DAA3A3001160CF /* Array++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Array++.swift"; path = "../Array++.swift"; sourceTree = "<group>"; };
 		5BBD49B125D94DF7009480B4 /* PlaylistDomainEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistDomainEntity.swift; sourceTree = "<group>"; };
 		5BD0EF4A25D80A00006CF6B0 /* AddBooksToPlaylistDomainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBooksToPlaylistDomainService.swift; sourceTree = "<group>"; };
 		5BD0EF5725D821F8006CF6B0 /* BookSerializerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookSerializerTests.swift; sourceTree = "<group>"; };
@@ -198,6 +202,7 @@
 		5B15E3CE25D73C940033E4FB /* mapper */ = {
 			isa = PBXGroup;
 			children = (
+				5BA4553A25DA5E32001160CF /* PlaylistBooksToHashMapper.swift */,
 				5B15E3CF25D73CA50033E4FB /* FolderToMP3BookMapper.swift */,
 				5B15E3D725D73CC50033E4FB /* PlaylistToMP3BookMapper.swift */,
 			);
@@ -501,6 +506,7 @@
 				5B9EA84725CC1AC4009B14A5 /* LogStore.swift */,
 				5B9EA85125CC1BF0009B14A5 /* UIDevice++.swift */,
 				5B6382B925D5767F00B86CAC /* OutputPort.swift */,
+				5BA4554225DAA3A3001160CF /* Array++.swift */,
 				5B9EA85325CC1BF0009B14A5 /* URL++.swift */,
 				5B15E3AB25D6CB070033E4FB /* URLS.swift */,
 				5B15E3B325D6EC950033E4FB /* UID.swift */,
@@ -743,7 +749,9 @@
 				5B15E3C425D6FC6D0033E4FB /* PlaylistFile.swift in Sources */,
 				5B94D8EB25D00D3D0054B23C /* BookListView.swift in Sources */,
 				5BBD49B225D94DF7009480B4 /* PlaylistDomainEntity.swift in Sources */,
+				5BA4553B25DA5E32001160CF /* PlaylistBooksToHashMapper.swift in Sources */,
 				5B1C3DC025D3E0B800B6F15A /* ActivityIndicator.swift in Sources */,
+				5BA4554325DAA3A6001160CF /* Array++.swift in Sources */,
 				5B9EA84D25CC1AC4009B14A5 /* DateTimeUtils.swift in Sources */,
 				5BF7535925CDD12D00C3F1E0 /* IPodAppService.swift in Sources */,
 				5B1C3DE725D4228600B6F15A /* Separator.swift in Sources */,

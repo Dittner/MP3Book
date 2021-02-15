@@ -14,12 +14,8 @@ class DemoFileAppServiceTests: XCTestCase {
 
     override func tearDownWithError() throws {
         let destDemoFolderURL = URLS.documentsURL.appendingPathComponent(destFolderName)
-        let fileManager = FileManager.default
-        if fileManager.fileExists(atPath: destDemoFolderURL.path) {
-            try fileManager.removeItem(atPath: destDemoFolderURL.path)
-            print("Demo folder has been removed")
-        } else {
-            print("Demo folder does not exist")
+        if FileManager.default.fileExists(atPath: destDemoFolderURL.path) {
+            try FileManager.default.removeItem(atPath: destDemoFolderURL.path)
         }
     }
 

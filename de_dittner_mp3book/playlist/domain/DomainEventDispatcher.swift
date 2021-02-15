@@ -22,6 +22,9 @@ class PlaylistDispatcher: DomainEventDispatcher {
 
 enum PlaylistDomainEvent {
     case bookStateChanged(book: Book)
+    case bookToPlaylistAdded(book: Book)
+    case bookFromPlaylistRemoved(book: Book)
     case audioFileStateChanged(file: AudioFile)
     case repositoryIsReady(repo: IBookRepository)
+    case repositoryStoreComplete(repo: IBookRepository)
 }

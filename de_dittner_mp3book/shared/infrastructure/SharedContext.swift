@@ -24,10 +24,13 @@ class SharedContext {
 
         let playlistMapper = PlaylistToMP3BookMapper(repo: playlistContext.bookRepository, dispatcher: playlistContext.dispatcher)
         subscribeToPlaylistsPort(playlistMapper)
+
+        let booksMapper = PlaylistBooksToHashMapper()
+        subscribeToPlaylistBooksPort(booksMapper)
     }
-    
+
     func run() {
-        //call run to be sure SharedContext has been launched
+        // call run to be sure SharedContext has been launched
         logInfo(msg: "App has 3 modules: SharedContext, LibraryContext, PlaylistContext")
     }
 
@@ -60,6 +63,18 @@ class SharedContext {
                 } catch {
                     logErr(msg: error.localizedDescription)
                 }
+            }
+            .store(in: &disposeBag)
+    }
+
+    private func subscribeToPlaylistBooksPort(_ booksMapper: PlaylistBooksToHashMapper) {
+        PlaylistContext.shared.playlistBooksPort.subject
+            .dropFirst()
+            .map { books in
+                booksMapper.convert(books)
+            }
+            .sink { hash in
+                LibraryContext.shared.selectedFoldersAnPlaylistsHash = hash
             }
             .store(in: &disposeBag)
     }

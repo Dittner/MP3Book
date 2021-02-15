@@ -25,16 +25,21 @@ class LibraryVM: ObservableObject {
         if isLoading { return }
 
         isLoading = true
-        logInfo(msg: "LibraryVM loadFiles")
+        logInfo(msg: "LibraryVM read fles")
         Async.background {
             do {
+                let isSelected = self.context.selectedFoldersAnPlaylistsHash
                 let docsContent = try self.context.documentsAppService.read()
                 let processedFolders = docsContent.folders.filter { $0.depth < 3 }.sorted(by: { $0 < $1 }).map { Wrapper<Folder>($0) }
+                processedFolders.forEach { $0.selected = isSelected[$0.data.id] ?? false }
+
                 Async.main {
                     self.wrappedFolders = processedFolders
 
                     self.context.iPodAppService.read { playlists in
-                        self.wrappedPlaylists = playlists.sorted(by: { $0 < $1 }).map { Wrapper<Playlist>($0) }
+                        let processedPlaylists = playlists.sorted(by: { $0 < $1 }).map { Wrapper<Playlist>($0) }
+                        processedPlaylists.forEach { $0.selected = isSelected[$0.data.id] ?? false }
+                        self.wrappedPlaylists = processedPlaylists
                         self.isLoading = false
                     }
                 }

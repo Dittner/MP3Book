@@ -16,6 +16,7 @@ class LibraryContext {
     
     let foldersPort:OutputPort<Folder>
     let playlistsPort:OutputPort<Playlist>
+    var selectedFoldersAnPlaylistsHash:[ID:Bool]
 
     init() {
         print("LibraryContext initialized")
@@ -23,6 +24,6 @@ class LibraryContext {
         iPodAppService = IPodAppService()
         foldersPort = OutputPort<Folder>()
         playlistsPort = OutputPort<Playlist>()
+        selectedFoldersAnPlaylistsHash = [:]
     }
 }
-

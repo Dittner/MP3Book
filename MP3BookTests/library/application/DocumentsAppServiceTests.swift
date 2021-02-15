@@ -9,18 +9,13 @@
 import XCTest
 
 class DocumentsAppServiceTests: XCTestCase {
-    let destFolderName: String = "test"
+    let destFolderName: String = "Test"
     let srcFolderName: String = "George Orwell – 1984"
 
-    //remove test folder with mp3 files
     override func tearDownWithError() throws {
         let destDemoFolderURL = URLS.documentsURL.appendingPathComponent(destFolderName)
-        let fileManager = FileManager.default
-        if fileManager.fileExists(atPath: destDemoFolderURL.path) {
-            try fileManager.removeItem(atPath: destDemoFolderURL.path)
-            print("Demo folder has been removed")
-        } else {
-            print("Demo folder does not exist")
+        if FileManager.default.fileExists(atPath: destDemoFolderURL.path) {
+            try FileManager.default.removeItem(atPath: destDemoFolderURL.path)
         }
     }
 

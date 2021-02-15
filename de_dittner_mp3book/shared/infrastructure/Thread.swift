@@ -32,4 +32,9 @@ extension Async {
             task()
         }
     }
+    
+    static func after(milliseconds: Int, _ task: @escaping () -> Void) {
+        Async.main.asyncAfter(deadline: .now() + DispatchTimeInterval.milliseconds(milliseconds), execute: task)
+    }
+    
 }
