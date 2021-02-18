@@ -57,7 +57,7 @@ struct LibraryContent: View {
             ActivityIndicator(isAnimating: $vm.isLoading)
         } else {
             ScrollView {
-                LazyVStack(alignment: .center, spacing: 1) {
+                LazyVStack(alignment: .center, spacing: 0) {
                     if vm.wrappedFolders.count > 0 {
                         Text("Documents")
                             .font(Font.custom(.helveticaNeue, size: 11))
@@ -65,7 +65,7 @@ struct LibraryContent: View {
                             .foregroundColor(themeObservable.theme.text.color)
                             .frame(height: 20, alignment: .center)
 
-                        SeparatorView()
+                        SeparatorView(horizontalPadding: -50)
 
                         ForEach(vm.wrappedFolders) { wrappedFolder in
                             WrapperFolderCell(w: wrappedFolder)
@@ -78,7 +78,7 @@ struct LibraryContent: View {
                                 .foregroundColor(themeObservable.theme.text.color)
                                 .frame(height: 20, alignment: .center)
 
-                            SeparatorView()
+                            SeparatorView(horizontalPadding: -50)
 
                             ForEach(vm.wrappedPlaylists) { wrappedPlaylist in
                                 WrapperPlaylistCell(w: wrappedPlaylist)
@@ -155,7 +155,7 @@ struct ListCell: View {
 
                 Spacer()
 
-                SeparatorView()
+                SeparatorView(horizontalPadding: -50)
 
             }.frame(maxWidth: .infinity)
 

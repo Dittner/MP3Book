@@ -19,4 +19,8 @@ extension URL {
         }
         return false
     }
+    
+    func fileExists() -> Bool {
+        return FileManager.default.fileExists(atPath: self.path)
+    }
 }

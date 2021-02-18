@@ -46,7 +46,7 @@ struct NavigationViewModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        ZStack {
+       ZStack {
             LinearGradient(gradient: Gradient(colors: theme.appBgColors), startPoint: .top, endPoint: .bottom)
                 .edgesIgnoringSafeArea(.all)
                 .overlay(
@@ -54,6 +54,7 @@ struct NavigationViewModifier: ViewModifier {
                 )
         }
     }
+    
 }
 
 extension View {

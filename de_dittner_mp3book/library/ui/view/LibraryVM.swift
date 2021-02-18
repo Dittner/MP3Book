@@ -25,7 +25,7 @@ class LibraryVM: ObservableObject {
         if isLoading { return }
 
         isLoading = true
-        logInfo(msg: "LibraryVM read fles")
+        logInfo(msg: "LibraryVM read files")
         Async.background {
             do {
                 let isSelected = self.context.selectedFoldersAnPlaylistsHash

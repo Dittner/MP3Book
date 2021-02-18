@@ -19,7 +19,9 @@ protocol Theme {
     var selectedText: UIColor { get }
     var play: UIColor { get }
     var separator: UIColor { get }
+    var sliderTrack: UIColor { get }
     var listCellBg: UIColor { get }
+    var popupBg: UIColor { get }
 }
 
 struct LightTheme: Theme {
@@ -31,8 +33,10 @@ struct LightTheme: Theme {
     let text: UIColor = UIColor(rgb: 0x5A595C)
     let selectedText: UIColor = UIColor(rgb: 0x5A595C)
     let play: UIColor = UIColor(rgb: 0xAB466A)
-    let separator: UIColor = UIColor(rgb: 0, alpha: 0.1)
+    let separator: UIColor = UIColor(rgb: 0, alpha: 0.2)
+    let sliderTrack: UIColor = UIColor(rgb: 0, alpha: 0.2)
     let listCellBg: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.5)
+    let popupBg: UIColor = UIColor(rgb: 0xEBEAE3)
 }
 
 struct DarkTheme: Theme {
@@ -44,8 +48,10 @@ struct DarkTheme: Theme {
     let text: UIColor = UIColor(rgb: 0x5A595C)
     let selectedText: UIColor = UIColor(rgb: 0xEBEAE3)
     let play: UIColor = UIColor(rgb: 0xFFDBA8)
-    let separator: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.1)
+    let separator: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.2)
+    let sliderTrack: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.2)
     let listCellBg: UIColor = UIColor(rgb: 0, alpha: 0.001)
+    let popupBg: UIColor = UIColor(rgb: 0x323035)
 }
 
 class ThemeObservable: ObservableObject {

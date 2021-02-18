@@ -29,8 +29,9 @@ class BookSerializer: IBookSerializer {
         dict["totalDuration"] = b.totalDuration
         dict["playlistID"] = b.playlistID
         dict["addedToPlaylist"] = b.addedToPlaylist
-        dict["progress"] = b.progress
+        dict["curFileProgress"] = b.curFileProgress
         dict["curFileIndex"] = b.curFileIndex
+        dict["rate"] = b.rate
 
         var filesDict: [[String: Any]] = []
         for f in b.files {
@@ -63,14 +64,15 @@ class BookSerializer: IBookSerializer {
             guard let folderPath = data["folderPath"] as? String, folderPath.count > 0 else { throw BookSerializerError.propertyNotFound(name: "folderPath", bookTitle: title) }
             res = Book(uid: uid, folderPath: folderPath, title: title, files: files, totalDuration: totalDuration, dispatcher: dispatcher)
         } else {
-            guard let playlistID = data["playlistID"] as? UInt64 else { throw BookSerializerError.propertyNotFound(name: "playlistID", bookTitle: title) }
+            guard let playlistID = data["playlistID"] as? String, playlistID.count > 0 else { throw BookSerializerError.propertyNotFound(name: "playlistID", bookTitle: title) }
 
-            res = Book(uid: uid, playlistPersistentID: playlistID, title: title, files: files, totalDuration: totalDuration, dispatcher: dispatcher)
+            res = Book(uid: uid, playlistID: playlistID, title: title, files: files, totalDuration: totalDuration, dispatcher: dispatcher)
         }
 
         res.addedToPlaylist = data["addedToPlaylist"] as? Bool ?? false
         res.curFileIndex = data["curFileIndex"] as? Int ?? 0
-        res.progress = data["progress"] as? Int ?? 0
+        res.rate = data["rate"] as? Float ?? 1.0
+        res.curFileProgress = data["curFileProgress"] as? Int ?? 0
 
         return res
     }

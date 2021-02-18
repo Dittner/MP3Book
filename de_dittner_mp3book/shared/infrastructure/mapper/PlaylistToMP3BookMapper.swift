@@ -23,7 +23,8 @@ class PlaylistToMP3BookMapper {
                 newBooks.append(b)
             } else {
                 let files = convert(playlist.files)
-                let b = Book(uid: UID(), playlistPersistentID: playlist.playlistPersistentID!, title: playlist.title, files: files, totalDuration: playlist.totalDuration, dispatcher: dispatcher)
+                
+                let b = Book(uid: UID(), playlistID: playlist.playlistPersistentID!.description, title: playlist.title, files: files, totalDuration: playlist.totalDuration, dispatcher: dispatcher)
                 newBooks.append(b)
             }
         }
@@ -37,6 +38,9 @@ class PlaylistToMP3BookMapper {
             let playlistID = f.playlistItem!.persistentID.description
             let audioFile = AudioFile(id: f.id, name: f.name, source: .iPodLibrary, playlistID: playlistID, duration: f.duration, index: index, dispatcher: dispatcher)
             res.append(audioFile)
+
+            // let url = f.playlistItem!.assetURL!
+            // print("Title: \(f.name), ID: \(playlistID), URL: \(url.description)")
         }
         return res
     }

@@ -10,10 +10,16 @@ import SwiftUI
 
 struct SeparatorView: View {
     @ObservedObject var themeObservable = ThemeObservable.shared
+    
+    let horizontalPadding:CGFloat
+    
+    init(horizontalPadding:CGFloat = 0) {
+        self.horizontalPadding = horizontalPadding
+    }
     var body: some View {
         
         themeObservable.theme.separator.color
-            .padding(.horizontal, -50)
+            .padding(.horizontal, horizontalPadding)
             .frame(height: 0.5)
             .frame(maxWidth: .infinity)
     }

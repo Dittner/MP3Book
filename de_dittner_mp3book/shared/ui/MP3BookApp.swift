@@ -21,7 +21,7 @@ struct MP3BookApp: App {
         UITableViewCell.appearance().backgroundColor = .clear
         UIScrollView.appearance().backgroundColor = .clear
         // set backgroundColor to clear makes unable to use background in child views
-        //UIView.appearance().backgroundColor = .clear
+        // UIView.appearance().backgroundColor = .clear
 
         ThemeObservable.shared.$theme
             .sink { theme in
@@ -35,7 +35,7 @@ struct MP3BookApp: App {
                 UINavigationBar.appearance().compactAppearance = coloredAppearance
                 UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
                 // set tintColor to theme.tint kill toolbar custom buttons after a model sheet is dismissed
-                //UINavigationBar.appearance().tintColor = theme.tint
+                // UINavigationBar.appearance().tintColor = theme.tint
             }
             .store(in: &disposeBag)
     }

@@ -37,24 +37,35 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
     let source: AudioFileSource
 
     @Published var playState: PlayState = .stopped
-    @Published var progress: Int = 0
+    @Published var curFileProgress: Int = 0
     @Published var curFileIndex: Int = 0
+    @Published private(set) var curFile: AudioFile
+    @Published var rate: Float = 1.0
     @Published var isDamaged: Bool = false
     @Published var addedToPlaylist: Bool = true
 
+    private(set) var totalDurationAt: [Int: Int] = [:]
+
     private(set) var sortType: AudioFilesSortType = .none
 
-    init(uid: UID, playlistPersistentID: UInt64, title: String, files: [AudioFile], totalDuration: Int, dispatcher: PlaylistDispatcher) {
+    init(uid: UID, playlistID: String, title: String, files: [AudioFile], totalDuration: Int, dispatcher: PlaylistDispatcher) {
         self.uid = uid
-        id = playlistPersistentID.description
+        id = playlistID
         self.title = title
         self.totalDuration = totalDuration
         source = .iPodLibrary
-        playlistID = playlistPersistentID.description
+        self.playlistID = playlistID
         folderPath = ""
         self.files = files
-
+        curFile = files[0]
+        
         super.init(dispatcher: dispatcher)
+
+        for f in files {
+            f.book = self
+        }
+
+        countTotalDurationAt()
         notifyStateChanged()
     }
 
@@ -67,25 +78,33 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
         self.totalDuration = totalDuration
         source = .documents
         self.files = files
+        curFile = files[0]
 
         super.init(dispatcher: dispatcher)
+
+        for f in files {
+            f.book = self
+        }
+
+        countTotalDurationAt()
         notifyStateChanged()
     }
 
     private var disposeBag: Set<AnyCancellable> = []
     private func notifyStateChanged() {
-        $playState
+        $rate
             .removeDuplicates()
             .dropFirst()
             .sink { _ in
                 self.dispatcher.subject.send(PlaylistDomainEvent.bookStateChanged(book: self))
             }
             .store(in: &disposeBag)
-
+        
         $curFileIndex
             .removeDuplicates()
             .dropFirst()
-            .sink { _ in
+            .sink { index in
+                self.curFile = self.files[index]
                 self.dispatcher.subject.send(PlaylistDomainEvent.bookStateChanged(book: self))
             }
             .store(in: &disposeBag)
@@ -100,10 +119,18 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
             .store(in: &disposeBag)
     }
 
+    private func countTotalDurationAt() {
+        totalDurationAt = [:]
+        var total = 0
+        for (index, file) in files.enumerated() {
+            totalDurationAt[index] = total
+            total += file.duration
+        }
+    }
+
     func sort(_ sortType: AudioFilesSortType) {
         if self.sortType != sortType {
             self.sortType = sortType
         }
     }
 }
-

@@ -150,6 +150,7 @@ class JSONBookRepository: IBookRepository {
         subject.send(newBooks.count > 0 ? subject.value + newBooks : subject.value)
     }
 
+    private var pendingBooksToStore: [ID] = []
     func storeChanges() {
         Async.after(milliseconds: 1000) {
             for bookID in self.pendingBooksToStore.removeDuplicates() {
@@ -162,7 +163,6 @@ class JSONBookRepository: IBookRepository {
         }
     }
 
-    private var pendingBooksToStore: [ID] = []
     private func store(_ b: Book) {
         do {
             let fileUrl = getBookStoreURL(b)

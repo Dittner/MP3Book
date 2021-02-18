@@ -12,6 +12,8 @@ class PlaylistContext {
     static var shared: PlaylistContext = PlaylistContext()
     let bookRepository: IBookRepository
     let addBooksToPlaylistDomainService: AddBooksToPlaylistDomainService
+    let playerAppService: PlayerAppService
+    
     let dispatcher: PlaylistDispatcher
     let playlistBooksPort: OutputPort<Book>
 
@@ -25,6 +27,8 @@ class PlaylistContext {
 
         bookRepository = try! JSONBookRepository(serializer: bookSerializer, dispatcher: dispatcher, storeTo: storageURL)
         addBooksToPlaylistDomainService = AddBooksToPlaylistDomainService(repo: bookRepository)
+        
+        playerAppService = PlayerAppService(api: MediaAPI())
         playlistBooksPort = OutputPort<Book>()
 
         listenToPlaylistBooks()
