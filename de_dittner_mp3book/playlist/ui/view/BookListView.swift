@@ -14,30 +14,25 @@ struct BookListView: View {
 
     var body: some View {
         ZStack {
-            NavigationView {
-                PlaylistContent(vm: vm)
-                    .toolbar {
-                        //                ToolbarItem(placement: .navigationBarLeading) {
-                        //                    IconButton(iconName: "switchTheme", iconColor: themeObservable.theme.tint.color) {
-                        //                        self.themeObservable.switchTheme()
-                        //                    }
-                        //                }
+            VStack(alignment: .center, spacing: 0) {
+                NavigationBar {
+                    HStack {
+                        Spacer().frame(width: 50)
+                        Spacer()
 
-                        ToolbarItem(placement: .principal) {
-                            Text("Playlist").bold()
-                                .font(Font.m3b.navigationTitle)
-                                .foregroundColor(themeObservable.theme.tint.color)
-                        }
+                        Text("Playlist").bold()
+                            .font(Font.m3b.navigationTitle)
+                            .foregroundColor(themeObservable.theme.tint.color)
 
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            NavigationLink(destination: LibraryView()) {
-                                Image("add")
-                                    .renderingMode(.template)
-                            }
-                        }
+                        Spacer()
+
+                        IconButton(iconName: "add", iconColor: themeObservable.theme.tint.color) {
+                            self.vm.addBooks()
+                        }.frame(width: 50, height: 70)
                     }
-                    .navigationViewTheme(themeObservable.theme)
-                    .navigationBarTheme(themeObservable.theme)
+                }
+
+                PlaylistContent(vm: vm)
             }
 
             if vm.playRateSelectorShown {
@@ -109,7 +104,6 @@ struct PlayRateSelector: View {
 }
 
 struct PlaylistContent: View {
-    @Environment(\.presentationMode) var presentation
     @ObservedObject var vm: BookListVM
 
     init(vm: BookListVM) {
@@ -127,6 +121,8 @@ struct PlaylistContent: View {
                         ForEach(vm.books) { book in
                             BookCell(b: book) {
                                 self.vm.selectBook(book)
+                            } openAction: {
+                                self.vm.openBook(book)
                             }
                         }
                     }
@@ -165,13 +161,15 @@ struct BookCell: View {
     }
 
     let selectAction: () -> Void
+    let openAction: () -> Void
 
     private var disposeBag: Set<AnyCancellable> = []
 
-    init(b: Book, selectAction: @escaping () -> Void) {
+    init(b: Book, selectAction: @escaping () -> Void, openAction: @escaping () -> Void) {
         book = b
         title = b.title
         self.selectAction = selectAction
+        self.openAction = openAction
 
         Publishers.CombineLatest(b.$curFileProgress, b.$curFileIndex)
             .map { curFileProgress, curFileIndex in
@@ -208,11 +206,10 @@ struct BookCell: View {
                 SeparatorView(horizontalPadding: -50)
 
             }.frame(maxWidth: .infinity)
-
-            Image("open")
-                .renderingMode(.template)
-                .allowsHitTesting(false)
-                .frame(width: 50)
+            
+            IconButton(iconName: "open", iconColor: themeObservable.theme.tint.color) {
+                self.openAction()
+            }.frame(width: 50, height: 70)
         }
         .frame(height: 70)
         .background(themeObservable.theme.transparent.color)

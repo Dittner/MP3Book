@@ -49,6 +49,8 @@ struct MP3BookApp: App {
 
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
+    @ObservedObject var navigator = Navigator.shared
+    
 
     var body: some View {
         if colorScheme == .dark {
@@ -56,6 +58,42 @@ struct ContentView: View {
         } else {
             ThemeObservable.shared.selectLightTheme()
         }
-        return BookListView()
+        return GeometryReader { geo in
+            ZStack {
+                
+                if let pos = navigator.screenPosition.xPosition(id: .bookList) {
+                    BookListView()
+                        .background(AppBG())
+                        .offset(x: pos, y: 0)
+                        .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
+                }
+                
+                if let pos = navigator.screenPosition.xPosition(id: .audioFileList) {
+                    AudioFileListView()
+                        .background(AppBG())
+                        .offset(x: pos, y: 0)
+                        .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
+                }
+                
+                if let pos = navigator.screenPosition.xPosition(id: .library) {
+                    LibraryView()
+                        .background(AppBG())
+                        .offset(x: pos, y: 0)
+                        .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
+                }
+            }
+            .onAppear {
+                navigator.appWidth = geo.size.width
+            }
+        }
+    }
+}
+
+struct AppBG: View {
+    @ObservedObject var themeObservable = ThemeObservable.shared
+
+    var body: some View {
+        LinearGradient(gradient: Gradient(colors: themeObservable.theme.appBgColors), startPoint: .top, endPoint: .bottom)
+                        .ignoresSafeArea()
     }
 }

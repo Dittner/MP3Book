@@ -9,12 +9,12 @@ import Combine
 import Foundation
 import MediaPlayer
 
-class BookListVM: ViewModel, ObservableObject {
-    static var shared: BookListVM = BookListVM(id: .bookList)
+class AudioFileListVM: ViewModel, ObservableObject {
+    static var shared: AudioFileListVM = AudioFileListVM(id: .audioFileList)
 
     @Published var isLoading = false
-    @Published var books: [Book] = []
-    @Published var playingBook: Book? = nil
+    @Published var files: [AudioFile] = []
+    @Published var selectedBook: Book?
     @Published var playRateSelectorShown: Bool = false
 
     private let context: PlaylistContext
@@ -22,15 +22,16 @@ class BookListVM: ViewModel, ObservableObject {
     private var disposeBag: Set<AnyCancellable> = []
 
     override init(id: ScreenID) {
-        logInfo(msg: "BookListVM init")
+        logInfo(msg: "AudioFileListVM init")
         context = PlaylistContext.shared
         player = context.playerAppService
-
+        
         super.init(id: id)
 
-        context.bookRepository.subject
-            .sink { books in
-                self.books = books.filter { $0.addedToPlaylist }.sorted(by: { $0.title < $1.title })
+        $selectedBook
+            .compactMap { $0 }
+            .sink { book in
+                self.files = book.files
 
             }.store(in: &disposeBag)
 
@@ -38,14 +39,9 @@ class BookListVM: ViewModel, ObservableObject {
             print("playRateSelectorShown = \(value)")
         }.store(in: &disposeBag)
     }
-
-    func addBooks() {
-        navigator.navigate(to: .library)
-    }
     
-    func openBook(_ b: Book) {
-        AudioFileListVM.shared.selectedBook = b
-        navigator.navigate(to: .audioFileList)
+    func goBack() {
+        navigator.goBack(to: .bookList)
     }
 
     // -------------------------------------
@@ -54,13 +50,13 @@ class BookListVM: ViewModel, ObservableObject {
     //
     // -------------------------------------
 
-    func selectBook(_ b: Book) {
-        if b.playState == .playing {
+    func playFile(_ f: AudioFile) {
+        guard let b = f.book else {return}
+        
+        if b.playState == .playing, b.curFileIndex == f.index {
             player.pause()
         } else {
-            if playingBook == nil || playingBook!.id != b.id {
-                playingBook = b
-            }
+            b.curFileIndex = f.index
             player.play(b)
         }
     }
@@ -70,7 +66,6 @@ class BookListVM: ViewModel, ObservableObject {
     }
 
     func play(_ b: Book) {
-        playingBook = b
         player.play(b)
     }
 

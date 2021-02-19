@@ -10,51 +10,45 @@ import SwiftUI
 struct LibraryView: View {
     @Environment(\.presentationMode) var presentation
     @ObservedObject var themeObservable = ThemeObservable.shared
-    @ObservedObject var vm = LibraryVM.shared
+    
 
     var body: some View {
-        NavigationView {
-            LibraryContent(vm: vm)
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        TextButton(text: "Cancel", textColor: themeObservable.theme.tint.color, font: Font.m3b.cancelButton) {
-                            self.presentation.wrappedValue.dismiss()
-                        }
+        VStack(alignment: .center, spacing: 0) {
+            NavigationBar {
+                HStack {
+                    TextButton(text: "Cancel", textColor: themeObservable.theme.tint.color, font: Font.m3b.cancelButton) {
+                        LibraryVM.shared.cancel()
                     }
 
-                    ToolbarItem(placement: .principal) {
-                        Text("Edit")
-                            .font(Font.m3b.navigationTitle)
-                            .foregroundColor(themeObservable.theme.tint.color)
-                    }
+                    Spacer()
 
-                    ToolbarItem(placement: .confirmationAction) {
-                        TextButton(text: "Done", textColor: themeObservable.theme.tint.color, font: Font.m3b.applyButton) {
-                            self.vm.apply()
-                            self.presentation.wrappedValue.dismiss()
-                        }
+                    Text("Edit  ").bold()
+                        .font(Font.m3b.navigationTitle)
+                        .foregroundColor(themeObservable.theme.tint.color)
+
+                    Spacer()
+
+                    TextButton(text: "Done", textColor: themeObservable.theme.tint.color, font: Font.m3b.applyButton) {
+                        LibraryVM.shared.apply()
                     }
-                }
-                .navigationViewTheme(themeObservable.theme)
-                .navigationBarTheme(themeObservable.theme)
+                }.padding()
+            }
+
+            LibraryContent()
                 .edgesIgnoringSafeArea(.bottom)
-
-        }
-        .navigationBarHidden(true)
-        .onAppear {
-            vm.loadFiles()
         }
     }
 }
 
 struct LibraryContent: View {
-    @Environment(\.presentationMode) var presentation
-    @ObservedObject var vm: LibraryVM
+    @ObservedObject var vm = LibraryVM.shared
     @ObservedObject var themeObservable = ThemeObservable.shared
 
     var body: some View {
         if vm.isLoading {
+            Spacer()
             ActivityIndicator(isAnimating: $vm.isLoading)
+            Spacer()
         } else {
             ScrollView {
                 LazyVStack(alignment: .center, spacing: 0) {
@@ -93,32 +87,30 @@ struct LibraryContent: View {
 }
 
 struct WrapperFolderCell: View {
-    @ObservedObject var wrappedFolder:Wrapper<Folder>
+    @ObservedObject var wrappedFolder: Wrapper<Folder>
     let title: String
     let subTitle: String
 
     init(w: Wrapper<Folder>) {
-        self.wrappedFolder = w
+        wrappedFolder = w
         title = w.data.title
         subTitle = String(w.data.files.count) + " files" + ", " + DateTimeUtils.secToHHMMSS(w.data.totalDuration)
-        
     }
-    
+
     var body: some View {
         ListCell(title: title, subTitle: subTitle, selected: $wrappedFolder.selected)
     }
 }
 
 struct WrapperPlaylistCell: View {
-    @ObservedObject var wrappedFolder:Wrapper<Playlist>
+    @ObservedObject var wrappedFolder: Wrapper<Playlist>
     let title: String
     let subTitle: String
 
     init(w: Wrapper<Playlist>) {
-        self.wrappedFolder = w
+        wrappedFolder = w
         title = w.data.title
         subTitle = String(w.data.files.count) + " files" + ", " + DateTimeUtils.secToHHMMSS(w.data.totalDuration)
-        
     }
 
     var body: some View {
@@ -128,11 +120,11 @@ struct WrapperPlaylistCell: View {
 
 struct ListCell: View {
     @ObservedObject var themeObservable = ThemeObservable.shared
-    
+
     let title: String
     let subTitle: String
-    @Binding var selected:Bool
-    
+    @Binding var selected: Bool
+
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
             Image("folder")

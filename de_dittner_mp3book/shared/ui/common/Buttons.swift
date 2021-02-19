@@ -7,23 +7,13 @@
 
 import SwiftUI
 
-struct IconButtonStyle: ButtonStyle {
-    var iconName: String
-    var theme: Theme
-    var width: CGFloat = 50
-    var height: CGFloat = 50
 
-    func makeBody(configuration: Self.Configuration) -> some View {
-        Image(iconName)
-            .renderingMode(.template)
-            .foregroundColor(configuration.isPressed ? theme.tint.color : theme.tint.color.opacity(0.5))
-            .frame(width: width, height: height)
-    }
-}
 
 struct IconButton: View {
     var iconName: String
     var iconColor: Color
+    var width: CGFloat = 50
+    var height: CGFloat = 50
     let onAction: () -> Void
 
     @State private var onPressed = false
@@ -31,7 +21,7 @@ struct IconButton: View {
     var body: some View {
         Image(iconName)
             .renderingMode(.template)
-            //.frame(width: 50, height: 50)
+            .frame(width: width, height: height)
             .contentShape(Rectangle())
             .foregroundColor(onPressed ? iconColor.opacity(0.5) : iconColor)
             .onTapGesture {
@@ -49,6 +39,7 @@ struct TextButton: View {
     var text: String
     var textColor: Color
     var font: Font
+    var height: CGFloat = 50
     let onAction: () -> Void
 
     @State private var onPressed = false
@@ -58,6 +49,7 @@ struct TextButton: View {
             .lineLimit(1)
             .font(font)
             .foregroundColor(onPressed ? textColor.opacity(0.5) : textColor)
+            .frame(height: height)
             .onTapGesture {
                 self.onAction()
             }

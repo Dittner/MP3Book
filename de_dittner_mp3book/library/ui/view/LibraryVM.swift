@@ -8,17 +8,25 @@
 import Combine
 import Foundation
 
-class LibraryVM: ObservableObject {
-    static var shared: LibraryVM = LibraryVM()
+class LibraryVM: ViewModel, ObservableObject {
+    static var shared: LibraryVM = LibraryVM(id: .library)
 
     @Published var isLoading = false
     @Published var wrappedFolders: [Wrapper<Folder>] = []
     @Published var wrappedPlaylists: [Wrapper<Playlist>] = []
 
     private let context: LibraryContext
-    init() {
+
+    override init(id: ScreenID) {
         logInfo(msg: "LibraryVM init")
         context = LibraryContext.shared
+
+        super.init(id: id)
+    }
+
+    override func screenActivated() {
+        super.screenActivated()
+        loadFiles()
     }
 
     func loadFiles() {
@@ -40,7 +48,9 @@ class LibraryVM: ObservableObject {
                         let processedPlaylists = playlists.sorted(by: { $0 < $1 }).map { Wrapper<Playlist>($0) }
                         processedPlaylists.forEach { $0.selected = isSelected[$0.data.id] ?? false }
                         self.wrappedPlaylists = processedPlaylists
-                        self.isLoading = false
+                        Async.after(milliseconds: 1000) {
+                            self.isLoading = false
+                        }
                     }
                 }
             } catch {
@@ -50,9 +60,14 @@ class LibraryVM: ObservableObject {
         }
     }
 
+    func cancel() {
+        navigator.goBack(to: .bookList)
+    }
+
     func apply() {
         context.foldersPort.write(wrappedFolders.filter { $0.selected }.map { $0.data })
         context.playlistsPort.write(wrappedPlaylists.filter { $0.selected }.map { $0.data })
+        navigator.goBack(to: .bookList)
     }
 }
 

@@ -33,7 +33,7 @@ struct LightTheme: Theme {
     let text: UIColor = UIColor(rgb: 0x5A595C)
     let selectedText: UIColor = UIColor(rgb: 0x5A595C)
     let play: UIColor = UIColor(rgb: 0xAB466A)
-    let separator: UIColor = UIColor(rgb: 0, alpha: 0.2)
+    let separator: UIColor = UIColor(rgb: 0, alpha: 0.1)
     let sliderTrack: UIColor = UIColor(rgb: 0, alpha: 0.2)
     let listCellBg: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.5)
     let popupBg: UIColor = UIColor(rgb: 0xEBEAE3)
@@ -48,7 +48,7 @@ struct DarkTheme: Theme {
     let text: UIColor = UIColor(rgb: 0x5A595C)
     let selectedText: UIColor = UIColor(rgb: 0xEBEAE3)
     let play: UIColor = UIColor(rgb: 0xFFDBA8)
-    let separator: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.2)
+    let separator: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.1)
     let sliderTrack: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.2)
     let listCellBg: UIColor = UIColor(rgb: 0, alpha: 0.001)
     let popupBg: UIColor = UIColor(rgb: 0x323035)
@@ -65,11 +65,6 @@ class ThemeObservable: ObservableObject {
         light = LightTheme()
         dark = DarkTheme()
         theme = light
-    }
-
-    func switchTheme() {
-        theme = theme.id == light.id ? dark : light
-        logInfo(msg: "Selected theme: \(theme.id)")
     }
     
     func selectDarkTheme() {

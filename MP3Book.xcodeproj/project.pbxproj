@@ -24,7 +24,7 @@
 		5B39F0EB25C89F5F00BC132C /* AudioFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39F0EA25C89F5F00BC132C /* AudioFile.swift */; };
 		5B39FD9025DC482C00AAAD1D /* Int++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39FD8F25DC482C00AAAD1D /* Int++.swift */; };
 		5B54376125CD8E0600ECB9A9 /* DemoFileAppServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B54376025CD8E0600ECB9A9 /* DemoFileAppServiceTests.swift */; };
-		5B62198425D132B4000412EB /* NavigationBarModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B62198325D132B4000412EB /* NavigationBarModifier.swift */; };
+		5B62198425D132B4000412EB /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B62198325D132B4000412EB /* NavigationBar.swift */; };
 		5B62198A25D132ED000412EB /* CornerRadiusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B62198925D132ED000412EB /* CornerRadiusStyle.swift */; };
 		5B62199025D1358F000412EB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B62198F25D1358F000412EB /* Theme.swift */; };
 		5B62199C25D14C21000412EB /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B62199B25D14C21000412EB /* Buttons.swift */; };
@@ -70,6 +70,10 @@
 		5BE8CAB925C8993D00834AD6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5BE8CAB825C8993D00834AD6 /* Preview Assets.xcassets */; };
 		5BE8CACF25C8993D00834AD6 /* MP3BookUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE8CACE25C8993D00834AD6 /* MP3BookUITests.swift */; };
 		5BE92F0C25DED3C40029CC59 /* DownArrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE92F0B25DED3C40029CC59 /* DownArrow.swift */; };
+		5BE92F1125DEEF770029CC59 /* AudioFileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE92F1025DEEF770029CC59 /* AudioFileListView.swift */; };
+		5BE92F1625DEEFA10029CC59 /* AudioFileListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE92F1525DEEFA10029CC59 /* AudioFileListVM.swift */; };
+		5BF263F025E0576500B2CBCC /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF263EF25E0576500B2CBCC /* Navigator.swift */; };
+		5BF263F825E057A500B2CBCC /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF263F725E057A500B2CBCC /* ViewModel.swift */; };
 		5BF7530A25CDBC5900C3F1E0 /* test.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5BF7530625CDBC2700C3F1E0 /* test.mp3 */; };
 		5BF7532925CDBDC000C3F1E0 /* George Orwell – 1984 in Resources */ = {isa = PBXBuildFile; fileRef = 5BF7532825CDBDBF00C3F1E0 /* George Orwell – 1984 */; };
 		5BF7533825CDC3C100C3F1E0 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF7533725CDC3C100C3F1E0 /* Folder.swift */; };
@@ -116,7 +120,7 @@
 		5B39F0EA25C89F5F00BC132C /* AudioFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFile.swift; sourceTree = "<group>"; };
 		5B39FD8F25DC482C00AAAD1D /* Int++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int++.swift"; sourceTree = "<group>"; };
 		5B54376025CD8E0600ECB9A9 /* DemoFileAppServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoFileAppServiceTests.swift; sourceTree = "<group>"; };
-		5B62198325D132B4000412EB /* NavigationBarModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarModifier.swift; sourceTree = "<group>"; };
+		5B62198325D132B4000412EB /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		5B62198925D132ED000412EB /* CornerRadiusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusStyle.swift; sourceTree = "<group>"; };
 		5B62198F25D1358F000412EB /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		5B62199B25D14C21000412EB /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
@@ -166,6 +170,10 @@
 		5BE8CACE25C8993D00834AD6 /* MP3BookUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MP3BookUITests.swift; sourceTree = "<group>"; };
 		5BE8CAD025C8993D00834AD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5BE92F0B25DED3C40029CC59 /* DownArrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownArrow.swift; sourceTree = "<group>"; };
+		5BE92F1025DEEF770029CC59 /* AudioFileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFileListView.swift; sourceTree = "<group>"; };
+		5BE92F1525DEEFA10029CC59 /* AudioFileListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFileListVM.swift; sourceTree = "<group>"; };
+		5BF263EF25E0576500B2CBCC /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
+		5BF263F725E057A500B2CBCC /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		5BF7530625CDBC2700C3F1E0 /* test.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test.mp3; sourceTree = "<group>"; };
 		5BF7532825CDBDBF00C3F1E0 /* George Orwell – 1984 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "George Orwell – 1984"; sourceTree = "<group>"; };
 		5BF7533725CDC3C100C3F1E0 /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
@@ -237,7 +245,7 @@
 				5B62199B25D14C21000412EB /* Buttons.swift */,
 				5B62198F25D1358F000412EB /* Theme.swift */,
 				5B62198925D132ED000412EB /* CornerRadiusStyle.swift */,
-				5B62198325D132B4000412EB /* NavigationBarModifier.swift */,
+				5B62198325D132B4000412EB /* NavigationBar.swift */,
 				5B1C3DE625D4228600B6F15A /* Separator.swift */,
 				5B62634F25D540FE008CADA4 /* SeparatorView.swift */,
 				5BE0996425DD1C53000A7183 /* SliderView.swift */,
@@ -353,6 +361,8 @@
 			children = (
 				5B1C3DEB25D46B3600B6F15A /* BookListVM.swift */,
 				5B94D8EA25D00D3D0054B23C /* BookListView.swift */,
+				5BE92F1525DEEFA10029CC59 /* AudioFileListVM.swift */,
+				5BE92F1025DEEF770029CC59 /* AudioFileListView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -484,6 +494,15 @@
 			path = MP3BookUITests;
 			sourceTree = "<group>";
 		};
+		5BF263EE25E0575100B2CBCC /* navigator */ = {
+			isa = PBXGroup;
+			children = (
+				5BF263EF25E0576500B2CBCC /* Navigator.swift */,
+				5BF263F725E057A500B2CBCC /* ViewModel.swift */,
+			);
+			path = navigator;
+			sourceTree = "<group>";
+		};
 		5BF7530525CDBC1A00C3F1E0 /* test */ = {
 			isa = PBXGroup;
 			children = (
@@ -514,6 +533,7 @@
 		5BF7532F25CDC00F00C3F1E0 /* infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				5BF263EE25E0575100B2CBCC /* navigator */,
 				5B15E3CE25D73C940033E4FB /* mapper */,
 				5BD0EF6F25D83748006CF6B0 /* SharedContext.swift */,
 				5B9EA86325CC3624009B14A5 /* Bootstrap.swift */,
@@ -740,17 +760,20 @@
 			files = (
 				5B62199C25D14C21000412EB /* Buttons.swift in Sources */,
 				5BE0996525DD1C53000A7183 /* SliderView.swift in Sources */,
+				5BF263F025E0576500B2CBCC /* Navigator.swift in Sources */,
 				5B6382BA25D5767F00B86CAC /* OutputPort.swift in Sources */,
 				5B9EA85625CC1BF0009B14A5 /* URL++.swift in Sources */,
 				5BE8CAB425C8993C00834AD6 /* LibraryView.swift in Sources */,
+				5BF263F825E057A500B2CBCC /* ViewModel.swift in Sources */,
 				5B1C3DF425D46C2F00B6F15A /* PlaylistContext.swift in Sources */,
 				5B15E3BC25D6FBF90033E4FB /* Playlist.swift in Sources */,
 				5BD0EF7025D83748006CF6B0 /* SharedContext.swift in Sources */,
-				5B62198425D132B4000412EB /* NavigationBarModifier.swift in Sources */,
+				5B62198425D132B4000412EB /* NavigationBar.swift in Sources */,
 				5BD0EF5D25D82F49006CF6B0 /* DomainEventDispatcher.swift in Sources */,
 				5B15E3B425D6EC950033E4FB /* UID.swift in Sources */,
 				5B6382CE25D5CF2400B86CAC /* IBookRepository.swift in Sources */,
 				5BE8CAB225C8993C00834AD6 /* MP3BookApp.swift in Sources */,
+				5BE92F1625DEEFA10029CC59 /* AudioFileListVM.swift in Sources */,
 				5B9EA88425CC5F16009B14A5 /* DetailedError.swift in Sources */,
 				5B1C3DEC25D46B3600B6F15A /* BookListVM.swift in Sources */,
 				5B1C3DF925D46CB800B6F15A /* Book.swift in Sources */,
@@ -774,6 +797,7 @@
 				5BA4553B25DA5E32001160CF /* PlaylistBooksToHashMapper.swift in Sources */,
 				5B1C3DC025D3E0B800B6F15A /* ActivityIndicator.swift in Sources */,
 				5BA4554325DAA3A6001160CF /* Array++.swift in Sources */,
+				5BE92F1125DEEF770029CC59 /* AudioFileListView.swift in Sources */,
 				5B9EA84D25CC1AC4009B14A5 /* DateTimeUtils.swift in Sources */,
 				5BF7535925CDD12D00C3F1E0 /* IPodAppService.swift in Sources */,
 				5B1C3DE725D4228600B6F15A /* Separator.swift in Sources */,
