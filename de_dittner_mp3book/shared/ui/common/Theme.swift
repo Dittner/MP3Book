@@ -22,6 +22,10 @@ protocol Theme {
     var sliderTrack: UIColor { get }
     var listCellBg: UIColor { get }
     var popupBg: UIColor { get }
+    var inputBg: UIColor { get }
+    var inputText: UIColor { get }
+    var deleteBtnBg: UIColor { get }
+    var deleteBtnIcon: UIColor { get }
 }
 
 struct LightTheme: Theme {
@@ -37,6 +41,10 @@ struct LightTheme: Theme {
     let sliderTrack: UIColor = UIColor(rgb: 0, alpha: 0.2)
     let listCellBg: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.5)
     let popupBg: UIColor = UIColor(rgb: 0xEBEAE3)
+    let inputBg: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.5)
+    let inputText: UIColor = UIColor(rgb: 0x5A595C)
+    let deleteBtnBg: UIColor = UIColor(rgb: 0xead6dc)
+    let deleteBtnIcon: UIColor = UIColor(rgb: 0x5A595C)
 }
 
 struct DarkTheme: Theme {
@@ -52,6 +60,10 @@ struct DarkTheme: Theme {
     let sliderTrack: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.2)
     let listCellBg: UIColor = UIColor(rgb: 0, alpha: 0.001)
     let popupBg: UIColor = UIColor(rgb: 0x323035)
+    let inputBg: UIColor = UIColor(rgb: 0, alpha: 0.5)
+    let inputText: UIColor = UIColor(rgb: 0xB2B1A8)
+    let deleteBtnBg: UIColor = UIColor(rgb: 0x4f1d35)
+    let deleteBtnIcon: UIColor = UIColor(rgb: 0xB2B1A8)
 }
 
 class ThemeObservable: ObservableObject {

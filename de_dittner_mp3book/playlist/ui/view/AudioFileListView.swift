@@ -17,7 +17,7 @@ struct AudioFileListView: View {
         ZStack {
             VStack(alignment: .center, spacing: 0) {
                 NavigationBar {
-                    HStack(alignment: .center, spacing: 5) {
+                    HStack(alignment: .center, spacing: 0) {
                         IconButton(iconName: "back", iconColor: themeObservable.theme.tint.color) {
                             self.vm.goBack()
                         }
@@ -42,6 +42,10 @@ struct AudioFileListView: View {
             if vm.playRateSelectorShown {
                 PlayRateSelector(isShown: $vm.playRateSelectorShown, selectedRate: vm.selectedBook?.rate ?? 1.0) { rate in
                     self.vm.updateRate(value: rate)
+                }
+            } else if vm.addBookmarkFormShown, let file = vm.player.book?.curFile {
+                AddBookmarkForm(isShown: $vm.addBookmarkFormShown, file: file) { time, comment in
+                    self.vm.addBookmark(time: time, comment: comment)
                 }
             }
         }
@@ -86,6 +90,9 @@ struct FileListContent: View {
                         vm.playPrev()
                     case .selectRate:
                         vm.playRateSelectorShown = true
+                    case .addBookmark:
+                        vm.pause()
+                        vm.addBookmarkFormShown = true
                     }
                 }
             }
@@ -138,15 +145,15 @@ struct FileCell: View {
                     .frame(width: 50)
 
                 Text(title)
-                    .font(Font.custom(.helveticaNeue, size: 17))
-                    .minimumScaleFactor(11 / 17)
+                    .font(Font.custom(.helveticaNeue, size: 15))
+                    .minimumScaleFactor(11 / 15)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
 
                 Spacer()
 
                 Text(duration)
-                    .font(Font.custom(.helveticaNeue, size: 12))
+                    .font(Font.custom(.helveticaNeue, size: 11))
                     .lineLimit(1)
                     .padding()
 

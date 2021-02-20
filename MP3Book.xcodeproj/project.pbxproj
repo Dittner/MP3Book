@@ -31,6 +31,7 @@
 		5B62634925D538AB008CADA4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B62634825D538AB008CADA4 /* AVFoundation.framework */; };
 		5B62634B25D538C0008CADA4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B62634A25D538C0008CADA4 /* AudioToolbox.framework */; };
 		5B62635025D540FE008CADA4 /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B62634F25D540FE008CADA4 /* SeparatorView.swift */; };
+		5B63739425E12A5F00FB7BBE /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B63739325E12A5F00FB7BBE /* Bookmark.swift */; };
 		5B6382BA25D5767F00B86CAC /* OutputPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6382B925D5767F00B86CAC /* OutputPort.swift */; };
 		5B6382C825D576E300B86CAC /* PortAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6382C025D576C300B86CAC /* PortAdapterTests.swift */; };
 		5B6382CE25D5CF2400B86CAC /* IBookRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6382CD25D5CF2400B86CAC /* IBookRepository.swift */; };
@@ -127,6 +128,7 @@
 		5B62634825D538AB008CADA4 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		5B62634A25D538C0008CADA4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5B62634F25D540FE008CADA4 /* SeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorView.swift; sourceTree = "<group>"; };
+		5B63739325E12A5F00FB7BBE /* Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
 		5B6382B925D5767F00B86CAC /* OutputPort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputPort.swift; sourceTree = "<group>"; };
 		5B6382C025D576C300B86CAC /* PortAdapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortAdapterTests.swift; sourceTree = "<group>"; };
 		5B6382CD25D5CF2400B86CAC /* IBookRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBookRepository.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 			children = (
 				5B39F0EA25C89F5F00BC132C /* AudioFile.swift */,
 				5B1C3DF825D46CB800B6F15A /* Book.swift */,
+				5B63739325E12A5F00FB7BBE /* Bookmark.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -786,6 +789,7 @@
 				5B1C3DD225D4184300B6F15A /* Font++.swift in Sources */,
 				5B1C3DBA25D3DAA300B6F15A /* LibraryVM.swift in Sources */,
 				5B6382E925D5D93900B86CAC /* AudioFileSerializer.swift in Sources */,
+				5B63739425E12A5F00FB7BBE /* Bookmark.swift in Sources */,
 				5B6382D325D5D08900B86CAC /* JSONBookRepository.swift in Sources */,
 				5B1C3DC825D3E42D00B6F15A /* LibraryContext.swift in Sources */,
 				5BD0EF8125D83A18006CF6B0 /* PlaylistToMP3BookMapper.swift in Sources */,

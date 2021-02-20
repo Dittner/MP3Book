@@ -34,24 +34,33 @@ struct ScreenPosition {
     }
 }
 
+struct Screen {
+    let activated: ScreenID
+    let deactivated: ScreenID?
+}
+
 class Navigator: ObservableObject {
     static var shared = Navigator()
 
     @Published var screenPosition: ScreenPosition
+    @Published var screen: Screen
 
     var appWidth: CGFloat = 0
 
     init() {
+        screen = Screen(activated: .bookList, deactivated: nil)
         screenPosition = ScreenPosition(leading: nil, center: .bookList, trailing: nil, goBack: false, appWidth: appWidth)
     }
 
     func goBack(to: ScreenID) {
+        screen = Screen(activated: to, deactivated: screen.deactivated)
         withAnimation {
             screenPosition = ScreenPosition(leading: nil, center: to, trailing: screenPosition.center, goBack: true, appWidth: appWidth)
         }
     }
 
     func navigate(to: ScreenID) {
+        screen = Screen(activated: to, deactivated: screen.deactivated)
         withAnimation {
             screenPosition = ScreenPosition(leading: screenPosition.center, center: to, trailing: nil, goBack: false, appWidth: appWidth)
         }

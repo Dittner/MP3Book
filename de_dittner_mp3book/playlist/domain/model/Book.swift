@@ -42,6 +42,7 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
     @Published private(set) var curFile: AudioFile
     @Published var rate: Float = 1.0
     @Published var isDamaged: Bool = false
+    @Published var bookmarksCount: Int = 0
     @Published var addedToPlaylist: Bool = true
 
     private(set) var totalDurationAt: [Int: Int] = [:]
@@ -58,13 +59,14 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
         folderPath = ""
         self.files = files
         curFile = files[0]
-        
+
         super.init(dispatcher: dispatcher)
 
         for f in files {
             f.book = self
         }
 
+        countTotalComments()
         countTotalDurationAt()
         notifyStateChanged()
     }
@@ -86,6 +88,7 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
             f.book = self
         }
 
+        countTotalComments()
         countTotalDurationAt()
         notifyStateChanged()
     }
@@ -99,7 +102,7 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
                 self.dispatcher.subject.send(PlaylistDomainEvent.bookStateChanged(book: self))
             }
             .store(in: &disposeBag)
-        
+
         $curFileIndex
             .removeDuplicates()
             .dropFirst()
@@ -117,6 +120,10 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
                 self.dispatcher.subject.send(added ? PlaylistDomainEvent.bookToPlaylistAdded(book: self) : PlaylistDomainEvent.bookFromPlaylistRemoved(book: self))
             }
             .store(in: &disposeBag)
+    }
+    
+    private func countTotalComments() {
+        bookmarksCount = files.reduce(0, { $0 + $1.bookmarks.count })
     }
 
     private func countTotalDurationAt() {

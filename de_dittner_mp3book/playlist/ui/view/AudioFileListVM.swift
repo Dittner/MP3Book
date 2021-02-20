@@ -16,9 +16,10 @@ class AudioFileListVM: ViewModel, ObservableObject {
     @Published var files: [AudioFile] = []
     @Published var selectedBook: Book?
     @Published var playRateSelectorShown: Bool = false
+    @Published var addBookmarkFormShown: Bool = false
 
     private let context: PlaylistContext
-    private let player: PlayerAppService
+    let player: PlayerAppService
     private var disposeBag: Set<AnyCancellable> = []
 
     override init(id: ScreenID) {
@@ -42,6 +43,10 @@ class AudioFileListVM: ViewModel, ObservableObject {
     
     func goBack() {
         navigator.goBack(to: .bookList)
+    }
+    
+    func addBookmark(time: Int, comment: String) {
+        player.book?.curFile.addMark(Bookmark(time: time, comment: comment))
     }
 
     // -------------------------------------

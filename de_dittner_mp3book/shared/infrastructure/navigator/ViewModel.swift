@@ -16,11 +16,11 @@ class ViewModel {
         screenID = id
         navigator = Navigator.shared
 
-        navigatorSubscription = navigator.$screenPosition
-            .sink { position in
-                if position.leading == self.screenID || position.trailing == self.screenID {
+        navigatorSubscription = navigator.$screen
+            .sink { screen in
+                if screen.deactivated == self.screenID {
                     self.screenDeactivated()
-                } else if position.center == self.screenID {
+                } else if screen.activated == self.screenID {
                     self.screenActivated()
                 }
             }

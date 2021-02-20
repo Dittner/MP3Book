@@ -28,7 +28,7 @@ struct BookListView: View {
 
                         IconButton(iconName: "add", iconColor: themeObservable.theme.tint.color) {
                             self.vm.addBooks()
-                        }.frame(width: 50, height: 70)
+                        }
                     }
                 }
 
@@ -39,6 +39,10 @@ struct BookListView: View {
                 PlayRateSelector(isShown: $vm.playRateSelectorShown, selectedRate: vm.playingBook?.rate ?? 1.0) { rate in
                     self.vm.updateRate(value: rate)
                 }
+            } else if vm.addBookmarkFormShown, let file = vm.playingBook?.curFile {
+                AddBookmarkForm(isShown: $vm.addBookmarkFormShown, file: file) { time, comment in
+                    self.vm.addBookmark(time: time, comment: comment)
+                }
             }
         }
     }
@@ -46,8 +50,8 @@ struct BookListView: View {
 
 struct PlayRateSelector: View {
     @ObservedObject var themeObservable = ThemeObservable.shared
-    let selectAction: (Float) -> Void
-    let selectedRate: Float
+    private let selectAction: (Float) -> Void
+    private let selectedRate: Float
     @Binding var isShown: Bool
 
     static let playRates: [Float] = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
@@ -60,10 +64,12 @@ struct PlayRateSelector: View {
 
     var body: some View {
         ZStack {
-            Color.black.opacity(0.1)
+            Color.black.opacity(0.2)
                 .ignoresSafeArea()
                 .onTapGesture {
-                    isShown = false
+                    withAnimation {
+                        self.isShown = false
+                    }
                 }
 
             VStack(alignment: .center, spacing: 0) {
@@ -81,7 +87,9 @@ struct PlayRateSelector: View {
                             .frame(height: 30)
                             .onTapGesture {
                                 self.selectAction(value)
-                                self.isShown = false
+                                withAnimation {
+                                    self.isShown = false
+                                }
                             }
                     }
 
@@ -96,9 +104,98 @@ struct PlayRateSelector: View {
                 DownArrow()
                     .fill(themeObservable.theme.popupBg.color)
                     .frame(width: 25, height: 15)
+                    .offset(y: -2)
 
                 Spacer().frame(height: PlayerView.playerHeight - 70)
-            }
+            }.shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 10)
+        }
+    }
+}
+
+struct AddBookmarkForm: View {
+    @ObservedObject var themeObservable = ThemeObservable.shared
+    @ObservedObject private var notifier = Notifier()
+    @Binding var isShown: Bool
+
+    class Notifier: ObservableObject {
+        @Published var time: Int = 0
+        @Published var comment: String = ""
+    }
+
+    private let file: AudioFile
+    private let title: String
+    private let action: (Int, String) -> Void
+
+    private let formWidth: CGFloat = 300
+
+    init(isShown: Binding<Bool>, file: AudioFile, action: @escaping (Int, String) -> Void) {
+        print("AddBookmarkForm init")
+        _isShown = isShown
+        self.action = action
+        self.file = file
+        let book = file.book!
+        title = (book.curFileIndex + 1).description + "/" + book.files.count.description + ": " + file.name
+        notifier.time = book.curFileProgress
+    }
+
+    func decreaseTime() {
+        notifier.time = notifier.time >= 5 ? notifier.time - 5 : 0
+    }
+
+    func increaseTime() {
+        notifier.time = notifier.time < file.duration - 5 ? notifier.time + 5 : file.duration
+    }
+
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.2)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    withAnimation {
+                        self.isShown = false
+                    }
+                }
+
+            VStack(alignment: .center, spacing: 0) {
+                Text(title)
+                    .font(Font.custom(.helveticaNeue, size: 13))
+                    .lineLimit(2)
+
+                HStack(alignment: .center, spacing: 0) {
+                    IconButton(iconName: "prev", iconColor: themeObservable.theme.tint.color) {
+                        self.decreaseTime()
+                    }
+
+                    Text(DateTimeUtils.secToHHMMSS(notifier.time))
+                        .font(Font.custom(.helveticaThin, size: 26))
+                        .lineLimit(1)
+
+                    IconButton(iconName: "next", iconColor: themeObservable.theme.tint.color) {
+                        self.increaseTime()
+                    }
+                }
+
+                TextField("Optional comment", text: $notifier.comment)
+                    .textFieldStyle(PlainTextFieldStyle())
+                    .padding(10)
+                    .font(Font.custom(.helveticaNeue, size: 13))
+                    .background(RoundedRectangle(cornerRadius: 4).fill(themeObservable.theme.inputBg.color))
+                    .foregroundColor(themeObservable.theme.inputText.color)
+
+                TextButton(text: "Add Bookmark", textColor: themeObservable.theme.tint.color, font: Font.m3b.applyButton) {
+                    self.action(notifier.time, notifier.comment)
+                    withAnimation {
+                        self.isShown = false
+                    }
+                }
+
+            }.padding(.horizontal, 20)
+                .padding(.top, 20)
+                .frame(width: formWidth)
+                .foregroundColor(themeObservable.theme.tint.color)
+                .background(themeObservable.theme.popupBg.color)
+                .cornerRadius(20)
+                .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 10)
         }
     }
 }
@@ -117,12 +214,17 @@ struct PlaylistContent: View {
         } else {
             VStack {
                 ScrollView {
-                    LazyVStack(alignment: .center, spacing: 1) {
+                    LazyVStack(spacing: 0) {
                         ForEach(vm.books) { book in
-                            BookCell(b: book) {
-                                self.vm.selectBook(book)
-                            } openAction: {
-                                self.vm.openBook(book)
+                            BookCell(b: book)  { action in
+                                switch action {
+                                case .select:
+                                    vm.selectBook(book)
+                                case .open:
+                                    vm.openBook(book)
+                                case .delete:
+                                    vm.removeFromPlaylist(book)
+                                }
                             }
                         }
                     }
@@ -143,6 +245,9 @@ struct PlaylistContent: View {
                         vm.playPrev()
                     case .selectRate:
                         vm.playRateSelectorShown = true
+                    case .addBookmark:
+                        vm.pause()
+                        vm.addBookmarkFormShown = true
                     }
                 }
             }
@@ -150,26 +255,32 @@ struct PlaylistContent: View {
     }
 }
 
+
+enum BookCellAction {
+    case select
+    case open
+    case delete
+}
 struct BookCell: View {
     @ObservedObject private var themeObservable = ThemeObservable.shared
     @ObservedObject private var book: Book
     @ObservedObject private var notifier = Notifier()
+
+    @State var offset = CGSize.zero
 
     let title: String
     class Notifier: ObservableObject {
         @Published var subtitle: String = ""
     }
 
-    let selectAction: () -> Void
-    let openAction: () -> Void
+    let action: (BookCellAction) -> Void
 
     private var disposeBag: Set<AnyCancellable> = []
 
-    init(b: Book, selectAction: @escaping () -> Void, openAction: @escaping () -> Void) {
+    init(b: Book, action: @escaping (BookCellAction) -> Void) {
         book = b
         title = b.title
-        self.selectAction = selectAction
-        self.openAction = openAction
+        self.action = action
 
         Publishers.CombineLatest(b.$curFileProgress, b.$curFileIndex)
             .map { curFileProgress, curFileIndex in
@@ -182,41 +293,63 @@ struct BookCell: View {
     }
 
     var body: some View {
-        HStack(alignment: .center, spacing: 0) {
-            Image(book.playState == .playing ? "pause" : "play")
-                .renderingMode(.template)
-                .allowsHitTesting(false)
-                .frame(width: 50)
+        GeometryReader { geometry in
+            HStack(alignment: .center, spacing: 0) {
+                Image(book.playState == .playing ? "pause" : "play")
+                    .renderingMode(.template)
+                    .allowsHitTesting(false)
+                    .frame(width: 50)
 
-            VStack(alignment: .center, spacing: 2) {
-                Spacer()
+                VStack(alignment: .center, spacing: 2) {
+                    Spacer()
 
-                Text(title)
-                    .font(Font.custom(.helveticaNeue, size: 17))
-                    .minimumScaleFactor(11 / 17)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.center)
+                    Text(title)
+                        .font(Font.custom(.helveticaNeue, size: 17))
+                        .minimumScaleFactor(11 / 17)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.center)
 
-                Text(self.notifier.subtitle)
-                    .font(Font.custom(.helveticaNeue, size: 12))
-                    .lineLimit(1)
+                    Text(self.notifier.subtitle)
+                        .font(Font.custom(.helveticaNeue, size: 12))
+                        .lineLimit(1)
 
-                Spacer()
+                    Spacer()
 
-                SeparatorView(horizontalPadding: -50)
+                    SeparatorView(horizontalPadding: -50)
 
-            }.frame(maxWidth: .infinity)
-            
-            IconButton(iconName: "open", iconColor: themeObservable.theme.tint.color) {
-                self.openAction()
-            }.frame(width: 50, height: 70)
-        }
-        .frame(height: 70)
-        .background(themeObservable.theme.transparent.color)
-        .foregroundColor(book.playState == .stopped ? themeObservable.theme.text.color : themeObservable.theme.play.color)
-        .onTapGesture {
-            selectAction()
-        }
+                }.frame(width: geometry.size.width - 100)
+
+                IconButton(iconName: "open", iconColor: book.playState == .stopped ? themeObservable.theme.text.color : themeObservable.theme.play.color) {
+                    self.action(.open)
+                }.frame(width: 50, height: 70)
+
+                IconButton(iconName: "delete", iconColor: themeObservable.theme.deleteBtnIcon.color) {
+                    self.action(.delete)
+                }.frame(width: 70, height: 70)
+                    .background(themeObservable.theme.deleteBtnBg.color)
+                
+                themeObservable.theme.deleteBtnBg.color.frame(width: -self.offset.width)
+            }
+            .background(themeObservable.theme.transparent.color)
+            .foregroundColor(book.playState == .stopped ? themeObservable.theme.text.color : themeObservable.theme.play.color)
+            .onTapGesture {
+                self.action(.select)
+            }
+            .offset(self.offset)
+                        .animation(.spring())
+                        .gesture(DragGesture()
+                                    .onChanged { gesture in
+                                        self.offset.width = gesture.translation.width > 0 ? .zero : gesture.translation.width
+                                    }
+                                    .onEnded { _ in
+                                        if self.offset.width > -50 {
+                                            self.offset = .zero
+                                        } else {
+                                            self.offset = CGSize(width: -70, height: 0)
+                                        }
+                                    }
+                        )
+        }.frame(height: 70)
     }
 }
 
@@ -227,6 +360,7 @@ enum PlayerAction {
     case playNext
     case playPrev
     case selectRate
+    case addBookmark
 }
 
 struct PlayerView: View {
@@ -343,7 +477,9 @@ struct PlayerView: View {
 
                             VStack(alignment: .center, spacing: 2) {
                                 TextButton(text: "\(book.rate)x", textColor: themeObservable.theme.tint.color, font: Font.custom(.helveticaNeueBold, size: 15)) {
-                                    self.action(.selectRate)
+                                    withAnimation {
+                                        self.action(.selectRate)
+                                    }
                                 }
                                 .frame(width: 50, height: 50, alignment: .center)
 
@@ -374,10 +510,14 @@ struct PlayerView: View {
                             Spacer()
 
                             VStack(alignment: .trailing, spacing: -10) {
-                                IconButton(iconName: "addComment", iconColor: themeObservable.theme.tint.color) { }
-                                    .frame(width: 50, height: 50, alignment: .center)
+                                IconButton(iconName: "addComment", iconColor: themeObservable.theme.tint.color) {
+                                    withAnimation {
+                                        self.action(.addBookmark)
+                                    }
+                                }
+                                .frame(width: 50, height: 50, alignment: .center)
 
-                                Text("4")
+                                Text(book.bookmarksCount.description)
                                     .font(Font.custom(.helveticaNeue, size: 13))
                                     .lineLimit(1)
                                     .frame(width: 50, alignment: .center)
@@ -389,9 +529,7 @@ struct PlayerView: View {
                     }
                     .foregroundColor(themeObservable.theme.tint.color)
                     .padding()
-
                     .allowsHitTesting(!disabled)
-                    // .opacity(disabled ? 0.8 : 1)
                 )
         }.frame(height: PlayerView.playerHeight)
     }

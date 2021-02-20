@@ -7,7 +7,6 @@
 
 import Combine
 import Foundation
-import MediaPlayer
 
 class AudioFile: PlaylistDomainEntity, ObservableObject, Identifiable {
     let id: ID
@@ -17,6 +16,7 @@ class AudioFile: PlaylistDomainEntity, ObservableObject, Identifiable {
     let name: String
     let index: Int
     let duration: Int
+    var bookmarks: [Bookmark] = []
     var book: Book!
 
     init(id: ID, name: String, source: AudioFileSource, path: String, duration: Int, index: Int, dispatcher: PlaylistDispatcher) {
@@ -54,6 +54,24 @@ class AudioFile: PlaylistDomainEntity, ObservableObject, Identifiable {
             return path
         } else {
             return "Audio file of " + book.title
+        }
+    }
+
+    func addMark(_ m: Bookmark) {
+        bookmarks.append(m)
+        bookmarks = bookmarks.sorted { $0.time < $1.time }
+        book.bookmarksCount += 1
+        dispatcher.subject.send(PlaylistDomainEvent.audioFileStateChanged(file: self))
+    }
+
+    func removeMark(_ m: Bookmark) {
+        for (index, bookmark) in bookmarks.enumerated() {
+            if bookmark.time == m.time && bookmark.comment == m.comment {
+                bookmarks.remove(at: index)
+                book.bookmarksCount -= 1
+                dispatcher.subject.send(PlaylistDomainEvent.audioFileStateChanged(file: self))
+                return
+            }
         }
     }
 }

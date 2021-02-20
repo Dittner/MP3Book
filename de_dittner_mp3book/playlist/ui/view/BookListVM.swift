@@ -16,6 +16,7 @@ class BookListVM: ViewModel, ObservableObject {
     @Published var books: [Book] = []
     @Published var playingBook: Book? = nil
     @Published var playRateSelectorShown: Bool = false
+    @Published var addBookmarkFormShown: Bool = false
 
     private let context: PlaylistContext
     private let player: PlayerAppService
@@ -42,10 +43,19 @@ class BookListVM: ViewModel, ObservableObject {
     func addBooks() {
         navigator.navigate(to: .library)
     }
-    
+
     func openBook(_ b: Book) {
         AudioFileListVM.shared.selectedBook = b
         navigator.navigate(to: .audioFileList)
+    }
+
+    func addBookmark(time: Int, comment: String) {
+        playingBook?.curFile.addMark(Bookmark(time: time, comment: comment))
+    }
+
+    func removeFromPlaylist(_ b: Book) {
+        b.addedToPlaylist = false
+        books = books.filter { $0.addedToPlaylist }
     }
 
     // -------------------------------------

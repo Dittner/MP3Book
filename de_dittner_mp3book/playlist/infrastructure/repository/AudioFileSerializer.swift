@@ -28,10 +28,20 @@ class AudioFileSerializer:IAudioFileSerializer {
         dict["path"] = f.path
         dict["playlistID"] = f.playlistID
         
+        var marksDict: [[String: Any]] = []
+        for bookmark in f.bookmarks {
+            var mDict:[String: Any] = [:]
+            mDict["comment"] = bookmark.comment
+            mDict["time"] = bookmark.time
+            marksDict.append(mDict)
+        }
+        dict["bookmarks"] = marksDict
+        
         return dict
     }
     
     func deserialize(data: [String : Any]) throws -> AudioFile {
+        var res:AudioFile
         guard let id = data["id"] as? ID, id.count > 0 else {throw AudioFileSerializerError.propertyNotFound(name: "id", fileId: "") }
         guard let name = data["name"] as? String, name.count > 0 else {throw AudioFileSerializerError.propertyNotFound(name: "name", fileId: id) }
         guard let index = data["index"] as? Int else {throw AudioFileSerializerError.propertyNotFound(name: "index", fileId: id) }
@@ -40,10 +50,22 @@ class AudioFileSerializer:IAudioFileSerializer {
 
         if source == .documents {
             guard let path = data["path"] as? String, path.count > 0 else {throw AudioFileSerializerError.propertyNotFound(name: "path", fileId: id) }
-            return AudioFile(id: id, name: name, source: source, path: path, duration: duration, index: index, dispatcher: dispatcher)
+            res = AudioFile(id: id, name: name, source: source, path: path, duration: duration, index: index, dispatcher: dispatcher)
         } else {
             guard let playlistID = data["playlistID"] as? String, playlistID.count > 0 else {throw AudioFileSerializerError.propertyNotFound(name: "playlistID", fileId: id) }
-            return AudioFile(id: id, name: name, source: source, playlistID: playlistID, duration: duration, index: index, dispatcher: dispatcher)
+            res = AudioFile(id: id, name: name, source: source, playlistID: playlistID, duration: duration, index: index, dispatcher: dispatcher)
         }
+        
+        if let bookmarksData = data["bookmarks"] as? [[String: Any]], bookmarksData.count > 0 {
+            var bookmarks:[Bookmark] = []
+            for bookmarkData in bookmarksData {
+                guard let time = bookmarkData["time"] as? Int else {throw AudioFileSerializerError.propertyNotFound(name: "bookmark.time", fileId: id) }
+                let m = Bookmark(time: time, comment: bookmarkData["comment"] as? String ?? "")
+                bookmarks.append(m)
+            }
+            res.bookmarks = bookmarks
+        }
+        
+        return res
     }
 }
