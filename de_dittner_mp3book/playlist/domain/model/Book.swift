@@ -33,7 +33,7 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
     let playlistID: String
     let title: String
     let totalDuration: Int
-    let files: [AudioFile]
+    private(set) var files: [AudioFile]
     let source: AudioFileSource
 
     @Published var playState: PlayState = .stopped
@@ -49,12 +49,13 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
 
     private(set) var sortType: AudioFilesSortType = .none
 
-    init(uid: UID, playlistID: String, title: String, files: [AudioFile], totalDuration: Int, dispatcher: PlaylistDispatcher) {
+    init(uid: UID, playlistID: String, title: String, files: [AudioFile], totalDuration: Int, sortType: AudioFilesSortType, dispatcher: PlaylistDispatcher) {
         self.uid = uid
         id = playlistID
         self.title = title
         self.totalDuration = totalDuration
         source = .iPodLibrary
+        self.sortType = sortType
         self.playlistID = playlistID
         folderPath = ""
         self.files = files
@@ -66,12 +67,13 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
             f.book = self
         }
 
+        sortFiles()
         countTotalComments()
         countTotalDurationAt()
         notifyStateChanged()
     }
 
-    init(uid: UID, folderPath: String, title: String, files: [AudioFile], totalDuration: Int, dispatcher: PlaylistDispatcher) {
+    init(uid: UID, folderPath: String, title: String, files: [AudioFile], totalDuration: Int, sortType: AudioFilesSortType, dispatcher: PlaylistDispatcher) {
         self.uid = uid
         id = folderPath
         self.folderPath = folderPath
@@ -79,6 +81,7 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
         self.title = title
         self.totalDuration = totalDuration
         source = .documents
+        self.sortType = sortType
         self.files = files
         curFile = files[0]
 
@@ -88,6 +91,7 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
             f.book = self
         }
 
+        sortFiles()
         countTotalComments()
         countTotalDurationAt()
         notifyStateChanged()
@@ -121,7 +125,7 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
             }
             .store(in: &disposeBag)
     }
-    
+
     private func countTotalComments() {
         bookmarksCount = files.reduce(0, { $0 + $1.bookmarks.count })
     }
@@ -136,8 +140,31 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
     }
 
     func sort(_ sortType: AudioFilesSortType) {
-        if self.sortType != sortType {
+        if source == .iPodLibrary, self.sortType != sortType {
             self.sortType = sortType
+
+            sortFiles()
+
+            if curFileIndex != 0 || curFileProgress != 0 {
+                let curFileID = curFile.id
+                for (index, file) in files.enumerated() {
+                    if file.id == curFileID {
+                        curFileIndex = index
+                        break
+                    }
+                }
+            }
+
+            countTotalDurationAt()
+            dispatcher.subject.send(PlaylistDomainEvent.bookStateChanged(book: self))
+        }
+    }
+
+    private func sortFiles() {
+        if sortType == .none {
+            files = files.sorted { $0.index < $1.index }
+        } else {
+            files = files.sorted { $0.name < $1.name }
         }
     }
 }

@@ -24,6 +24,7 @@ class BookSerializer: IBookSerializer {
         dict["uid"] = b.uid
         dict["title"] = b.title
         dict["source"] = b.source.rawValue
+        dict["sortType"] = b.sortType.rawValue
         dict["title"] = b.title
         dict["folderPath"] = b.folderPath
         dict["totalDuration"] = b.totalDuration
@@ -48,6 +49,7 @@ class BookSerializer: IBookSerializer {
         guard let title = data["title"] as? String, title.count > 0 else { throw BookSerializerError.propertyNotFound(name: "title", bookTitle: "") }
         guard let uid = data["uid"] as? UID else { throw BookSerializerError.propertyNotFound(name: "uid", bookTitle: title) }
         guard let sourceInt = data["source"] as? Int, let source = AudioFileSource(rawValue: sourceInt) else { throw BookSerializerError.propertyNotFound(name: "source", bookTitle: title) }
+        guard let sortTypeInt = data["sortType"] as? Int, let sortType = AudioFilesSortType(rawValue: sortTypeInt) else { throw BookSerializerError.propertyNotFound(name: "sortType", bookTitle: title) }
         
         guard let totalDuration = data["totalDuration"] as? Int, totalDuration > 0 else { throw BookSerializerError.propertyNotFound(name: "totalDuration", bookTitle: title) }
 
@@ -62,11 +64,11 @@ class BookSerializer: IBookSerializer {
 
         if source == .documents {
             guard let folderPath = data["folderPath"] as? String, folderPath.count > 0 else { throw BookSerializerError.propertyNotFound(name: "folderPath", bookTitle: title) }
-            res = Book(uid: uid, folderPath: folderPath, title: title, files: files, totalDuration: totalDuration, dispatcher: dispatcher)
+            res = Book(uid: uid, folderPath: folderPath, title: title, files: files, totalDuration: totalDuration, sortType: sortType, dispatcher: dispatcher)
         } else {
             guard let playlistID = data["playlistID"] as? String, playlistID.count > 0 else { throw BookSerializerError.propertyNotFound(name: "playlistID", bookTitle: title) }
 
-            res = Book(uid: uid, playlistID: playlistID, title: title, files: files, totalDuration: totalDuration, dispatcher: dispatcher)
+            res = Book(uid: uid, playlistID: playlistID, title: title, files: files, totalDuration: totalDuration, sortType: sortType, dispatcher: dispatcher)
         }
 
         res.addedToPlaylist = data["addedToPlaylist"] as? Bool ?? false

@@ -26,7 +26,7 @@ class AudioFileListVM: ViewModel, ObservableObject {
         logInfo(msg: "AudioFileListVM init")
         context = PlaylistContext.shared
         player = context.playerAppService
-        
+
         super.init(id: id)
 
         $selectedBook
@@ -40,13 +40,21 @@ class AudioFileListVM: ViewModel, ObservableObject {
             print("playRateSelectorShown = \(value)")
         }.store(in: &disposeBag)
     }
-    
+
     func goBack() {
         navigator.goBack(to: .bookList)
     }
-    
+
     func addBookmark(time: Int, comment: String) {
         player.book?.curFile.addMark(Bookmark(time: time, comment: comment))
+    }
+
+    func resortFiles() {
+        if let b = selectedBook {
+            pause()
+            b.sort(b.sortType == .none ? .title : .none)
+            files = b.files
+        }
     }
 
     // -------------------------------------
@@ -56,8 +64,8 @@ class AudioFileListVM: ViewModel, ObservableObject {
     // -------------------------------------
 
     func playFile(_ f: AudioFile) {
-        guard let b = f.book else {return}
-        
+        guard let b = f.book else { return }
+
         if b.playState == .playing, b.curFileIndex == f.index {
             player.pause()
         } else {

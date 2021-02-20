@@ -45,7 +45,7 @@ class LibraryVM: ViewModel, ObservableObject {
                     self.wrappedFolders = processedFolders
 
                     self.context.iPodAppService.read { playlists in
-                        let processedPlaylists = playlists.sorted(by: { $0 < $1 }).map { Wrapper<Playlist>($0) }
+                        let processedPlaylists = playlists.sorted { $0 < $1 }.map { Wrapper<Playlist>($0) }
                         processedPlaylists.forEach { $0.selected = isSelected[$0.data.id] ?? false }
                         self.wrappedPlaylists = processedPlaylists
                         Async.after(milliseconds: 1000) {

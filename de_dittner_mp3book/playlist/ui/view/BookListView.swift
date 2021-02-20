@@ -216,7 +216,7 @@ struct PlaylistContent: View {
                 ScrollView {
                     LazyVStack(spacing: 0) {
                         ForEach(vm.books) { book in
-                            BookCell(b: book)  { action in
+                            BookCell(b: book) { action in
                                 switch action {
                                 case .select:
                                     vm.selectBook(book)
@@ -255,12 +255,12 @@ struct PlaylistContent: View {
     }
 }
 
-
 enum BookCellAction {
     case select
     case open
     case delete
 }
+
 struct BookCell: View {
     @ObservedObject private var themeObservable = ThemeObservable.shared
     @ObservedObject private var book: Book
@@ -286,7 +286,7 @@ struct BookCell: View {
             .map { curFileProgress, curFileIndex in
                 let time = DateTimeUtils.secToHHMMSS(b.totalDurationAt[b.curFileIndex]! + curFileProgress)
                 let totalDuration = DateTimeUtils.secToHHMMSS(b.totalDuration)
-                return "\(curFileIndex + 1) / \(b.files.count), \(time)/\(totalDuration)"
+                return "\(curFileIndex + 1)/\(b.files.count), \(time)/\(totalDuration)"
             }
             .assign(to: \.subtitle, on: notifier)
             .store(in: &disposeBag)
@@ -309,15 +309,29 @@ struct BookCell: View {
                         .lineLimit(2)
                         .multilineTextAlignment(.center)
 
-                    Text(self.notifier.subtitle)
-                        .font(Font.custom(.helveticaNeue, size: 12))
-                        .lineLimit(1)
+                    HStack(alignment: .center, spacing: 2)  {
+                        Text(self.notifier.subtitle)
+                            .font(Font.custom(.helveticaNeue, size: 12))
+                            .lineLimit(1)
+                        
+                        Spacer().frame(width: 5)
+                        
+                        if book.bookmarksCount > 0 {
+                            Image("bookmark")
+                                .renderingMode(.template)
+                                .allowsHitTesting(false)
+                            Text(book.bookmarksCount.description)
+                                .font(Font.custom(.helveticaNeue, size: 12))
+                                .lineLimit(1)
+                        }
+                    }
+                    
 
                     Spacer()
 
                     SeparatorView(horizontalPadding: -50)
 
-                }.frame(width: geometry.size.width - 100)
+                }.frame(width: geometry.size.width > 100 ? geometry.size.width - 100 : 100)
 
                 IconButton(iconName: "open", iconColor: book.playState == .stopped ? themeObservable.theme.text.color : themeObservable.theme.play.color) {
                     self.action(.open)
@@ -327,7 +341,7 @@ struct BookCell: View {
                     self.action(.delete)
                 }.frame(width: 70, height: 70)
                     .background(themeObservable.theme.deleteBtnBg.color)
-                
+
                 themeObservable.theme.deleteBtnBg.color.frame(width: -self.offset.width)
             }
             .background(themeObservable.theme.transparent.color)
@@ -336,19 +350,19 @@ struct BookCell: View {
                 self.action(.select)
             }
             .offset(self.offset)
-                        .animation(.spring())
-                        .gesture(DragGesture()
-                                    .onChanged { gesture in
-                                        self.offset.width = gesture.translation.width > 0 ? .zero : gesture.translation.width
-                                    }
-                                    .onEnded { _ in
-                                        if self.offset.width > -50 {
-                                            self.offset = .zero
-                                        } else {
-                                            self.offset = CGSize(width: -70, height: 0)
-                                        }
-                                    }
-                        )
+            .animation(.spring())
+            .gesture(DragGesture()
+                .onChanged { gesture in
+                    self.offset.width = gesture.translation.width > 0 ? .zero : gesture.translation.width
+                }
+                .onEnded { _ in
+                    if self.offset.width > -50 {
+                        self.offset = .zero
+                    } else {
+                        self.offset = CGSize(width: -70, height: 0)
+                    }
+                }
+            )
         }.frame(height: 70)
     }
 }
@@ -381,7 +395,7 @@ struct PlayerView: View {
         @Published var progress: Double = 0
     }
 
-    static let fakeBook = Book(uid: UID(), folderPath: "", title: "", files: [AudioFile(id: "0", name: "", source: .documents, path: "", duration: 0, index: 0, dispatcher: PlaylistDispatcher())], totalDuration: 0, dispatcher: PlaylistDispatcher())
+    static let fakeBook = Book(uid: UID(), folderPath: "", title: "", files: [AudioFile(id: "0", name: "", source: .documents, path: "", duration: 0, index: 0, dispatcher: PlaylistDispatcher())], totalDuration: 0, sortType: .none, dispatcher: PlaylistDispatcher())
 
     private var disposeBag: Set<AnyCancellable> = []
 
@@ -510,7 +524,7 @@ struct PlayerView: View {
                             Spacer()
 
                             VStack(alignment: .trailing, spacing: -10) {
-                                IconButton(iconName: "addComment", iconColor: themeObservable.theme.tint.color) {
+                                IconButton(iconName: "addBookmark", iconColor: themeObservable.theme.tint.color) {
                                     withAnimation {
                                         self.action(.addBookmark)
                                     }

@@ -31,8 +31,14 @@ struct AudioFileListView: View {
 
                         Spacer()
 
-                        IconButton(iconName: "sort", iconColor: themeObservable.theme.tint.color) {
+                        if vm.selectedBook?.source == .iPodLibrary {
+                            IconButton(iconName: "sort", iconColor: themeObservable.theme.tint.color) {
+                                vm.resortFiles()
+                            }
+                        } else {
+                            Spacer().frame(width: 50)
                         }
+                        
                     }
                 }
 
@@ -43,7 +49,7 @@ struct AudioFileListView: View {
                 PlayRateSelector(isShown: $vm.playRateSelectorShown, selectedRate: vm.selectedBook?.rate ?? 1.0) { rate in
                     self.vm.updateRate(value: rate)
                 }
-            } else if vm.addBookmarkFormShown, let file = vm.player.book?.curFile {
+            } else if vm.addBookmarkFormShown, let file = vm.selectedBook?.curFile {
                 AddBookmarkForm(isShown: $vm.addBookmarkFormShown, file: file) { time, comment in
                     self.vm.addBookmark(time: time, comment: comment)
                 }
@@ -146,14 +152,14 @@ struct FileCell: View {
 
                 Text(title)
                     .font(Font.custom(.helveticaNeue, size: 15))
-                    .minimumScaleFactor(11 / 15)
+                    .minimumScaleFactor(12 / 15)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
 
                 Spacer()
 
                 Text(duration)
-                    .font(Font.custom(.helveticaNeue, size: 11))
+                    .font(Font.custom(.helveticaNeue, size: 12))
                     .lineLimit(1)
                     .padding()
 

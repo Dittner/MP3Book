@@ -24,7 +24,7 @@ class PlaylistToMP3BookMapper {
             } else {
                 let files = convert(playlist.files)
                 
-                let b = Book(uid: UID(), playlistID: playlist.playlistPersistentID!.description, title: playlist.title, files: files, totalDuration: playlist.totalDuration, dispatcher: dispatcher)
+                let b = Book(uid: UID(), playlistID: playlist.playlistPersistentID!.description, title: playlist.title, files: files, totalDuration: playlist.totalDuration, sortType: .none, dispatcher: dispatcher)
                 newBooks.append(b)
             }
         }

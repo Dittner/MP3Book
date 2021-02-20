@@ -52,6 +52,8 @@ class JSONBookRepository: IBookRepository {
             var books = [Book]()
             do {
                 let urls = try FileManager.default.contentsOfDirectory(at: self.url, includingPropertiesForKeys: nil).filter { $0.pathExtension == "m3b" }
+                
+                logInfo(msg: "Books count on disc: \(urls.count)")
 
                 for fileURL in urls {
                     do {
@@ -69,7 +71,8 @@ class JSONBookRepository: IBookRepository {
                             }
                         }
                     } catch {
-                        logErr(msg: "Failed to serialize book, url: \(fileURL), details: \(error.localizedDescription)")
+                        logErr(msg: "Failed to deserialize book, url: \(fileURL), details: \(error.localizedDescription)")
+                        try self.destroyBook(storeURL: fileURL)
                     }
                 }
             } catch {
@@ -96,6 +99,16 @@ class JSONBookRepository: IBookRepository {
             do {
                 try FileManager.default.removeItem(atPath: storeURL.path)
                 logInfo(msg: "Book «\(b.title)» has been destroyed")
+            } catch {
+                throw JSONBookRepositoryError.removeBookFromDiscFailed(details: error.localizedDescription)
+            }
+        }
+    }
+    
+    private func destroyBook(storeURL: URL) throws {
+        if FileManager.default.fileExists(atPath: storeURL.path) {
+            do {
+                try FileManager.default.removeItem(atPath: storeURL.path)
             } catch {
                 throw JSONBookRepositoryError.removeBookFromDiscFailed(details: error.localizedDescription)
             }

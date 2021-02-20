@@ -22,7 +22,7 @@ class FolderToMP3BookMapper {
                 newBooks.append(b)
             } else {
                 let files = convert(folder.files)
-                let b = Book(uid: UID(), folderPath: folder.path!, title: folder.title, files: files, totalDuration: folder.totalDuration, dispatcher: dispatcher)
+                let b = Book(uid: UID(), folderPath: folder.path!, title: folder.title, files: files, totalDuration: folder.totalDuration, sortType: .none, dispatcher: dispatcher)
                 newBooks.append(b)
             }
         }
