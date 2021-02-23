@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-
-
 struct IconButton: View {
     var iconName: String
     var iconColor: Color
@@ -76,6 +74,42 @@ struct PressActions: ViewModifier {
                         onRelease()
                     })
             )
+    }
+}
+
+struct TabBarButton: View {
+    var icon: String
+    var title: String
+    var theme: Theme
+    let selected: Bool
+    let onAction: () -> Void
+
+    @State private var onPressed = false
+
+    var body: some View {
+        VStack(alignment: .center, spacing: 2) {
+            Spacer()
+
+            Image(icon)
+                .renderingMode(.template)
+
+            Text(title)
+                .font(Font.custom(.helveticaNeue, size: 11))
+                .lineLimit(1)
+        }
+        .padding(8)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(onPressed || selected ? theme.tabBarBg.color : theme.toolbarColors[1])
+        .foregroundColor(onPressed || selected ? theme.tabBarSelected.color : theme.text.color)
+        .zIndex(10)
+        .onTapGesture {
+            self.onAction()
+        }
+        .pressAction {
+            self.onPressed = true
+        } onRelease: {
+            self.onPressed = false
+        }
     }
 }
 

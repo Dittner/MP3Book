@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import os.log
 
-let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "main")
+let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "m3b")
 
 func logInfo(msg: String) {
     logger.info("\(msg)")

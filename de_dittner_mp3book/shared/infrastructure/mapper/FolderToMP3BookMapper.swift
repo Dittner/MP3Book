@@ -22,7 +22,7 @@ class FolderToMP3BookMapper {
                 newBooks.append(b)
             } else {
                 let files = convert(folder.files)
-                let b = Book(uid: UID(), folderPath: folder.path!, title: folder.title, files: files, totalDuration: folder.totalDuration, sortType: .none, dispatcher: dispatcher)
+                let b = Book(uid: UID(), folderPath: folder.path!, title: folder.title, files: files, bookmarks: [], sortType: .none, dispatcher: dispatcher)
                 newBooks.append(b)
             }
         }
@@ -32,8 +32,9 @@ class FolderToMP3BookMapper {
 
     func convert(_ files: [FolderFile]) -> [AudioFile] {
         var res = [AudioFile]()
-        for (index, f) in files.enumerated() {
-            let audioFile = AudioFile(id: f.id, name: f.name, source: .documents, path: f.path, duration: f.duration, index: index, dispatcher: dispatcher)
+        let sortedFiles = files.sorted(by: <)
+        for (index, f) in sortedFiles.enumerated() {
+            let audioFile = AudioFile(uid: UID(), id: f.id, name: f.name, source: .documents, path: f.path, duration: f.duration, index: index, dispatcher: dispatcher)
             res.append(audioFile)
         }
         return res

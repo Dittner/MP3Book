@@ -16,6 +16,7 @@ import SwiftUI
 enum FontName: String {
     case helveticaNeue = "Helvetica Neue"
     case helveticaThin = "Helvetica Neue Thin"
+    case helveticaLight = "Helvetica Neue Light"
     case helveticaNeueBold = "Helvetica Neue Bold"
 }
 

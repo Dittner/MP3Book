@@ -14,7 +14,7 @@ struct BookListView: View {
 
     var body: some View {
         ZStack {
-            VStack(alignment: .center, spacing: 0) {
+            VStack(alignment: .center, spacing: -20) {
                 NavigationBar {
                     HStack {
                         Spacer().frame(width: 50)
@@ -30,18 +30,18 @@ struct BookListView: View {
                             self.vm.addBooks()
                         }
                     }
-                }
+                }.navigationBarShadow()
 
                 PlaylistContent(vm: vm)
             }
 
             if vm.playRateSelectorShown {
-                PlayRateSelector(isShown: $vm.playRateSelectorShown, selectedRate: vm.playingBook?.rate ?? 1.0) { rate in
+                PlayRateSelector(isShown: $vm.playRateSelectorShown, selectedRate: vm.selectedBook?.rate ?? 1.0) { rate in
                     self.vm.updateRate(value: rate)
                 }
-            } else if vm.addBookmarkFormShown, let file = vm.playingBook?.curFile {
+            } else if vm.addBookmarkFormShown, let file = vm.selectedBook?.coll.curFile {
                 AddBookmarkForm(isShown: $vm.addBookmarkFormShown, file: file) { time, comment in
-                    self.vm.addBookmark(time: time, comment: comment)
+                    self.vm.addBookmark(time: time, comment: comment, file: file)
                 }
             }
         }
@@ -67,9 +67,7 @@ struct PlayRateSelector: View {
             Color.black.opacity(0.2)
                 .ignoresSafeArea()
                 .onTapGesture {
-                    withAnimation {
-                        self.isShown = false
-                    }
+                    self.isShown = false
                 }
 
             VStack(alignment: .center, spacing: 0) {
@@ -81,15 +79,13 @@ struct PlayRateSelector: View {
                         .frame(height: 30)
 
                     ForEach(PlayRateSelector.playRates, id: \.self) { value in
-                        SeparatorView()
+                        HSeparatorView()
                         Text(value.description)
                             .font(Font.custom(selectedRate == value ? .helveticaNeueBold : .helveticaNeue, size: 15))
                             .frame(height: 30)
                             .onTapGesture {
                                 self.selectAction(value)
-                                withAnimation {
-                                    self.isShown = false
-                                }
+                                self.isShown = false
                             }
                     }
 
@@ -133,9 +129,9 @@ struct AddBookmarkForm: View {
         _isShown = isShown
         self.action = action
         self.file = file
-        let book = file.book!
-        title = (book.curFileIndex + 1).description + "/" + book.files.count.description + ": " + file.name
-        notifier.time = book.curFileProgress
+        let coll = file.book!.coll
+        title = (coll.curFileIndex + 1).description + "/" + coll.count.description + ": " + file.name
+        notifier.time = coll.curFileProgress
     }
 
     func decreaseTime() {
@@ -151,9 +147,7 @@ struct AddBookmarkForm: View {
             Color.black.opacity(0.2)
                 .ignoresSafeArea()
                 .onTapGesture {
-                    withAnimation {
-                        self.isShown = false
-                    }
+                    self.isShown = false
                 }
 
             VStack(alignment: .center, spacing: 0) {
@@ -175,18 +169,30 @@ struct AddBookmarkForm: View {
                     }
                 }
 
-                TextField("Optional comment", text: $notifier.comment)
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .padding(10)
-                    .font(Font.custom(.helveticaNeue, size: 13))
-                    .background(RoundedRectangle(cornerRadius: 4).fill(themeObservable.theme.inputBg.color))
-                    .foregroundColor(themeObservable.theme.inputText.color)
+                VStack(alignment: .leading, spacing: -20) {
+                    if notifier.comment.count == 0 {
+                        Text("Optional comment")
+                            .font(Font.custom(.helveticaNeue, size: 13))
+                            .lineLimit(1)
+                            .opacity(0.8)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 8)
+                            .foregroundColor(themeObservable.theme.inputText.color)
+                            .frame(height: 20, alignment: .topLeading)
+                    }
+
+                    TextEditor(text: $notifier.comment)
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .padding(.horizontal, 10)
+                        .font(Font.custom(.helveticaNeue, size: 13))
+                        .background(RoundedRectangle(cornerRadius: 4).fill(themeObservable.theme.inputBg.color))
+                        .foregroundColor(themeObservable.theme.inputText.color)
+                        .frame(height: 100)
+                }
 
                 TextButton(text: "Add Bookmark", textColor: themeObservable.theme.tint.color, font: Font.m3b.applyButton) {
                     self.action(notifier.time, notifier.comment)
-                    withAnimation {
-                        self.isShown = false
-                    }
+                    self.isShown = false
                 }
 
             }.padding(.horizontal, 20)
@@ -214,6 +220,7 @@ struct PlaylistContent: View {
         } else {
             VStack {
                 ScrollView {
+                    Spacer().frame(height: 20)
                     LazyVStack(spacing: 0) {
                         ForEach(vm.books) { book in
                             BookCell(b: book) { action in
@@ -228,10 +235,11 @@ struct PlaylistContent: View {
                             }
                         }
                     }
+                    Spacer().frame(height: 20)
                 }
                 .clipped()
 
-                PlayerView(playingBook: vm.playingBook) { action in
+                PlayerView(book: vm.selectedBook) { action in
                     switch action {
                     case let .updateProgress(progress):
                         vm.updateProgress(value: progress)
@@ -264,6 +272,7 @@ enum BookCellAction {
 struct BookCell: View {
     @ObservedObject private var themeObservable = ThemeObservable.shared
     @ObservedObject private var book: Book
+    @ObservedObject private var bookmarkColl: BookmarkColl
     @ObservedObject private var notifier = Notifier()
 
     @State var offset = CGSize.zero
@@ -279,16 +288,16 @@ struct BookCell: View {
 
     init(b: Book, action: @escaping (BookCellAction) -> Void) {
         book = b
+        bookmarkColl = b.bookmarkColl
         title = b.title
         self.action = action
 
-        Publishers.CombineLatest(b.$curFileProgress, b.$curFileIndex)
-            .map { curFileProgress, curFileIndex in
-                let time = DateTimeUtils.secToHHMMSS(b.totalDurationAt[b.curFileIndex]! + curFileProgress)
+        Publishers.CombineLatest(b.audioFileColl.$curFileIndex, b.audioFileColl.$curFileProgress)
+            .map { index, progress in
+                let time = DateTimeUtils.secToHHMMSS(b.totalDurationAt[index]! + progress)
                 let totalDuration = DateTimeUtils.secToHHMMSS(b.totalDuration)
-                return "\(curFileIndex + 1)/\(b.files.count), \(time)/\(totalDuration)"
-            }
-            .assign(to: \.subtitle, on: notifier)
+                return "\(index + 1)/\(b.audioFileColl.count), \(time)/\(totalDuration)"
+            }.assign(to: \.subtitle, on: notifier)
             .store(in: &disposeBag)
     }
 
@@ -309,27 +318,26 @@ struct BookCell: View {
                         .lineLimit(2)
                         .multilineTextAlignment(.center)
 
-                    HStack(alignment: .center, spacing: 2)  {
+                    HStack(alignment: .center, spacing: 2) {
                         Text(self.notifier.subtitle)
                             .font(Font.custom(.helveticaNeue, size: 12))
                             .lineLimit(1)
-                        
+
                         Spacer().frame(width: 5)
-                        
-                        if book.bookmarksCount > 0 {
-                            Image("bookmark")
+
+                        if bookmarkColl.count > 0 {
+                            Image("bookmarkSmall")
                                 .renderingMode(.template)
                                 .allowsHitTesting(false)
-                            Text(book.bookmarksCount.description)
+                            Text(bookmarkColl.count.description)
                                 .font(Font.custom(.helveticaNeue, size: 12))
                                 .lineLimit(1)
                         }
                     }
-                    
 
                     Spacer()
 
-                    SeparatorView(horizontalPadding: -50)
+                    HSeparatorView(horizontalPadding: -50)
 
                 }.frame(width: geometry.size.width > 100 ? geometry.size.width - 100 : 100)
 
@@ -364,187 +372,5 @@ struct BookCell: View {
                 }
             )
         }.frame(height: 70)
-    }
-}
-
-enum PlayerAction {
-    case updateProgress(value: Double)
-    case play(b: Book)
-    case pause
-    case playNext
-    case playPrev
-    case selectRate
-    case addBookmark
-}
-
-struct PlayerView: View {
-    @ObservedObject private var themeObservable = ThemeObservable.shared
-    @ObservedObject private var systemVolume = SystemVolume.shared
-    @ObservedObject private var book: Book
-
-    @ObservedObject private var notifier = Notifier()
-
-    let action: (PlayerAction) -> Void
-    let disabled: Bool
-    static let playerHeight: CGFloat = 170
-
-    class Notifier: ObservableObject {
-        @Published var time: String = "0"
-        @Published var title: String = ""
-        @Published var duration: String = "0"
-        @Published var progress: Double = 0
-    }
-
-    static let fakeBook = Book(uid: UID(), folderPath: "", title: "", files: [AudioFile(id: "0", name: "", source: .documents, path: "", duration: 0, index: 0, dispatcher: PlaylistDispatcher())], totalDuration: 0, sortType: .none, dispatcher: PlaylistDispatcher())
-
-    private var disposeBag: Set<AnyCancellable> = []
-
-    init(playingBook: Book?, action: @escaping (PlayerAction) -> Void) {
-        print("PlayerView init")
-        if let b = playingBook {
-            disabled = false
-            book = b
-        } else {
-            disabled = true
-            book = PlayerView.fakeBook
-        }
-
-        self.action = action
-        let curBB = book
-
-        book.$curFileProgress
-            .map { $0.asDouble }
-            .assign(to: \.progress, on: notifier)
-            .store(in: &disposeBag)
-
-        book.$curFile
-            .map { $0.duration }
-            .map { DateTimeUtils.secToHHMMSS($0) }
-            .assign(to: \.duration, on: notifier)
-            .store(in: &disposeBag)
-
-        book.$curFileIndex
-            .map { ($0 + 1).description + "/" + curBB.files.count.description }
-            .assign(to: \.title, on: notifier)
-            .store(in: &disposeBag)
-
-        notifier.$progress
-            .map { DateTimeUtils.secToHHMMSS(Int($0)) }
-            .assign(to: \.time, on: notifier)
-            .store(in: &disposeBag)
-    }
-
-    var body: some View {
-        ZStack {
-            Rectangle()
-                .fill(LinearGradient(gradient: Gradient(colors: themeObservable.theme.toolbarColors.reversed()), startPoint: .top, endPoint: .bottom))
-                .cornerRadius(radius: 20, corners: [.topLeft, .topRight])
-                .overlay(
-                    VStack(alignment: .center, spacing: 2) {
-                        HStack(alignment: .top, spacing: 0) {
-                            Text(notifier.time)
-                            Spacer()
-                            Text(notifier.title)
-                            Spacer()
-                            Text(notifier.duration)
-                        }
-                        .font(Font.custom(.helveticaNeue, size: 13))
-                        .lineLimit(1)
-
-                        SliderView(progress: $notifier.progress, minValue: 0, maxValue: book.curFile.duration.asDouble, trackColor: themeObservable.theme.sliderTrack.color) { progress in
-                            self.action(.updateProgress(value: progress))
-                        }
-
-                        Spacer().frame(height: 5)
-
-                        HStack(alignment: .top, spacing: 0) {
-                            HStack(alignment: .center, spacing: 2) {
-                                Text(systemVolume.value.description + "%")
-                                    .font(Font.custom(.helveticaNeue, size: 13))
-                                    .lineLimit(1)
-
-                                Image("volume")
-                                    .renderingMode(.template)
-                                    .allowsHitTesting(false)
-
-                            }.frame(width: 50, height: 50, alignment: .leading)
-
-                            Spacer()
-
-                            VStack(alignment: .center, spacing: 2) {
-                                TextButton(text: "-15s", textColor: themeObservable.theme.tint.color, font: Font.custom(.helveticaNeueBold, size: 15)) {
-                                    if self.notifier.progress > 15 {
-                                        self.action(.updateProgress(value: self.notifier.progress - 15))
-                                    } else {
-                                        self.action(.updateProgress(value: 0.001))
-                                    }
-                                }
-                                .frame(width: 50, height: 50, alignment: .center)
-
-                                IconButton(iconName: "playerBackward", iconColor: themeObservable.theme.tint.color) {
-                                    self.action(.playPrev)
-                                }
-                                .frame(width: 50, height: 50, alignment: .center)
-                            }
-
-                            Spacer()
-
-                            VStack(alignment: .center, spacing: 2) {
-                                TextButton(text: "\(book.rate)x", textColor: themeObservable.theme.tint.color, font: Font.custom(.helveticaNeueBold, size: 15)) {
-                                    withAnimation {
-                                        self.action(.selectRate)
-                                    }
-                                }
-                                .frame(width: 50, height: 50, alignment: .center)
-
-                                IconButton(iconName: book.playState == .playing ? "playerPause" : "playerPlay", iconColor: themeObservable.theme.tint.color) {
-                                    self.action(book.playState == .playing ? .pause : .play(b: book))
-                                }
-                                .frame(width: 50, height: 50, alignment: .center)
-                            }
-
-                            Spacer()
-
-                            VStack(alignment: .center, spacing: 2) {
-                                TextButton(text: "+15s", textColor: themeObservable.theme.tint.color, font: Font.custom(.helveticaNeueBold, size: 15)) {
-                                    if self.book.curFile.duration.asDouble - self.notifier.progress > 15 {
-                                        self.action(.updateProgress(value: self.notifier.progress + 15))
-                                    } else {
-                                        self.action(.updateProgress(value: self.book.curFile.duration.asDouble))
-                                    }
-                                }
-                                .frame(width: 50, height: 50, alignment: .center)
-
-                                IconButton(iconName: "playerForward", iconColor: themeObservable.theme.tint.color) {
-                                    self.action(.playNext)
-                                }
-                                .frame(width: 50, height: 50, alignment: .center)
-                            }
-
-                            Spacer()
-
-                            VStack(alignment: .trailing, spacing: -10) {
-                                IconButton(iconName: "addBookmark", iconColor: themeObservable.theme.tint.color) {
-                                    withAnimation {
-                                        self.action(.addBookmark)
-                                    }
-                                }
-                                .frame(width: 50, height: 50, alignment: .center)
-
-                                Text(book.bookmarksCount.description)
-                                    .font(Font.custom(.helveticaNeue, size: 13))
-                                    .lineLimit(1)
-                                    .frame(width: 50, alignment: .center)
-
-                            }.offset(x: 15)
-                        }
-                        .font(Font.custom(.helveticaNeue, size: 13))
-                        .lineLimit(1)
-                    }
-                    .foregroundColor(themeObservable.theme.tint.color)
-                    .padding()
-                    .allowsHitTesting(!disabled)
-                )
-        }.frame(height: PlayerView.playerHeight)
     }
 }

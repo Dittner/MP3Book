@@ -12,8 +12,6 @@ import MediaPlayer
 class AudioFileListVM: ViewModel, ObservableObject {
     static var shared: AudioFileListVM = AudioFileListVM(id: .audioFileList)
 
-    @Published var isLoading = false
-    @Published var files: [AudioFile] = []
     @Published var selectedBook: Book?
     @Published var playRateSelectorShown: Bool = false
     @Published var addBookmarkFormShown: Bool = false
@@ -29,31 +27,38 @@ class AudioFileListVM: ViewModel, ObservableObject {
 
         super.init(id: id)
 
-        $selectedBook
-            .compactMap { $0 }
-            .sink { book in
-                self.files = book.files
-
-            }.store(in: &disposeBag)
-
         $playRateSelectorShown.sink { value in
             print("playRateSelectorShown = \(value)")
         }.store(in: &disposeBag)
+    }
+    
+    override func screenDeactivated() {
+        super.screenDeactivated()
+        selectedBook?.playMode = .audioFile
     }
 
     func goBack() {
         navigator.goBack(to: .bookList)
     }
 
-    func addBookmark(time: Int, comment: String) {
-        player.book?.curFile.addMark(Bookmark(time: time, comment: comment))
+    func addBookmark(file: AudioFile, time: Int, comment: String) {
+        player.book?.bookmarkColl.addMark(Bookmark(uid: UID(), file: file, time: time, comment: comment))
     }
 
     func resortFiles() {
         if let b = selectedBook {
             pause()
             b.sort(b.sortType == .none ? .title : .none)
-            files = b.files
+        }
+    }
+
+    func removeBookmark(_ m: Bookmark) {
+        if let b = selectedBook {
+            if b.bookmarkColl.curBookmark == m {
+                player.pause()
+            }
+
+            b.bookmarkColl.removeMark(m)
         }
     }
 
@@ -66,12 +71,25 @@ class AudioFileListVM: ViewModel, ObservableObject {
     func playFile(_ f: AudioFile) {
         guard let b = f.book else { return }
 
-        if b.playState == .playing, b.curFileIndex == f.index {
+        if b.playState == .playing, b.audioFileColl.curFile == f {
             player.pause()
         } else {
-            b.curFileIndex = f.index
+            b.coll.curFileIndex = f.index
             player.play(b)
         }
+        UserDefaults.standard.set(b.id, forKey: "lastPlayedBookID")
+    }
+
+    func playBookmark(_ mark: Bookmark) {
+        guard let b = mark.file.book else { return }
+
+        if b.playState == .playing, b.bookmarkColl.curBookmark == mark {
+            player.pause()
+        } else {
+            b.bookmarkColl.curFileIndex = b.bookmarkColl.bookmarks.firstIndex(of: mark) ?? 0
+            player.play(b)
+        }
+        UserDefaults.standard.set(b.id, forKey: "lastPlayedBookID")
     }
 
     func updateProgress(value: Double) {

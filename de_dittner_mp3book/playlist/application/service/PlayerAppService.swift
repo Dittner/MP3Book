@@ -13,7 +13,9 @@ enum PlayerAppServiceError: DetailedError {
 }
 
 class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
-    @Published var book: Book? = nil
+    @Published private(set) var book: Book? = nil
+    var fileColl: FileCollection?
+
     let api: MediaAPI
 
     init(api: MediaAPI) {
@@ -21,40 +23,52 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
         api.delegate = self
     }
 
+    var subscription: AnyCancellable?
     func play(_ b: Book) {
         api.stop()
-        if let book = book, book.id != b.id {
-            book.playState = .stopped
-            api.setPlayRate(value: book.rate)
+        if let curBook = book, curBook.uid != b.uid {
+            curBook.playState = .stopped
+            api.setPlayRate(value: b.rate)
         }
+
+        subscription?.cancel()
         book = b
-        
-        if b.curFileProgress == b.curFile.duration {
-            if b.curFileIndex < b.files.count - 1 {
-                b.curFileProgress = 0
-                b.curFileIndex += 1
+        fileColl = b.coll
+
+        subscription = b.$coll
+            .sink { coll in
+                self.pause()
+                self.fileColl = coll
+            }
+
+        guard var coll = fileColl else { return }
+        guard let curFile = coll.curFile else { return }
+
+        if coll.curFileProgress == curFile.duration {
+            if coll.curFileIndex < coll.count - 1 {
+                coll.curFileIndex += 1
             } else {
-                b.curFileProgress = 0
-                b.curFileIndex = 0
+                coll.curFileIndex = 0
             }
         }
 
-        if let url = b.curFile.getURL() {
-            api.play(url: url, position: b.curFileProgress, duration: b.curFile.duration)
+        if let url = curFile.getURL() {
+            api.play(url: url, position: coll.curFileProgress, duration: curFile.duration)
         } else {
-            logErr(msg: "fileURLNotFound, book: " + b.title + ", file: " + b.curFile.description)
+            logErr(msg: "fileURLNotFound, book: " + b.title + ", file: " + curFile.description)
         }
     }
 
     func pause() {
         api.stop()
     }
-    
+
     func updatePosition(value: Double) {
+        guard var coll = fileColl else { return }
         api.updatePosition(value: value)
-        book?.curFileProgress = Int(value)
+        coll.curFileProgress = Int(value)
     }
-    
+
     func updateRate(value: Float) {
         api.setPlayRate(value: value)
         book?.rate = value
@@ -77,13 +91,13 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
     }
 
     func mediaAPIDidCompletePlayFile() {
-        guard let b = book else { return }
-        if b.curFileIndex < b.files.count - 1 {
-            b.curFileProgress = 0
-            b.curFileIndex += 1
+        guard let b = book, var coll = fileColl else { return }
+
+        if coll.curFileIndex < coll.count - 1, b.playMode == .audioFile {
+            coll.curFileIndex += 1
             play(b)
-        } else {
-            b.curFileProgress = b.curFile.duration
+        } else if let curFile = coll.curFile {
+            coll.curFileProgress = curFile.duration
             pause()
         }
     }
@@ -91,16 +105,15 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
     func mediaAPIWillPlayNextFile() {
         playNext()
     }
-    
+
     func playNext() {
-        guard let b = book else { return }
-        if b.curFileIndex < b.files.count - 1 {
-            b.curFileProgress = 0
-            b.curFileIndex += 1
+        guard let b = book, var coll = fileColl else { return }
+
+        if coll.curFileIndex < coll.count - 1 {
+            coll.curFileIndex += 1
             play(b)
         } else {
-            b.curFileProgress = 0
-            b.curFileIndex = 0
+            coll.curFileIndex = 0
             play(b)
         }
     }
@@ -108,23 +121,22 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
     func mediaAPIWillPlayPrevFile() {
         playPrev()
     }
-    
+
     func playPrev() {
-        guard let b = book else { return }
-        if b.curFileIndex > 0 {
-            b.curFileProgress = 0
-            b.curFileIndex -= 1
+        guard let b = book, var coll = fileColl else { return }
+
+        if coll.curFileIndex > 0 {
+            coll.curFileIndex -= 1
             play(b)
         } else {
-            b.curFileProgress = 0
-            b.curFileIndex = b.files.count - 1
+            coll.curFileIndex = coll.count - 1
             play(b)
         }
     }
 
     func mediaAPIDidPlaybackTimeChange(time: Int) {
-        guard let b = book else { return }
-        b.curFileProgress = time
+        guard var coll = fileColl else { return }
+        coll.curFileProgress = time
     }
 
     func mediaAPIBeginInterruption() {

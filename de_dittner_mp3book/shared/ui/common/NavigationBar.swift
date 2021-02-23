@@ -17,6 +17,7 @@ struct NavigationBar<Content: View>: View {
             .background(Rectangle()
                 .fill(LinearGradient(gradient: Gradient(colors: themeObservable.theme.toolbarColors), startPoint: .top, endPoint: .bottom))
                 .cornerRadius(radius: 20, corners: [.bottomLeft, .bottomRight])
-                            .edgesIgnoringSafeArea(.top))
+                .edgesIgnoringSafeArea(.top))
+            .zIndex(2)
     }
 }

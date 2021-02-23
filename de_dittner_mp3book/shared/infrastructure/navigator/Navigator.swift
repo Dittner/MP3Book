@@ -53,14 +53,14 @@ class Navigator: ObservableObject {
     }
 
     func goBack(to: ScreenID) {
-        screen = Screen(activated: to, deactivated: screen.deactivated)
+        screen = Screen(activated: to, deactivated: screen.activated)
         withAnimation {
             screenPosition = ScreenPosition(leading: nil, center: to, trailing: screenPosition.center, goBack: true, appWidth: appWidth)
         }
     }
 
     func navigate(to: ScreenID) {
-        screen = Screen(activated: to, deactivated: screen.deactivated)
+        screen = Screen(activated: to, deactivated: screen.activated)
         withAnimation {
             screenPosition = ScreenPosition(leading: screenPosition.center, center: to, trailing: nil, goBack: false, appWidth: appWidth)
         }

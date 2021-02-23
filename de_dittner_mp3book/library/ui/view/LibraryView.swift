@@ -32,7 +32,7 @@ struct LibraryView: View {
                         LibraryVM.shared.apply()
                     }
                 }.padding()
-            }
+            }.navigationBarShadow()
 
             LibraryContent()
                 .edgesIgnoringSafeArea(.bottom)
@@ -59,7 +59,7 @@ struct LibraryContent: View {
                             .foregroundColor(themeObservable.theme.text.color)
                             .frame(height: 20, alignment: .center)
 
-                        SeparatorView(horizontalPadding: -50)
+                        HSeparatorView(horizontalPadding: -50)
 
                         ForEach(vm.wrappedFolders) { wrappedFolder in
                             WrapperFolderCell(w: wrappedFolder)
@@ -72,7 +72,7 @@ struct LibraryContent: View {
                                 .foregroundColor(themeObservable.theme.text.color)
                                 .frame(height: 20, alignment: .center)
 
-                            SeparatorView(horizontalPadding: -50)
+                            HSeparatorView(horizontalPadding: -50)
 
                             ForEach(vm.wrappedPlaylists) { wrappedPlaylist in
                                 WrapperPlaylistCell(w: wrappedPlaylist)
@@ -147,7 +147,7 @@ struct ListCell: View {
 
                 Spacer()
 
-                SeparatorView(horizontalPadding: -50)
+                HSeparatorView(horizontalPadding: -50)
 
             }.frame(maxWidth: .infinity)
 

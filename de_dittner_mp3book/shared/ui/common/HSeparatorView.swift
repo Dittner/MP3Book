@@ -8,7 +8,7 @@
 import Combine
 import SwiftUI
 
-struct SeparatorView: View {
+struct HSeparatorView: View {
     @ObservedObject var themeObservable = ThemeObservable.shared
     
     let horizontalPadding:CGFloat

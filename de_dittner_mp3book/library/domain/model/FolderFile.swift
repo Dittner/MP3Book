@@ -21,3 +21,9 @@ struct FolderFile {
         self.duration = duration
     }
 }
+
+extension FolderFile: Comparable {
+    static func < (lhs: FolderFile, rhs: FolderFile) -> Bool {
+        lhs.path < rhs.path
+    }
+}
