@@ -83,7 +83,7 @@ class BookListVM: ViewModel, ObservableObject {
     }
 
     func addBookmark(time: Int, comment: String, file: AudioFile) {
-        player.book?.bookmarkColl.addMark(Bookmark(uid: UID(), file: file, time: time, comment: comment))
+        selectedBook?.bookmarkColl.addMark(Bookmark(uid: UID(), file: file, time: time, comment: comment))
     }
 
     func removeFromPlaylist(_ b: Book) {

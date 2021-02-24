@@ -6,7 +6,7 @@
 //
 
 import Combine
-import Foundation
+import MediaPlayer
 
 enum PlayerAppServiceError: DetailedError {
     case fileURLNotFound(details: String)
@@ -14,7 +14,7 @@ enum PlayerAppServiceError: DetailedError {
 
 class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
     @Published private(set) var book: Book? = nil
-    var fileColl: FileCollection?
+    private var fileColl: FileCollection?
 
     let api: MediaAPI
 
@@ -102,8 +102,21 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
         }
     }
 
+    func mediaAPIWillStop() {
+        pause()
+    }
+    
+    func mediaAPIWillPlay() {
+        guard let b = book else { return }
+        play(b)
+    }
+    
     func mediaAPIWillPlayNextFile() {
         playNext()
+    }
+
+    func mediaAPIWillUpdatePosition(value: Double) {
+        updatePosition(value: value)
     }
 
     func playNext() {
@@ -137,12 +150,32 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
     func mediaAPIDidPlaybackTimeChange(time: Int) {
         guard var coll = fileColl else { return }
         coll.curFileProgress = time
+        updateRemoteInfo()
     }
 
-    func mediaAPIBeginInterruption() {
+    func updateRemoteInfo() {
+        guard let book = book, let file = book.coll.curFile else { return }
+
+        var nowPlayingInfo = [String: Any]()
+        nowPlayingInfo[MPMediaItemPropertyTitle] = book.title
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = book.coll.curFileProgress
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = file.duration
+        nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = (book.coll.curFileIndex + 1).description + "/" + book.coll.count.description
+
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
+
+    func mediaAPIInterruptionBegan() {
+        guard let b = book, b.playState == .playing else { return }
+        pause()
+    }
+    
+    func mediaAPIInterruptionEnded() {
+        guard let b = book, b.playState != .playing else { return }
+        play(b)
     }
 
     func mediaAPIErrorOccurred(err: DetailedError) {
-        logErr(msg: err.localizedDescription)
+        logErr(msg: "MediaAPIError: \(err.localizedDescription)")
     }
 }

@@ -13,7 +13,7 @@ struct LibraryView: View {
     
 
     var body: some View {
-        VStack(alignment: .center, spacing: 0) {
+        VStack(alignment: .center, spacing: -20) {
             NavigationBar {
                 HStack {
                     TextButton(text: "Cancel", textColor: themeObservable.theme.tint.color, font: Font.m3b.cancelButton) {
@@ -51,6 +51,7 @@ struct LibraryContent: View {
             Spacer()
         } else {
             ScrollView {
+                Spacer().frame(height: 20)
                 LazyVStack(alignment: .center, spacing: 0) {
                     if vm.wrappedFolders.count > 0 {
                         Text("Documents")

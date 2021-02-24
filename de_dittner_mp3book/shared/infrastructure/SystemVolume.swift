@@ -13,26 +13,13 @@ class SystemVolume: ObservableObject {
 
     static var shared: SystemVolume = SystemVolume()
 
-    init() {
-        value = Int(AVAudioSession.sharedInstance().outputVolume * 100)
-
-        NotificationCenter.default.addObserver(self, selector: Selector(("volumeDidChange:")), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
-
-        subscribe()
-    }
-
     private let session = AVAudioSession.sharedInstance()
     private var progressObserver: NSKeyValueObservation!
 
-    func subscribe() {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
-            try session.setActive(true, options: .notifyOthersOnDeactivation)
-        } catch {
-            print("cannot activate session")
-        }
+    init() {
+        value = Int(AVAudioSession.sharedInstance().outputVolume * 100)
 
-        progressObserver = session.observe(\.outputVolume) { [self] session, _ in
+        progressObserver = AVAudioSession.sharedInstance().observe(\.outputVolume) { [self] session, _ in
             DispatchQueue.main.async {
                 self.value = Int(session.outputVolume * 100)
             }

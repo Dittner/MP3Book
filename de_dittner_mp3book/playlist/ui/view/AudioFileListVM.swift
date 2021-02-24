@@ -42,7 +42,7 @@ class AudioFileListVM: ViewModel, ObservableObject {
     }
 
     func addBookmark(file: AudioFile, time: Int, comment: String) {
-        player.book?.bookmarkColl.addMark(Bookmark(uid: UID(), file: file, time: time, comment: comment))
+        selectedBook?.bookmarkColl.addMark(Bookmark(uid: UID(), file: file, time: time, comment: comment))
     }
 
     func resortFiles() {

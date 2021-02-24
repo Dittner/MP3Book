@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B039B5425E5BABD00EAC650 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B039B5325E5BABD00EAC650 /* StoreKit.framework */; };
 		5B15E38F25D6A5610033E4FB /* BookRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B15E38E25D6A5610033E4FB /* BookRepositoryTests.swift */; };
 		5B15E3AC25D6CB070033E4FB /* URLS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B15E3AB25D6CB070033E4FB /* URLS.swift */; };
 		5B15E3B425D6EC950033E4FB /* UID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B15E3B325D6EC950033E4FB /* UID.swift */; };
@@ -104,6 +105,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5B039B5325E5BABD00EAC650 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		5B15E38E25D6A5610033E4FB /* BookRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRepositoryTests.swift; sourceTree = "<group>"; };
 		5B15E3AB25D6CB070033E4FB /* URLS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLS.swift; sourceTree = "<group>"; };
 		5B15E3B325D6EC950033E4FB /* UID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UID.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 		5BA4554225DAA3A3001160CF /* Array++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Array++.swift"; path = "../Array++.swift"; sourceTree = "<group>"; };
 		5BA4555225DAE5D7001160CF /* PlayerAppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerAppService.swift; sourceTree = "<group>"; };
 		5BA4555725DAE6AC001160CF /* MediaAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaAPI.swift; sourceTree = "<group>"; };
+		5BB422BC25E5B86600C1FABC /* MP3Book.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MP3Book.entitlements; sourceTree = "<group>"; };
 		5BBD49B125D94DF7009480B4 /* PlaylistDomainEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistDomainEntity.swift; sourceTree = "<group>"; };
 		5BD0EF4A25D80A00006CF6B0 /* AddBooksToPlaylistDomainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBooksToPlaylistDomainService.swift; sourceTree = "<group>"; };
 		5BD0EF5725D821F8006CF6B0 /* BookSerializerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookSerializerTests.swift; sourceTree = "<group>"; };
@@ -194,6 +197,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B039B5425E5BABD00EAC650 /* StoreKit.framework in Frameworks */,
 				5B62634925D538AB008CADA4 /* AVFoundation.framework in Frameworks */,
 				5B62634B25D538C0008CADA4 /* AudioToolbox.framework in Frameworks */,
 			);
@@ -331,6 +335,7 @@
 		5B62634725D538AB008CADA4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5B039B5325E5BABD00EAC650 /* StoreKit.framework */,
 				5B62634A25D538C0008CADA4 /* AudioToolbox.framework */,
 				5B62634825D538AB008CADA4 /* AVFoundation.framework */,
 			);
@@ -451,6 +456,7 @@
 		5BE8CAA525C8993C00834AD6 = {
 			isa = PBXGroup;
 			children = (
+				5BB422BC25E5B86600C1FABC /* MP3Book.entitlements */,
 				5BE8CAB025C8993C00834AD6 /* de_dittner_mp3book */,
 				5BE8CAC225C8993D00834AD6 /* MP3BookTests */,
 				5BE8CACD25C8993D00834AD6 /* MP3BookUITests */,
@@ -999,7 +1005,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = MP3Book.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_ASSET_PATHS = "\"de_dittner_mp3book/Preview Content\"";
 				DEVELOPMENT_TEAM = F3QYFD9Z4F;
 				ENABLE_PREVIEWS = YES;
@@ -1009,8 +1017,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.dittner.MP3Book;
+				PRODUCT_BUNDLE_IDENTIFIER = de.dittner.mp3book;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = mp3BookDev;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1021,7 +1030,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = MP3Book.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_ASSET_PATHS = "\"de_dittner_mp3book/Preview Content\"";
 				DEVELOPMENT_TEAM = F3QYFD9Z4F;
 				ENABLE_PREVIEWS = YES;
@@ -1031,8 +1042,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.dittner.MP3Book;
+				PRODUCT_BUNDLE_IDENTIFIER = de.dittner.mp3book;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = mp3BookDev;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

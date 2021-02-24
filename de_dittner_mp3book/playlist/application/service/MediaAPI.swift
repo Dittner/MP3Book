@@ -20,8 +20,12 @@ protocol MediaAPINotificationDelegate {
     func mediaAPIDidCompletePlayFile()
     func mediaAPIWillPlayNextFile()
     func mediaAPIWillPlayPrevFile()
+    func mediaAPIWillStop()
+    func mediaAPIWillPlay()
+    func mediaAPIWillUpdatePosition(value: Double)
     func mediaAPIDidPlaybackTimeChange(time: Int)
-    func mediaAPIBeginInterruption()
+    func mediaAPIInterruptionBegan()
+    func mediaAPIInterruptionEnded()
     func mediaAPIErrorOccurred(err: DetailedError)
 }
 
@@ -36,8 +40,125 @@ class MediaAPI {
 
     init() {
         mediaPlayer = AVPlayer(playerItem: nil)
+        observeRemoteControls()
         observeMediaPlayer()
+        setupBackgroundMode()
     }
+
+    // -------------------------------------
+    //
+    //   Remote Controls
+    //
+    // -------------------------------------
+
+    func observeRemoteControls() {
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.nextTrackCommand.isEnabled = true
+        commandCenter.previousTrackCommand.isEnabled = true
+        commandCenter.changePlaybackPositionCommand.isEnabled = true
+
+        commandCenter.playCommand.addTarget { [unowned self] _ in
+            self.delegate.mediaAPIWillPlay()
+            return .success
+        }
+
+        commandCenter.pauseCommand.addTarget { [unowned self] _ in
+            self.delegate.mediaAPIWillStop()
+            return .success
+        }
+
+        commandCenter.previousTrackCommand.addTarget { [unowned self] _ in
+            self.delegate.mediaAPIWillPlayPrevFile()
+            return .success
+        }
+
+        commandCenter.nextTrackCommand.addTarget { [unowned self] _ in
+            self.delegate.mediaAPIWillPlayNextFile()
+            return .success
+        }
+
+        commandCenter.changePlaybackPositionCommand.addTarget { [unowned self] event in
+            if let event = event as? MPChangePlaybackPositionCommandEvent {
+                self.delegate.mediaAPIWillUpdatePosition(value: event.positionTime)
+                return .success
+            } else {
+                return .commandFailed
+            }
+        }
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleInterruption),
+                                               name: AVAudioSession.interruptionNotification,
+                                               object: nil)
+    }
+
+    @objc func handleInterruption(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let interruptionTypeRawValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+              let interruptionType = AVAudioSession.InterruptionType(rawValue: interruptionTypeRawValue) else {
+            return
+        }
+
+        switch interruptionType {
+        case .began:
+            if userInfo[AVAudioSessionInterruptionWasSuspendedKey] == nil {
+                delegate.mediaAPIInterruptionBegan()
+                logInfo(msg: "Interruption is began: \(notification.description)")
+            }
+        case .ended:
+            delegate.mediaAPIInterruptionEnded()
+            logInfo(msg: "Interruption is ended: \(notification.description)")
+        @unknown default:
+            logWarn(msg: "Unknown interruptionType: \(interruptionType)")
+        }
+    }
+
+    // -------------------------------------
+    //
+    //   OS Media Player
+    //
+    // -------------------------------------
+
+    func observeMediaPlayer() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(mediaPlayerDidPlayToEndTime),
+                                               name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(mediaPlayerDecodeErrorDidOccur),
+                                               name: NSNotification.Name.AVPlayerItemFailedToPlayToEndTime,
+                                               object: nil)
+    }
+
+    @objc func mediaPlayerDidPlayToEndTime(notification: NSNotification) {
+        delegate.mediaAPIDidCompletePlayFile()
+    }
+
+    @objc func mediaPlayerDecodeErrorDidOccur(notification: NSNotification) {
+        let url = playingFileURL?.description ?? "Unknown"
+        delegate.mediaAPIErrorOccurred(err: MediaAPIError.fileDecodingFailed(url: url, details: notification.description))
+    }
+
+    // -------------------------------------
+    //
+    //   Background Mode
+    //
+    // -------------------------------------
+
+    func setupBackgroundMode() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+            try AVAudioSession.sharedInstance().setActive(true)
+
+        } catch {
+            logErr(msg: "Setting category to AVAudioSession.Category.playback failed: " + error.localizedDescription)
+        }
+    }
+
+    // ------------------------------------------------------------------
 
     private var playRate: Float = 1.0
     func setPlayRate(value: Float) {
@@ -74,7 +195,6 @@ class MediaAPI {
                     removePeriodicTimeObserver()
                     delegate.mediaAPIDidFinishPlayFile()
                 }
-                
             }
         }
     }
@@ -109,35 +229,15 @@ class MediaAPI {
         }
     }
 
-    func observeMediaPlayer() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(mediaPlayerDidPlayToEndTime),
-                                               name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(mediaPlayerDecodeErrorDidOccur),
-                                               name: NSNotification.Name.AVPlayerItemFailedToPlayToEndTime,
-                                               object: nil)
-    }
-
-    @objc func mediaPlayerDidPlayToEndTime(notification: NSNotification) {
-        delegate.mediaAPIDidCompletePlayFile()
-    }
-
-    @objc func mediaPlayerDecodeErrorDidOccur(notification: NSNotification) {
-        let url = curSoundFile?.url.description ?? "Unknown"
-        delegate.mediaAPIErrorOccurred(err: MediaAPIError.fileDecodingFailed(url: url, details: notification.description))
-    }
-
     // -------------------------------------
     //
     //   PLAY
     //
     // -------------------------------------
 
-    var curSoundFile: SoundFile?
+    private var playingFileURL: URL?
     func play(url: URL, position: Int, duration: Int) {
-        curSoundFile = SoundFile(url: url, position: position, duration: duration)
+        playingFileURL = url
 
         if AVAsset(url: url).isPlayable {
             let item = AVPlayerItem(url: url)
@@ -157,7 +257,7 @@ class MediaAPI {
         playState = .stopped
         mediaPlayer.pause()
     }
-    
+
     func updatePosition(value: Double) {
         if playState == .playing {
             mediaPlayer.seek(to: CMTime(seconds: value, preferredTimescale: CMTimeScale(NSEC_PER_SEC)))
@@ -165,8 +265,14 @@ class MediaAPI {
     }
 }
 
-struct SoundFile {
+class SoundFile {
     let url: URL
-    let position: Int
     let duration: Int
+    var position: Int = 0
+
+    init(url: URL, duration: Int, position: Int) {
+        self.url = url
+        self.duration = duration
+        self.position = position
+    }
 }
