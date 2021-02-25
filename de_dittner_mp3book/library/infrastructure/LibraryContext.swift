@@ -19,7 +19,7 @@ class LibraryContext {
     var selectedFoldersAnPlaylistsHash:[ID:Bool]
 
     init() {
-        print("LibraryContext initialized")
+        logInfo(msg: "LibraryContext initialized")
         documentsAppService = DocumentsAppService()
         iPodAppService = IPodAppService()
         foldersPort = OutputPort<Folder>()

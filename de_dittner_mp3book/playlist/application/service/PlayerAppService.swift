@@ -16,7 +16,7 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
     @Published private(set) var book: Book? = nil
     private var fileColl: FileCollection?
 
-    let api: MediaAPI
+    private let api: MediaAPI
 
     init(api: MediaAPI) {
         self.api = api
@@ -29,6 +29,10 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
         if let curBook = book, curBook.uid != b.uid {
             curBook.playState = .stopped
             api.setPlayRate(value: b.rate)
+        }
+
+        if b.isDamaged {
+            PlaylistContext.shared.recoverBook(b)
         }
 
         subscription?.cancel()
@@ -105,12 +109,12 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
     func mediaAPIWillStop() {
         pause()
     }
-    
+
     func mediaAPIWillPlay() {
         guard let b = book else { return }
         play(b)
     }
-    
+
     func mediaAPIWillPlayNextFile() {
         playNext()
     }
@@ -169,13 +173,24 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
         guard let b = book, b.playState == .playing else { return }
         pause()
     }
-    
+
     func mediaAPIInterruptionEnded() {
         guard let b = book, b.playState != .playing else { return }
         play(b)
     }
 
-    func mediaAPIErrorOccurred(err: DetailedError) {
-        logErr(msg: "MediaAPIError: \(err.localizedDescription)")
+    func mediaAPIErrorOccurred(error: MediaAPIError) {
+        guard let b = book else { return }
+        switch error {
+        case .fileNotPlayable:
+            logErr(msg: "MediaAPIError: fileNotPlayable, url: \(b.coll.curFile?.path ?? "Unknown")")
+            b.isDamaged = true
+            PlaylistContext.shared.notifyBookIsDamaged(b)
+
+        case let .fileDecodingFailed(details):
+            logErr(msg: "MediaAPIError: fileDecodingFailed, url: \(b.coll.curFile?.path ?? "Unknown"), details: \(details)")
+            b.isDamaged = true
+            PlaylistContext.shared.notifyBookIsDamaged(b)
+        }
     }
 }

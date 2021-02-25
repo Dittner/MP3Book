@@ -86,9 +86,8 @@ class IPodAppService {
         return nil
     }
 
-    private func getPlaylist(persistentID id: UInt64) -> Playlist? {
-        guard let hasAccess = hasAccessToMediaLibrary() else { return nil }
-        guard hasAccess else { return nil }
+    func getPlaylist(persistentID id: UInt64) -> Playlist? {
+        guard let hasAccess = hasAccessToMediaLibrary(), hasAccess else { return nil }
 
         let filter = MPMediaPropertyPredicate(value: id,
                                               forProperty: MPMediaItemPropertyPersistentID)
@@ -100,5 +99,18 @@ class IPodAppService {
         guard let playlistItem = firstFoundPlaylistItem else { return nil }
 
         return createPlaylist(playlistItem)
+    }
+
+    func playlistExists(persistentID id: UInt64) -> Bool {
+        guard let hasAccess = hasAccessToMediaLibrary(), hasAccess else { return false }
+
+        let filter = MPMediaPropertyPredicate(value: id,
+                                              forProperty: MPMediaItemPropertyPersistentID)
+        let playlistQuery = MPMediaQuery.playlists()
+        playlistQuery.addFilterPredicate(filter)
+        let playlistColl = playlistQuery.collections
+
+        let firstFoundPlaylistItem = playlistColl != nil && playlistColl!.count > 0 ? playlistColl![0] : nil
+        return firstFoundPlaylistItem != nil
     }
 }

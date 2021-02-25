@@ -12,20 +12,26 @@ class SharedContext {
     static var shared: SharedContext = SharedContext()
     let libraryContext: LibraryContext
     let playlistContext: PlaylistContext
+    let foldersMapper: FolderToMP3BookMapper
+    let playlistMapper: PlaylistToMP3BookMapper
+    let reloadAudioFilesFromIPodLibraryService: ReloadAudioFilesFromIPodLibraryService
 
     init() {
-        print("SharedContext initialized")
+        logInfo(msg: "SharedContext initialized")
 
         libraryContext = LibraryContext.shared
         playlistContext = PlaylistContext.shared
 
-        let foldersMapper = FolderToMP3BookMapper(repo: playlistContext.bookRepository, dispatcher: playlistContext.dispatcher)
-        subscribeToFoldersPort(foldersMapper)
+        foldersMapper = FolderToMP3BookMapper(repo: playlistContext.bookRepository, dispatcher: playlistContext.dispatcher)
 
-        let playlistMapper = PlaylistToMP3BookMapper(repo: playlistContext.bookRepository, dispatcher: playlistContext.dispatcher)
-        subscribeToPlaylistsPort(playlistMapper)
+        playlistMapper = PlaylistToMP3BookMapper(repo: playlistContext.bookRepository, dispatcher: playlistContext.dispatcher)
 
         let booksMapper = PlaylistBooksToHashMapper()
+
+        reloadAudioFilesFromIPodLibraryService = ReloadAudioFilesFromIPodLibraryService(playlistMapper: playlistMapper, iPodAppService: LibraryContext.shared.iPodAppService)
+
+        subscribeToFoldersPort(foldersMapper)
+        subscribeToPlaylistsPort(playlistMapper)
         subscribeToPlaylistBooksPort(booksMapper)
     }
 

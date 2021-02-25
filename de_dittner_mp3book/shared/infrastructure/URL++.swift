@@ -11,16 +11,16 @@ extension URL {
         return pathExtension.lowercased() == "mp3"
     }
     
-    func isIpodItemLink() -> Bool {
-        let ipodPrefix = "ipod-library"
-        if description.count > ipodPrefix.count {
-            let res = description.lowercased().prefix(ipodPrefix.count)
-            return res == ipodPrefix
-        }
-        return false
-    }
-    
     func fileExists() -> Bool {
         return FileManager.default.fileExists(atPath: self.path)
     }
+    
+    func isIPodItemLink() -> Bool {
+        let iPodPrefix = "ipod-library"
+        if description.count > iPodPrefix.count {
+            let res = description.lowercased().prefix(iPodPrefix.count)
+            return res == iPodPrefix
+        }
+        return false
+    }    
 }

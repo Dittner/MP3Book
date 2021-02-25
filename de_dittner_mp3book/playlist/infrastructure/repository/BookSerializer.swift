@@ -33,6 +33,7 @@ class BookSerializer: IBookSerializer {
         dict["curFileProgress"] = b.audioFileColl.curFileProgress
         dict["curFileIndex"] = b.audioFileColl.curFileIndex
         dict["rate"] = b.rate
+        dict["isDamaged"] = b.isDamaged
 
         var filesDict: [[String: Any]] = []
         for f in b.audioFileColl.files {
@@ -82,6 +83,7 @@ class BookSerializer: IBookSerializer {
         res.audioFileColl.curFileIndex = data["curFileIndex"] as? Int ?? 0
         res.audioFileColl.curFileProgress = data["curFileProgress"] as? Int ?? 0
         res.rate = data["rate"] as? Float ?? 1.0
+        res.isDamaged = data["isDamaged"] as? Bool ?? false
 
         return res
     }

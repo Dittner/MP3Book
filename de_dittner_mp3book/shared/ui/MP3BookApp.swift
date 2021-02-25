@@ -50,7 +50,7 @@ struct MP3BookApp: App {
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var navigator = Navigator.shared
-    
+    @ObservedObject var alertBox = AlertBox.shared
 
     var body: some View {
         if colorScheme == .dark {
@@ -60,21 +60,20 @@ struct ContentView: View {
         }
         return GeometryReader { geo in
             ZStack {
-                
                 if let pos = navigator.screenPosition.xPosition(id: .bookList) {
                     BookListView()
                         .background(AppBG())
                         .offset(x: pos, y: 0)
                         .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
                 }
-                
+
                 if let pos = navigator.screenPosition.xPosition(id: .audioFileList) {
                     AudioFileListView()
                         .background(AppBG())
                         .offset(x: pos, y: 0)
                         .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
                 }
-                
+
                 if let pos = navigator.screenPosition.xPosition(id: .library) {
                     LibraryView()
                         .background(AppBG())
@@ -85,6 +84,13 @@ struct ContentView: View {
             .onAppear {
                 navigator.appWidth = geo.size.width
             }
+            .alert(item: $alertBox.message) { msg in
+                Alert(
+                    title: Text(msg.title),
+                    message: Text(msg.details),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
         }
     }
 }
@@ -94,6 +100,6 @@ struct AppBG: View {
 
     var body: some View {
         LinearGradient(gradient: Gradient(colors: themeObservable.theme.appBgColors), startPoint: .top, endPoint: .bottom)
-                        .ignoresSafeArea()
+            .ignoresSafeArea()
     }
 }

@@ -52,7 +52,7 @@ class JSONBookRepository: IBookRepository {
             var books = [Book]()
             do {
                 let urls = try FileManager.default.contentsOfDirectory(at: self.url, includingPropertiesForKeys: nil).filter { $0.pathExtension == "m3b" }
-                
+
                 logInfo(msg: "Books count on disc: \(urls.count)")
 
                 for fileURL in urls {
@@ -90,7 +90,14 @@ class JSONBookRepository: IBookRepository {
     }
 
     private func bookSourceExists(_ b: Book) -> Bool {
-        return FileManager.default.fileExists(atPath: URLS.documentsURL.appendingPathComponent(b.folderPath).path)
+        if let url = b.getURL() {
+            if b.source == .documents {
+                return url.fileExists()
+            } else if let id = UInt64(b.playlistID), LibraryContext.shared.iPodAppService.playlistExists(persistentID: id) {
+                return true
+            }
+        }
+        return false
     }
 
     private func destroyBook(_ b: Book) throws {
@@ -104,7 +111,7 @@ class JSONBookRepository: IBookRepository {
             }
         }
     }
-    
+
     private func destroyBook(storeURL: URL) throws {
         if FileManager.default.fileExists(atPath: storeURL.path) {
             do {

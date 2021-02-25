@@ -67,7 +67,7 @@ class BookListVM: ViewModel, ObservableObject {
     
     private func setupLastPlayedBook() {
         guard let bookID = UserDefaults.standard.object(forKey: "lastPlayedBookID") as? ID else {return}
-        if let book = context.bookRepository.read(bookID) {
+        if let book = context.bookRepository.read(bookID), !book.isDamaged {
             selectBook(book)
             pause()
         }

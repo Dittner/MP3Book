@@ -238,21 +238,32 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
             .removeDuplicates()
             .dropFirst()
             .sink { _ in
-                self.dispatcher.subject.send(PlaylistDomainEvent.bookStateChanged(book: self))
+                self.dispatcher.notify(.bookStateChanged(book: self))
+            }
+            .store(in: &disposeBag)
+        
+        $isDamaged
+            .removeDuplicates()
+            .dropFirst()
+            .sink { value in
+                self.dispatcher.notify(.bookStateChanged(book: self))
+                if value {
+                    self.dispatcher.notify(.bookIsDamaged(book: self))
+                }
             }
             .store(in: &disposeBag)
 
         audioFileColl.$curFileIndex
             .dropFirst()
             .sink { _ in
-                self.dispatcher.subject.send(PlaylistDomainEvent.bookStateChanged(book: self))
+                self.dispatcher.notify(.bookStateChanged(book: self))
             }
             .store(in: &disposeBag)
 
         bookmarkColl.$count
             .dropFirst()
             .sink { _ in
-                self.dispatcher.subject.send(PlaylistDomainEvent.bookStateChanged(book: self))
+                self.dispatcher.notify(.bookStateChanged(book: self))
             }
             .store(in: &disposeBag)
 
@@ -260,8 +271,8 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
             .removeDuplicates()
             .dropFirst()
             .sink { added in
-                self.dispatcher.subject.send(PlaylistDomainEvent.bookStateChanged(book: self))
-                self.dispatcher.subject.send(added ? PlaylistDomainEvent.bookToPlaylistAdded(book: self) : PlaylistDomainEvent.bookFromPlaylistRemoved(book: self))
+                self.dispatcher.notify(.bookStateChanged(book: self))
+                self.dispatcher.notify(added ? .bookToPlaylistAdded(book: self) : .bookFromPlaylistRemoved(book: self))
             }
             .store(in: &disposeBag)
 
@@ -271,6 +282,17 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
                 self.coll = playMode == .audioFile ? self.audioFileColl : self.bookmarkColl
             }
             .store(in: &disposeBag)
+        
+        $bookmarkColl
+            .dropFirst()
+            .sink { playMode in
+                self.dispatcher.notify(PlaylistDomainEvent.bookStateChanged(book: self))
+            }
+            .store(in: &disposeBag)
+    }
+    
+    func getURL() -> URL? {
+        return source == .documents ? URLS.documentsURL.appendingPathComponent(folderPath) : URL(string: "ipod-library://item/item.mp3?id=" + playlistID)
     }
 
     private func countTotalDurationAt() {
@@ -299,7 +321,7 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
             }
 
             countTotalDurationAt()
-            dispatcher.subject.send(PlaylistDomainEvent.bookStateChanged(book: self))
+            dispatcher.notify(.bookStateChanged(book: self))
         }
     }
 

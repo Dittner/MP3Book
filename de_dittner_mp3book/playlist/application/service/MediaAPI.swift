@@ -26,12 +26,12 @@ protocol MediaAPINotificationDelegate {
     func mediaAPIDidPlaybackTimeChange(time: Int)
     func mediaAPIInterruptionBegan()
     func mediaAPIInterruptionEnded()
-    func mediaAPIErrorOccurred(err: DetailedError)
+    func mediaAPIErrorOccurred(error: MediaAPIError)
 }
 
 enum MediaAPIError: DetailedError {
-    case fileNotPlayable(url: String)
-    case fileDecodingFailed(url: String, details: String)
+    case fileNotPlayable
+    case fileDecodingFailed(details: String)
 }
 
 class MediaAPI {
@@ -138,8 +138,7 @@ class MediaAPI {
     }
 
     @objc func mediaPlayerDecodeErrorDidOccur(notification: NSNotification) {
-        let url = playingFileURL?.description ?? "Unknown"
-        delegate.mediaAPIErrorOccurred(err: MediaAPIError.fileDecodingFailed(url: url, details: notification.description))
+        delegate.mediaAPIErrorOccurred(error: MediaAPIError.fileDecodingFailed(details: notification.description))
     }
 
     // -------------------------------------
@@ -235,10 +234,7 @@ class MediaAPI {
     //
     // -------------------------------------
 
-    private var playingFileURL: URL?
     func play(url: URL, position: Int, duration: Int) {
-        playingFileURL = url
-
         if AVAsset(url: url).isPlayable {
             let item = AVPlayerItem(url: url)
             mediaPlayer.replaceCurrentItem(with: item)
@@ -248,8 +244,7 @@ class MediaAPI {
             mediaPlayer.playImmediately(atRate: playRate)
             playState = .playing
         } else {
-            let urlDescription = url.isIpodItemLink() ? url.description : url.relativePath
-            delegate.mediaAPIErrorOccurred(err: MediaAPIError.fileNotPlayable(url: urlDescription))
+            delegate.mediaAPIErrorOccurred(error: MediaAPIError.fileNotPlayable)
         }
     }
 
@@ -262,17 +257,5 @@ class MediaAPI {
         if playState == .playing {
             mediaPlayer.seek(to: CMTime(seconds: value, preferredTimescale: CMTimeScale(NSEC_PER_SEC)))
         }
-    }
-}
-
-class SoundFile {
-    let url: URL
-    let duration: Int
-    var position: Int = 0
-
-    init(url: URL, duration: Int, position: Int) {
-        self.url = url
-        self.duration = duration
-        self.position = position
     }
 }

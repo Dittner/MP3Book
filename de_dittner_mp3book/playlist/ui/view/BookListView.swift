@@ -304,7 +304,7 @@ struct BookCell: View {
     var body: some View {
         GeometryReader { geometry in
             HStack(alignment: .center, spacing: 0) {
-                Image(book.playState == .playing ? "pause" : "play")
+                Image(book.isDamaged ? "damaged" : book.playState == .playing ? "pause" : "play")
                     .renderingMode(.template)
                     .allowsHitTesting(false)
                     .frame(width: 50)
