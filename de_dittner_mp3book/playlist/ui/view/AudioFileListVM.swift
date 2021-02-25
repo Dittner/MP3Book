@@ -18,6 +18,7 @@ class AudioFileListVM: ViewModel, ObservableObject {
 
     private let context: PlaylistContext
     let player: PlayerAppService
+    private var playSuspending: Bool = false
     private var disposeBag: Set<AnyCancellable> = []
 
     override init(id: ScreenID) {
@@ -27,11 +28,18 @@ class AudioFileListVM: ViewModel, ObservableObject {
 
         super.init(id: id)
 
-        $playRateSelectorShown.sink { value in
-            print("playRateSelectorShown = \(value)")
+        $addBookmarkFormShown.sink { isModalViewShown in
+            guard let b = self.selectedBook else { return }
+            if isModalViewShown && b.playState == .playing {
+                self.playSuspending = true
+                self.pause()
+            } else if !isModalViewShown && self.playSuspending {
+                self.play(b)
+                self.playSuspending = false
+            }
         }.store(in: &disposeBag)
     }
-    
+
     override func screenDeactivated() {
         super.screenDeactivated()
         selectedBook?.playMode = .audioFile

@@ -91,7 +91,6 @@ struct FileListContent: View {
                     case .selectRate:
                         vm.playRateSelectorShown = true
                     case .addBookmark:
-                        vm.pause()
                         vm.addBookmarkFormShown = true
                     }
                 }

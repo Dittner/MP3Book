@@ -10,12 +10,11 @@ import SwiftUI
 
 @main
 struct MP3BookApp: App {
-    let b: Bootstrap
     @ObservedObject var themeObservable = ThemeObservable.shared
 
     private var disposeBag: Set<AnyCancellable> = []
     init() {
-        b = Bootstrap()
+        SharedContext.shared.run()
 
         UITableView.appearance().backgroundColor = .clear
         UITableViewCell.appearance().backgroundColor = .clear

@@ -14,14 +14,14 @@ enum DemoFileIOError: DetailedError {
 }
 
 class DemoFileAppService {
-    func copyDemoFile(srcFileName:String, to:URL) throws {
+    func copyDemoFile(srcFileName: String, to: URL) throws {
         // Move the folder with demo record from bundle to documents (folder)
         let destFolderURL = to
         let fileManager = FileManager.default
         let destDemoFileUrl = destFolderURL.appendingPathComponent(srcFileName)
 
         if !((try? destDemoFileUrl.checkResourceIsReachable()) ?? false) {
-            logger.info("Demo file is copied...")
+            logInfo(msg: "Demo file is copied...")
 
             do {
                 try FileManager.default.createDirectory(atPath: destFolderURL.path, withIntermediateDirectories: true, attributes: nil)
@@ -44,7 +44,7 @@ class DemoFileAppService {
                 // logger.info("Couldn't copy demo folder to documents folder! Error:\(error.description)")
             }
 
-            logger.info("Demo file has been copied")
+            logInfo(msg: "Demo file has been copied")
         }
     }
 }

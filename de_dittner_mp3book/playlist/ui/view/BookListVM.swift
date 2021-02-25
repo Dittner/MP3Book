@@ -21,6 +21,7 @@ class BookListVM: ViewModel, ObservableObject {
     private let context: PlaylistContext
     private let player: PlayerAppService
     private var disposeBag: Set<AnyCancellable> = []
+    private var playSuspending: Bool = false
 
     override init(id: ScreenID) {
         logInfo(msg: "BookListVM init")
@@ -28,7 +29,7 @@ class BookListVM: ViewModel, ObservableObject {
         player = context.playerAppService
 
         super.init(id: id)
-        
+
         waitWhenRepoIsReady()
 
         context.bookRepository.subject
@@ -37,21 +38,28 @@ class BookListVM: ViewModel, ObservableObject {
                 self.setupLastPlayedBook()
                 self.isLoading = false
             }.store(in: &disposeBag)
-        
+
         player.$book
             .removeDuplicates()
             .sink { book in
                 self.selectedBook = book
             }.store(in: &disposeBag)
 
-        $playRateSelectorShown.sink { value in
-            print("playRateSelectorShown = \(value)")
+        $addBookmarkFormShown.sink { isModalViewShown in
+            guard let b = self.selectedBook else { return }
+            if isModalViewShown && b.playState == .playing {
+                self.playSuspending = true
+                self.pause()
+            } else if !isModalViewShown && self.playSuspending {
+                self.play(b)
+                self.playSuspending = false
+            }
         }.store(in: &disposeBag)
     }
-    
+
     private func waitWhenRepoIsReady() {
         if context.bookRepository.isReady {
-            self.isLoading = false
+            isLoading = false
         } else {
             context.dispatcher.subject
                 .sink { event in
@@ -64,9 +72,9 @@ class BookListVM: ViewModel, ObservableObject {
                 }.store(in: &disposeBag)
         }
     }
-    
+
     private func setupLastPlayedBook() {
-        guard let bookID = UserDefaults.standard.object(forKey: "lastPlayedBookID") as? ID else {return}
+        guard let bookID = UserDefaults.standard.object(forKey: "lastPlayedBookID") as? ID else { return }
         if let book = context.bookRepository.read(bookID), !book.isDamaged {
             selectBook(book)
             pause()
@@ -76,6 +84,7 @@ class BookListVM: ViewModel, ObservableObject {
     }
 
     func addBooks() {
+        pause()
         navigator.navigate(to: .library)
     }
 
