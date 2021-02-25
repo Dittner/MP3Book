@@ -28,7 +28,7 @@ class SharedContext {
 
         let booksMapper = PlaylistBooksToHashMapper()
 
-        reloadAudioFilesFromIPodLibraryService = ReloadAudioFilesFromIPodLibraryService(playlistMapper: playlistMapper, iPodAppService: LibraryContext.shared.iPodAppService)
+        reloadAudioFilesFromIPodLibraryService = ReloadAudioFilesFromIPodLibraryService(playlistMapper: playlistMapper, iPodAppService: libraryContext.iPodAppService, booksRepository: playlistContext.bookRepository)
 
         subscribeToFoldersPort(foldersMapper)
         subscribeToPlaylistsPort(playlistMapper)

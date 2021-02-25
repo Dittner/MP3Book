@@ -70,6 +70,8 @@ class BookListVM: ViewModel, ObservableObject {
         if let book = context.bookRepository.read(bookID), !book.isDamaged {
             selectBook(book)
             pause()
+        } else {
+            selectedBook = nil
         }
     }
 

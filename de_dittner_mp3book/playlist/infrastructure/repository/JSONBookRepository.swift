@@ -105,6 +105,7 @@ class JSONBookRepository: IBookRepository {
         if FileManager.default.fileExists(atPath: storeURL.path) {
             do {
                 try FileManager.default.removeItem(atPath: storeURL.path)
+                b.destroyed = true
                 logInfo(msg: "Book «\(b.title)» has been destroyed")
             } catch {
                 throw JSONBookRepositoryError.removeBookFromDiscFailed(details: error.localizedDescription)
@@ -154,6 +155,22 @@ class JSONBookRepository: IBookRepository {
 
     func read(_ bookID: ID) -> Book? {
         return hash[bookID]
+    }
+
+    func remove(_ bookID: ID) {
+        guard let book = read(bookID) else { return }
+        try? destroyBook(book)
+        hash[book.id] = nil
+
+        var books = subject.value
+        for (index, b) in books.enumerated() {
+            if book == b {
+                books.remove(at: index)
+                break
+            }
+        }
+
+        subject.send(books)
     }
 
     func write(_ books: [Book]) {

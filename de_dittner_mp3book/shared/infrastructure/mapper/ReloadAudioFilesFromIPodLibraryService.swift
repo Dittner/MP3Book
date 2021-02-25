@@ -9,10 +9,12 @@ import Foundation
 class ReloadAudioFilesFromIPodLibraryService {
     private let iPodAppService: IPodAppService
     private let playlistMapper: PlaylistToMP3BookMapper
+    private let booksRepository: IBookRepository
 
-    init(playlistMapper: PlaylistToMP3BookMapper, iPodAppService: IPodAppService) {
+    init(playlistMapper: PlaylistToMP3BookMapper, iPodAppService: IPodAppService, booksRepository: IBookRepository) {
         self.iPodAppService = iPodAppService
         self.playlistMapper = playlistMapper
+        self.booksRepository = booksRepository
     }
 
     func run(_ b: Book) {
@@ -37,17 +39,16 @@ class ReloadAudioFilesFromIPodLibraryService {
         let oldCurFileIndex = b.audioFileColl.curFileIndex
         let oldCurFileProgress = b.audioFileColl.curFileProgress
 
-        b.audioFileColl = AudioFileColl(files: newFiles)
-        b.bookmarkColl = BookmarkColl(bookmarks: updatedBookmarks)
+        let newBook = Book(uid: UID(), playlistID: b.playlistID, title: b.title, files: newFiles, bookmarks: updatedBookmarks, sortType: b.sortType, dispatcher: b.dispatcher)
+
         if oldCurFileIndex < b.audioFileColl.count {
-            b.audioFileColl.curFileIndex = oldCurFileIndex
-            if let curFile = b.audioFileColl.curFile, oldCurFileProgress < curFile.duration {
-                b.audioFileColl.curFileProgress = oldCurFileProgress
+            newBook.audioFileColl.curFileIndex = oldCurFileIndex
+            if let curFile = newBook.audioFileColl.curFile, oldCurFileProgress < curFile.duration {
+                newBook.audioFileColl.curFileProgress = oldCurFileProgress
             }
         }
 
-        b.playMode = .audioFile
-        b.coll = b.audioFileColl
-        b.isDamaged = false
+        booksRepository.remove(b.id)
+        try? booksRepository.write([newBook])
     }
 }

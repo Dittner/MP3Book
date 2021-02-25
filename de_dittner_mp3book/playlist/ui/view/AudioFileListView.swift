@@ -305,6 +305,7 @@ struct BookmarkCell: View {
                             .renderingMode(.template)
                             .allowsHitTesting(false)
                             .frame(width: 50)
+                            .animation(.none)
 
                         Text(time)
                             .font(Font.custom(.helveticaThin, size: 17))

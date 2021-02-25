@@ -307,6 +307,7 @@ struct BookCell: View {
                 Image(book.isDamaged ? "damaged" : book.playState == .playing ? "pause" : "play")
                     .renderingMode(.template)
                     .allowsHitTesting(false)
+                    .animation(.none)
                     .frame(width: 50)
 
                 VStack(alignment: .center, spacing: 2) {

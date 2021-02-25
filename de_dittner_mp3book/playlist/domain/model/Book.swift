@@ -68,7 +68,7 @@ class AudioFileColl: FileCollection, ObservableObject {
     var curFilePublisher: Published<AudioFile?>.Publisher { $curFile }
 
     // count
-    @Published private(set) var count: Int = 0
+    @Published internal var count: Int = 0
     var countPublished: Published<Int> { _count }
     var countPublisher: Published<Int>.Publisher { $count }
 
@@ -80,7 +80,7 @@ class AudioFileColl: FileCollection, ObservableObject {
         count = files.count
 
         $curFileIndex
-            .filter{ $0 < self.count}
+            .filter { $0 < self.count }
             .sink { index in
                 if self.curFile != self.files[index] {
                     self.curFileProgress = 0
@@ -122,7 +122,7 @@ class BookmarkColl: FileCollection, ObservableObject {
         count = bookmarks.count
 
         $curFileIndex
-            .filter{ $0 < self.count}
+            .filter { $0 < self.count }
             .sink { index in
                 if self.curBookmark != self.bookmarks[index] {
                     self.curBookmark = index < self.bookmarks.count ? self.bookmarks[index] : nil
@@ -174,10 +174,11 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
     @Published var addedToPlaylist: Bool = true
     @Published var playMode: PlayMode = .audioFile
 
-    @Published var bookmarkColl: BookmarkColl
-    @Published var audioFileColl: AudioFileColl
+    @Published private(set) var bookmarkColl: BookmarkColl
+    @Published private(set) var audioFileColl: AudioFileColl
     @Published var coll: FileCollection
 
+    var destroyed: Bool = false
     private(set) var totalDurationAt: [Int: Int] = [:]
 
     private(set) var sortType: AudioFilesSortType = .none
@@ -241,7 +242,7 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
                 self.dispatcher.notify(.bookStateChanged(book: self))
             }
             .store(in: &disposeBag)
-        
+
         $isDamaged
             .removeDuplicates()
             .dropFirst()
@@ -282,15 +283,15 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
                 self.coll = playMode == .audioFile ? self.audioFileColl : self.bookmarkColl
             }
             .store(in: &disposeBag)
-        
+
         $bookmarkColl
             .dropFirst()
-            .sink { playMode in
+            .sink { _ in
                 self.dispatcher.notify(PlaylistDomainEvent.bookStateChanged(book: self))
             }
             .store(in: &disposeBag)
     }
-    
+
     func getURL() -> URL? {
         return source == .documents ? URLS.documentsURL.appendingPathComponent(folderPath) : URL(string: "ipod-library://item/item.mp3?id=" + playlistID)
     }

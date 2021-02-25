@@ -14,4 +14,5 @@ protocol IBookRepository {
     func has(_ bookID: ID) -> Bool
     func read(_ bookID: ID) -> Book?
     func write(_ books: [Book]) throws
+    func remove(_ bookID: ID)
 }

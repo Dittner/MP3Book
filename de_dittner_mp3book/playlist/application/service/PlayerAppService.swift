@@ -26,13 +26,10 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
     var subscription: AnyCancellable?
     func play(_ b: Book) {
         api.stop()
+        
         if let curBook = book, curBook.uid != b.uid {
             curBook.playState = .stopped
             api.setPlayRate(value: b.rate)
-        }
-
-        if b.isDamaged {
-            PlaylistContext.shared.recoverBook(b)
         }
 
         subscription?.cancel()
@@ -86,6 +83,9 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
 
     func mediaAPIDidStartPlayFile() {
         guard let b = book else { return }
+        if b.isDamaged {
+            b.isDamaged = false
+        }
         b.playState = .playing
     }
 
@@ -180,17 +180,17 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
     }
 
     func mediaAPIErrorOccurred(error: MediaAPIError) {
-        guard let b = book else { return }
+        guard let b = book, !b.destroyed else { return }
         switch error {
         case .fileNotPlayable:
             logErr(msg: "MediaAPIError: fileNotPlayable, url: \(b.coll.curFile?.path ?? "Unknown")")
             b.isDamaged = true
-            PlaylistContext.shared.notifyBookIsDamaged(b)
+            PlaylistContext.shared.recoverBook(b)
 
         case let .fileDecodingFailed(details):
             logErr(msg: "MediaAPIError: fileDecodingFailed, url: \(b.coll.curFile?.path ?? "Unknown"), details: \(details)")
             b.isDamaged = true
-            PlaylistContext.shared.notifyBookIsDamaged(b)
+            PlaylistContext.shared.recoverBook(b)
         }
     }
 }

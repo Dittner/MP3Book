@@ -98,11 +98,16 @@ class PlaylistContext {
             b.isDamaged = false
         case .bookNotFound:
             b.isDamaged = true
+            notifyBookIsDamaged(b)
         case .fileNotFound:
             if b.source == .iPodLibrary {
                 reloadFilesService.run(b)
+                if !b.destroyed {
+                    notifyBookIsDamaged(b)
+                }
             } else {
                 b.isDamaged = true
+                notifyBookIsDamaged(b)
             }
         }
     }
