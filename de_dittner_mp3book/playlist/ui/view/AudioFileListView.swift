@@ -141,12 +141,14 @@ struct PlayModeTabBar: View {
 
 struct FileList: View {
     @ObservedObject private var book: Book
+    @ObservedObject private var audioFileColl: AudioFileColl
     @ObservedObject private var bookmarkColl: BookmarkColl
 
     private let vm: AudioFileListVM
 
     init(book: Book, vm: AudioFileListVM) {
         self.book = book
+        audioFileColl = book.audioFileColl
         bookmarkColl = book.bookmarkColl
         self.vm = vm
     }
@@ -156,8 +158,8 @@ struct FileList: View {
             Spacer().frame(height: 20)
             LazyVStack(alignment: .center, spacing: 1) {
                 if book.playMode == .audioFile {
-                    ForEach(book.audioFileColl.files) { file in
-                        FileCell(f: file, fileColl: book.audioFileColl) {
+                    ForEach(audioFileColl.files) { file in
+                        FileCell(f: file, fileColl: audioFileColl) {
                             vm.playFile(file)
                         }
                     }

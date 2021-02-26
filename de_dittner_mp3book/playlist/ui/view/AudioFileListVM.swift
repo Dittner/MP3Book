@@ -81,8 +81,8 @@ class AudioFileListVM: ViewModel, ObservableObject {
 
         if b.playState == .playing, b.audioFileColl.curFile == f {
             player.pause()
-        } else {
-            b.coll.curFileIndex = f.index
+        } else if let fileIndex = b.audioFileColl.files.getFirstIndexOf(item: f) {
+            b.audioFileColl.curFileIndex = fileIndex
             player.play(b)
         }
         UserDefaults.standard.set(b.id, forKey: "lastPlayedBookID")

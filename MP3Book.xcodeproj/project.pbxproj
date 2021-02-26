@@ -245,14 +245,6 @@
 			path = mapper;
 			sourceTree = "<group>";
 		};
-		5B1C3DBE25D3E0A600B6F15A /* controls */ = {
-			isa = PBXGroup;
-			children = (
-				5B1C3DBF25D3E0B800B6F15A /* ActivityIndicator.swift */,
-			);
-			path = controls;
-			sourceTree = "<group>";
-		};
 		5B1C3DD625D41D5600B6F15A /* common */ = {
 			isa = PBXGroup;
 			children = (
@@ -267,6 +259,7 @@
 				5B92343225E27E4C0050ACD3 /* VSeparatorView.swift */,
 				5BE0996425DD1C53000A7183 /* SliderView.swift */,
 				5BE92F0B25DED3C40029CC59 /* DownArrow.swift */,
+				5B1C3DBF25D3E0B800B6F15A /* ActivityIndicator.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -323,7 +316,6 @@
 		5B51F9C925D0090200323635 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				5B1C3DBE25D3E0A600B6F15A /* controls */,
 				5BE8CAB325C8993C00834AD6 /* LibraryView.swift */,
 				5B1C3DB925D3DAA300B6F15A /* LibraryVM.swift */,
 			);

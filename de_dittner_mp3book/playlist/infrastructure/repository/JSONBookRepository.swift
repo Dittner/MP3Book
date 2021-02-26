@@ -93,7 +93,7 @@ class JSONBookRepository: IBookRepository {
         if let url = b.getURL() {
             if b.source == .documents {
                 return url.fileExists()
-            } else if let id = UInt64(b.playlistID), LibraryContext.shared.iPodAppService.playlistExists(persistentID: id) {
+            } else if let id = b.playlistID, LibraryContext.shared.iPodAppService.playlistExists(persistentID: id) {
                 return true
             }
         }
@@ -163,11 +163,8 @@ class JSONBookRepository: IBookRepository {
         hash[book.id] = nil
 
         var books = subject.value
-        for (index, b) in books.enumerated() {
-            if book == b {
-                books.remove(at: index)
-                break
-            }
+        if let bookIndex = books.getFirstIndexOf(item: book) {
+            books.remove(at: bookIndex)
         }
 
         subject.send(books)

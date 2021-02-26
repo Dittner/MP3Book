@@ -32,7 +32,7 @@ class ValidationDomainService {
                 if !url.fileExists() {
                     return false
                 }
-            } else if let id = UInt64(b.playlistID), !LibraryContext.shared.iPodAppService.playlistExists(persistentID: id) {
+            } else if let id = b.playlistID, !LibraryContext.shared.iPodAppService.playlistExists(persistentID: id) {
                 return false
             }
         }

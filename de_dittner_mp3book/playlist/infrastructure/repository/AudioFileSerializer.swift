@@ -45,7 +45,7 @@ class AudioFileSerializer: IAudioFileSerializer {
             guard let path = data["path"] as? String, path.count > 0 else { throw AudioFileSerializerError.propertyNotFound(name: "path", fileId: id) }
             res = AudioFile(uid: uid, id: id, name: name, source: source, path: path, duration: duration, index: index, dispatcher: dispatcher)
         } else {
-            guard let playlistID = data["playlistID"] as? String, playlistID.count > 0 else { throw AudioFileSerializerError.propertyNotFound(name: "playlistID", fileId: id) }
+            guard let playlistID = data["playlistID"] as? UInt64 else { throw AudioFileSerializerError.propertyNotFound(name: "playlistID", fileId: id) }
             res = AudioFile(uid: uid, id: id, name: name, source: source, playlistID: playlistID, duration: duration, index: index, dispatcher: dispatcher)
         }
 

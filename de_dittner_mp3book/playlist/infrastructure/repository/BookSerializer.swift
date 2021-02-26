@@ -74,7 +74,7 @@ class BookSerializer: IBookSerializer {
             guard let folderPath = data["folderPath"] as? String, folderPath.count > 0 else { throw BookSerializerError.propertyNotFound(name: "folderPath", bookTitle: title) }
             res = Book(uid: uid, folderPath: folderPath, title: title, files: files, bookmarks: bookmarks, sortType: sortType, dispatcher: dispatcher)
         } else {
-            guard let playlistID = data["playlistID"] as? String, playlistID.count > 0 else { throw BookSerializerError.propertyNotFound(name: "playlistID", bookTitle: title) }
+            guard let playlistID = data["playlistID"] as? UInt64 else { throw BookSerializerError.propertyNotFound(name: "playlistID", bookTitle: title) }
 
             res = Book(uid: uid, playlistID: playlistID, title: title, files: files, bookmarks: bookmarks, sortType: sortType, dispatcher: dispatcher)
         }

@@ -216,7 +216,9 @@ struct PlaylistContent: View {
 
     var body: some View {
         if vm.isLoading {
+            Spacer()
             ActivityIndicator(isAnimating: $vm.isLoading)
+            Spacer()
         } else {
             VStack {
                 ScrollView {

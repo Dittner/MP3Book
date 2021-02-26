@@ -35,8 +35,8 @@ class BookListVM: ViewModel, ObservableObject {
         context.bookRepository.subject
             .sink { books in
                 self.books = books.filter { $0.addedToPlaylist }.sorted(by: { $0.title < $1.title })
+                logInfo(msg: "BookListVM received books: \(self.books.count)/\(books.count)")
                 self.setupLastPlayedBook()
-                self.isLoading = false
             }.store(in: &disposeBag)
 
         player.$book
@@ -62,6 +62,7 @@ class BookListVM: ViewModel, ObservableObject {
             isLoading = false
         } else {
             context.dispatcher.subject
+                .debounce(for: 0.2, scheduler: RunLoop.main)
                 .sink { event in
                     switch event {
                     case .repositoryIsReady:

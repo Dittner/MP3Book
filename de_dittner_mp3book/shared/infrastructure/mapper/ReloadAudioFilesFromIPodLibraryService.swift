@@ -18,7 +18,7 @@ class ReloadAudioFilesFromIPodLibraryService {
     }
 
     func run(_ b: Book) {
-        guard let playlistID = UInt64(b.playlistID) else { return }
+        guard let playlistID = b.playlistID else { return }
         guard let playlist = iPodAppService.getPlaylist(persistentID: playlistID) else { return }
 
         let newFiles = playlistMapper.convert(playlist.files)
@@ -39,7 +39,7 @@ class ReloadAudioFilesFromIPodLibraryService {
         let oldCurFileIndex = b.audioFileColl.curFileIndex
         let oldCurFileProgress = b.audioFileColl.curFileProgress
 
-        let newBook = Book(uid: UID(), playlistID: b.playlistID, title: b.title, files: newFiles, bookmarks: updatedBookmarks, sortType: b.sortType, dispatcher: b.dispatcher)
+        let newBook = Book(uid: UID(), playlistID: playlistID, title: b.title, files: newFiles, bookmarks: updatedBookmarks, sortType: b.sortType, dispatcher: b.dispatcher)
 
         if oldCurFileIndex < b.audioFileColl.count {
             newBook.audioFileColl.curFileIndex = oldCurFileIndex

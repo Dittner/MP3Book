@@ -17,7 +17,7 @@ struct Playlist: Identifiable {
     }
 
     let id: ID
-    let playlistPersistentID: UInt64?
+    let playlistPersistentID: UInt64
     let title: String
     let totalDuration: Int
     let files: [PlaylistFile]

@@ -72,7 +72,7 @@ class AudioFileColl: FileCollection, ObservableObject {
     var countPublished: Published<Int> { _count }
     var countPublisher: Published<Int>.Publisher { $count }
 
-    internal var files: [AudioFile]
+    @Published internal var files: [AudioFile]
 
     private var disposeBag: Set<AnyCancellable> = []
     init(files: [AudioFile]) {
@@ -162,8 +162,8 @@ typealias ID = String
 class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
     let uid: UID
     let id: ID
-    let folderPath: String
-    let playlistID: String
+    let folderPath: String?
+    let playlistID: UInt64?
     let title: String
     let totalDuration: Int
     let source: AudioFileSource
@@ -183,15 +183,15 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
 
     private(set) var sortType: AudioFilesSortType = .none
 
-    init(uid: UID, playlistID: String, title: String, files: [AudioFile], bookmarks: [Bookmark], sortType: AudioFilesSortType, dispatcher: PlaylistDispatcher) {
+    init(uid: UID, playlistID: UInt64, title: String, files: [AudioFile], bookmarks: [Bookmark], sortType: AudioFilesSortType, dispatcher: PlaylistDispatcher) {
         self.uid = uid
-        id = playlistID
+        id = playlistID.description
         self.title = title
         totalDuration = files.reduce(0, { $0 + $1.duration })
         source = .iPodLibrary
         self.sortType = sortType
         self.playlistID = playlistID
-        folderPath = ""
+        folderPath = nil
         let afc = AudioFileColl(files: files)
         audioFileColl = afc
         bookmarkColl = BookmarkColl(bookmarks: bookmarks)
@@ -212,7 +212,7 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
         self.uid = uid
         id = folderPath
         self.folderPath = folderPath
-        playlistID = ""
+        playlistID = nil
         self.title = title
         totalDuration = files.reduce(0, { $0 + $1.duration })
         source = .documents
@@ -293,7 +293,12 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
     }
 
     func getURL() -> URL? {
-        return source == .documents ? URLS.documentsURL.appendingPathComponent(folderPath) : URL(string: "ipod-library://item/item.mp3?id=" + playlistID)
+        if source == .documents, let path = folderPath {
+            return URLS.documentsURL.appendingPathComponent(path)
+        } else if source == .iPodLibrary, let playlistID = playlistID {
+            return URL(string: "ipod-library://item/item.mp3?id=" + playlistID.description)
+        }
+        return nil
     }
 
     private func countTotalDurationAt() {
@@ -312,12 +317,8 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
             sortFiles()
 
             if let curFile = audioFileColl.curFile, audioFileColl.curFileIndex != 0 || audioFileColl.curFileProgress != 0 {
-                let curFileID = curFile.id
-                for (i, file) in audioFileColl.files.enumerated() {
-                    if file.id == curFileID {
-                        audioFileColl.curFileIndex = i
-                        break
-                    }
+                if let newFileIndex = audioFileColl.files.getFirstIndexOf(item: curFile) {
+                    audioFileColl.curFileIndex = newFileIndex
                 }
             }
 

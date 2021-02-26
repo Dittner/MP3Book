@@ -18,6 +18,7 @@ class SharedContext {
     let reloadAudioFilesFromIPodLibraryService: ReloadAudioFilesFromIPodLibraryService
 
     init() {
+        SharedContext.logAbout()
         logInfo(msg: "SharedContext initialized")
 
         libraryContext = LibraryContext.shared
@@ -38,12 +39,11 @@ class SharedContext {
 
     // call run to be sure SharedContext has been launched
     func run() {
-        logAbout()
         addDemoFileIfNeeded()
         logInfo(msg: "App has 3 modules: SharedContext, LibraryContext, PlaylistContext")
     }
 
-    func logAbout() {
+    private static func logAbout() {
         var aboutLog: String = "MP3BookLogs\n"
         let ver: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0"
         let build: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
