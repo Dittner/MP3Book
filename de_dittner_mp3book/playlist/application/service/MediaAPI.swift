@@ -163,8 +163,9 @@ class MediaAPI {
     func setPlayRate(value: Float) {
         if playRate != value {
             playRate = value
-            playRate = value
-            mediaPlayer.rate = value
+            if playState == .playing {
+                mediaPlayer.rate = value
+            }
         }
     }
 

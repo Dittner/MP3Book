@@ -1,0 +1,22 @@
+/* 
+  DE
+*/
+"Playlist" = "Playlist";
+"Add Bookmark" = "Lesezeichen erstellen";
+"Optional comment" = "Kommentar (optional)";
+"Cancel" = "Abbrechen";
+"Library" = "Mediathek";
+"Done" = "Fertig";
+"App Data" = "App Dateien";
+"Media Library" = "Medienbibliothek";
+"%lld bookmark" = "%lld Lesezeichen";
+"%lld bookmarks" = "%lld Lesezeichen";
+"%lld audio file" = "%lld Audiodatei";
+"%lld audio files" = "%lld Audiodateien";
+"NoBookInTheAppData" = "Das Buch fehlt in den App-Dateien";
+"NoBookInTheMediaLib" = "Das Buch fehlt in der Medienbibliothek";
+"NoAudioFile" = "Die Audiodatei fehlt";
+"CheckBookFolder %@" = "Überprüfen Sie die App-Dateien, ob der Ordner «%@» vorhanden ist";
+"CheckPlaylist %@" = "Überprüfen Sie die Medienbibliothek, ob die Playlist «%@» vorhanden ist";
+"CheckFileExistInAppData %@" = "Überprüfen Sie die App-Dateien, ob die Audiodatei «%@» vorhanden ist";
+"CheckFileExistInMediaLib %@ %@" = "Überprüfen Sie die Medienbibliothek, ob die Playlist «%@» vorhanden ist und sie enthält die Audiodatei «%@»";

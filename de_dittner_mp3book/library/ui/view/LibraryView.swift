@@ -22,9 +22,10 @@ struct LibraryView: View {
 
                     Spacer()
 
-                    Text("Edit  ").bold()
+                    Text("Library").bold()
                         .font(Font.m3b.navigationTitle)
                         .foregroundColor(themeObservable.theme.tint.color)
+                        .offset(x: -5)
 
                     Spacer()
 
@@ -54,7 +55,7 @@ struct LibraryContent: View {
                 Spacer().frame(height: 20)
                 LazyVStack(alignment: .center, spacing: 0) {
                     if vm.wrappedFolders.count > 0 {
-                        Text("Documents")
+                        Text("App Data")
                             .font(Font.custom(.helveticaNeue, size: 11))
                             .lineLimit(1)
                             .foregroundColor(themeObservable.theme.text.color)
@@ -67,7 +68,7 @@ struct LibraryContent: View {
                         }
 
                         if vm.wrappedPlaylists.count > 0 {
-                            Text("iPod Library")
+                            Text("Media Library")
                                 .font(Font.custom(.helveticaNeue, size: 11))
                                 .lineLimit(1)
                                 .foregroundColor(themeObservable.theme.text.color)

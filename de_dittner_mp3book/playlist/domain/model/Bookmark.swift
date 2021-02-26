@@ -37,6 +37,6 @@ extension Bookmark: Comparable {
     }
 
     static func == (lhs: Bookmark, rhs: Bookmark) -> Bool {
-        return lhs.file.name == rhs.file.name && lhs.time == rhs.time
+        return lhs.uid == rhs.uid
     }
 }

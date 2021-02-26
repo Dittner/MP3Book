@@ -34,7 +34,7 @@ struct IconButton: View {
 }
 
 struct TextButton: View {
-    var text: String
+    var text: LocalizedStringKey
     var textColor: Color
     var font: Font
     var height: CGFloat = 50
@@ -79,7 +79,7 @@ struct PressActions: ViewModifier {
 
 struct TabBarButton: View {
     var icon: String
-    var title: String
+    var title: LocalizedStringKey
     var theme: Theme
     let selected: Bool
     let onAction: () -> Void

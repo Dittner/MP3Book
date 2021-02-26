@@ -110,11 +110,11 @@ struct PlayModeTabBar: View {
         bookmarkColl = book.bookmarkColl
     }
 
-    func getBookmarksTitle() -> String {
+    func getBookmarksTitle() -> LocalizedStringKey {
         bookmarkColl.count > 1 ? "\(bookmarkColl.count) bookmarks" : "\(bookmarkColl.count) bookmark"
     }
 
-    func getAudioFilesTitle() -> String {
+    func getAudioFilesTitle() -> LocalizedStringKey {
         book.audioFileColl.count > 1 ? "\(book.audioFileColl.count) audio files" : "\(book.audioFileColl.count) audio file"
     }
 
@@ -283,9 +283,9 @@ struct BookmarkCell: View {
         title = bookmark.file.name
         time = DateTimeUtils.secToHHMMSS(bookmark.time)
 
-        Publishers.CombineLatest(bookmark.file.book.$playState, coll.$curFileIndex)
-            .map { state, _ in
-                if let playingMark = coll.curBookmark, playingMark == bookmark {
+        Publishers.CombineLatest(bookmark.file.book.$playState, coll.$curBookmark)
+            .map { state, curBookmark in
+                if let playingMark = curBookmark, playingMark == bookmark {
                     return state
                 } else {
                     return .stopped

@@ -1,0 +1,22 @@
+/* 
+  RU
+*/
+"Playlist" = "Плейлист";
+"Add Bookmark" = "Добавить закладку";
+"Optional comment" = "Комментарий (необязательно)";
+"Cancel" = "Отмена";
+"Library" = "Медиатека";
+"Done" = "Готово";
+"App Data" = "Данные приложения";
+"Media Library" = "Медиа библиотека";
+"%lld bookmark" = "Закладок: %lld";
+"%lld bookmarks" = "Закладок: %lld";
+"%lld audio file" = "Аудиофайлов: %lld";
+"%lld audio files" = "Аудиофайлов: %lld";
+"NoBookInTheAppData" = "Не удалось найти книгу";
+"NoBookInTheMediaLib" = "Не удалось найти книгу";
+"NoAudioFile" = "Аудиофайл не найден";
+"CheckBookFolder %@" = "Проверьте, существует ли папка «%@» в данных приложения";
+"CheckPlaylist %@" = "Проверьте, существует ли плейлист «%@», скопирован ли он на устройство";
+"CheckFileExistInAppData %@" = "Проверьте, содержит ли папка с книгой аудиофайл «%@»";
+"CheckFileExistInMediaLib %@ %@" = "Проверьте, существует ли аудиофайл «%@» в плейлисте «%@»";

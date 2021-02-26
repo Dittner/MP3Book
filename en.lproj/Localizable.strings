@@ -1,0 +1,22 @@
+/* 
+  EN
+*/
+"Playlist" = "Playlist";
+"Add Bookmark" = "Add Bookmark";
+"Optional comment" = "Optional comment";
+"Cancel" = "Cancel";
+"Library" = "Library";
+"Done" = "Done";
+"App Data" = "App Data";
+"Media Library" = "Media Library";
+"%lld bookmark" = "%lld bookmark";
+"%lld bookmarks" = "%lld bookmarks";
+"%lld audio file" = "%lld audio file";
+"%lld audio files" = "%lld audio files";
+"NoBookInTheAppData" = "The book is missing from the App data";
+"NoBookInTheMediaLib" = "The book is missing from the Media Library";
+"NoAudioFile" = "Audio file is missing";
+"CheckBookFolder %@" = "Check the app's directory if the folder «%@» exists and has a content";
+"CheckPlaylist %@" = "Check if the playlist «%@» exists and it is copied on the iOS device";
+"CheckFileExistInAppData %@" = "Check the app's directory if the file «%@» exists";
+"CheckFileExistInMediaLib %@ %@" = "Check if the playlist «%@» exists and it has a file «%@»";

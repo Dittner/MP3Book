@@ -83,7 +83,7 @@ struct PlayerView: View {
         if playMode == .audioFile {
             return (notifier.index + 1).description + "/" + notifier.count.description
         } else {
-            return count == 0 ? "" : (notifier.index + 1).description + "/" + notifier.count.description + " bookmarks"
+            return count == 0 ? "" : (notifier.index + 1).description + "/" + notifier.count.description
         }
     }
 
@@ -93,6 +93,13 @@ struct PlayerView: View {
                 Text(DateTimeUtils.secToHHMMSS(notifier.time))
                 Spacer()
                 Text(getTitle(playMode: book.playMode, index: notifier.index, count: notifier.count))
+                
+                if book.playMode == .bookmark {
+                    Image("bookmarkSmall")
+                        .renderingMode(.template)
+                        .allowsHitTesting(false)
+                        .offset(x: 2, y: 2)
+                }
                 Spacer()
                 Text(DateTimeUtils.secToHHMMSS(notifier.duration))
             }
@@ -138,7 +145,7 @@ struct PlayerView: View {
                 Spacer()
 
                 VStack(alignment: .center, spacing: 2) {
-                    TextButton(text: "\(book.rate)x", textColor: themeObservable.theme.tint.color, font: Font.custom(.helveticaNeueBold, size: 15)) {
+                    TextButton(text: "\(String(format: "%.1f", book.rate))x", textColor: themeObservable.theme.tint.color, font: Font.custom(.helveticaNeueBold, size: 15)) {
                         withAnimation {
                             self.action(.selectRate)
                         }
