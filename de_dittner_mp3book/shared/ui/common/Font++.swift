@@ -27,11 +27,6 @@ extension UIFont {
 }
 
 extension Font {
-    public static let m3b = (navigationTitle: Font.custom(.helveticaNeueBold, size: 17),
-                             cancelButton: Font.custom(.helveticaNeue, size: 15),
-                             applyButton: Font.custom(.helveticaNeueBold, size: 15),
-                             backButton: Font.custom(.helveticaNeue, size: 15))
-
     static func custom(_ name: FontName, size: CGFloat) -> Font {
         Font.custom(name.rawValue, size: size)
     }
@@ -43,3 +38,4 @@ extension Font {
         }
     }
 }
+

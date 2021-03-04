@@ -13,7 +13,7 @@ struct NavigationBar<Content: View>: View {
 
     var body: some View {
         self.content()
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 60)
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: Constants.size.navigationBarHeight)
             .background(Rectangle()
                 .fill(LinearGradient(gradient: Gradient(colors: themeObservable.theme.toolbarColors), startPoint: .top, endPoint: .bottom))
                 .cornerRadius(radius: 20, corners: [.bottomLeft, .bottomRight])

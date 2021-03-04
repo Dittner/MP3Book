@@ -16,20 +16,20 @@ struct LibraryView: View {
         VStack(alignment: .center, spacing: -20) {
             NavigationBar {
                 HStack {
-                    TextButton(text: "Cancel", textColor: themeObservable.theme.tint.color, font: Font.m3b.cancelButton) {
+                    TextButton(text: "Cancel", textColor: themeObservable.theme.tint.color, font: Constants.font.r14) {
                         LibraryVM.shared.cancel()
                     }
 
                     Spacer()
-
+                    
                     Text("Library").bold()
-                        .font(Font.m3b.navigationTitle)
+                        .font(Constants.font.b16)
                         .foregroundColor(themeObservable.theme.tint.color)
                         .offset(x: -5)
 
                     Spacer()
 
-                    TextButton(text: "Done", textColor: themeObservable.theme.tint.color, font: Font.m3b.applyButton) {
+                    TextButton(text: "Done", textColor: themeObservable.theme.tint.color, font: Constants.font.b14) {
                         LibraryVM.shared.apply()
                     }
                 }.padding()
@@ -56,7 +56,7 @@ struct LibraryContent: View {
                 LazyVStack(alignment: .center, spacing: 0) {
                     if vm.wrappedFolders.count > 0 {
                         Text("App Data")
-                            .font(Font.custom(.helveticaNeue, size: 11))
+                            .font(Constants.font.r11)
                             .lineLimit(1)
                             .foregroundColor(themeObservable.theme.text.color)
                             .frame(height: 20, alignment: .center)
@@ -69,7 +69,7 @@ struct LibraryContent: View {
 
                         if vm.wrappedPlaylists.count > 0 {
                             Text("Media Library")
-                                .font(Font.custom(.helveticaNeue, size: 11))
+                                .font(Constants.font.r11)
                                 .lineLimit(1)
                                 .foregroundColor(themeObservable.theme.text.color)
                                 .frame(height: 20, alignment: .center)
@@ -92,15 +92,17 @@ struct WrapperFolderCell: View {
     @ObservedObject var wrappedFolder: Wrapper<Folder>
     let title: String
     let subTitle: String
+    let isSubFolder: Bool
 
     init(w: Wrapper<Folder>) {
         wrappedFolder = w
         title = w.data.title
+        isSubFolder = w.data.depth > 1
         subTitle = String(w.data.files.count) + " files" + ", " + DateTimeUtils.secToHHMMSS(w.data.totalDuration)
     }
 
     var body: some View {
-        ListCell(title: title, subTitle: subTitle, selected: $wrappedFolder.selected)
+        ListCell(title: title, subTitle: subTitle, isSubFolder: isSubFolder, selected: $wrappedFolder.selected)
     }
 }
 
@@ -116,7 +118,7 @@ struct WrapperPlaylistCell: View {
     }
 
     var body: some View {
-        ListCell(title: title, subTitle: subTitle, selected: $wrappedFolder.selected)
+        ListCell(title: title, subTitle: subTitle, isSubFolder: false, selected: $wrappedFolder.selected)
     }
 }
 
@@ -125,6 +127,7 @@ struct ListCell: View {
 
     let title: String
     let subTitle: String
+    let isSubFolder: Bool
     @Binding var selected: Bool
 
     var body: some View {
@@ -132,19 +135,19 @@ struct ListCell: View {
             Image("folder")
                 .renderingMode(.template)
                 .allowsHitTesting(false)
-                .frame(width: 50)
+                .frame(width: isSubFolder ? 75 : 50)
 
             VStack(alignment: .center, spacing: 2) {
                 Spacer()
 
                 Text(title)
-                    .font(Font.custom(.helveticaNeue, size: 17))
-                    .minimumScaleFactor(11 / 17)
+                    .font(Constants.font.r15)
+                    .minimumScaleFactor(12/15)
                     .lineLimit(2)
                     .multilineTextAlignment(.center)
 
                 Text(subTitle)
-                    .font(Font.custom(.helveticaNeue, size: 12))
+                    .font(Constants.font.r12)
                     .lineLimit(1)
 
                 Spacer()
@@ -152,13 +155,16 @@ struct ListCell: View {
                 HSeparatorView(horizontalPadding: -50)
 
             }.frame(maxWidth: .infinity)
+            
+            Spacer()
+                .frame(width: isSubFolder ? 25 : 0)
 
             Image(selected ? "checkBoxSelected" : "checkBox")
                 .renderingMode(.template)
                 .allowsHitTesting(false)
                 .frame(width: 50)
         }
-        .frame(height: 70)
+        .frame(height: Constants.size.folderListCellHeight)
         .background(selected ? themeObservable.theme.listCellBg.color : themeObservable.theme.transparent.color)
         .foregroundColor(selected ? themeObservable.theme.selectedText.color : themeObservable.theme.text.color)
         .onTapGesture {

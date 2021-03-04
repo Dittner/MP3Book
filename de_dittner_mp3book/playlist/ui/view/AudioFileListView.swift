@@ -24,10 +24,11 @@ struct AudioFileListView: View {
 
                         Spacer()
 
-                        Text(vm.selectedBook?.title ?? "").bold()
+                        Text(vm.selectedBook?.title ?? "")
                             .lineLimit(2)
-                            .font(Font.m3b.navigationTitle)
+                            .font(Constants.font.b16)
                             .foregroundColor(themeObservable.theme.tint.color)
+                            .multilineTextAlignment(.center)
 
                         Spacer()
 
@@ -227,7 +228,7 @@ struct FileCell: View {
                     .frame(width: 50)
 
                 Text(title)
-                    .font(Font.custom(.helveticaNeue, size: 14))
+                    .font(Constants.font.r14)
                     .minimumScaleFactor(12 / 14)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
@@ -235,7 +236,7 @@ struct FileCell: View {
                 Spacer()
 
                 Text(duration)
-                    .font(Font.custom(.helveticaNeue, size: 12))
+                    .font(Constants.font.r12)
                     .lineLimit(1)
                     .padding()
 
@@ -245,7 +246,7 @@ struct FileCell: View {
 
             HSeparatorView(horizontalPadding: -50)
         }
-        .frame(height: 60)
+        .frame(height: Constants.size.fileListCellHeight)
         .background(themeObservable.theme.transparent.color)
         .foregroundColor(notifier.playState == .stopped ? themeObservable.theme.text.color : themeObservable.theme.play.color)
         .onTapGesture {
@@ -309,19 +310,19 @@ struct BookmarkCell: View {
                             .animation(.none)
 
                         Text(time)
-                            .font(Font.custom(.helveticaThin, size: 17))
+                            .font(Constants.font.t16)
                             .lineLimit(1)
                             .multilineTextAlignment(.leading)
 
                         VStack(alignment: .leading, spacing: 5) {
                             Text(title)
-                                .font(Font.custom(.helveticaNeue, size: 12))
+                                .font(Constants.font.r12)
                                 .lineLimit(2)
                                 .multilineTextAlignment(.leading)
 
                             if bookmark.comment.count > 0 {
                                 Text(bookmark.comment)
-                                    .font(Font.custom(.helveticaLight, size: 13))
+                                    .font(Constants.font.l13)
                                     .lineLimit(20)
                                     .multilineTextAlignment(.leading)
                             }
@@ -336,7 +337,7 @@ struct BookmarkCell: View {
 
                 IconButton(iconName: "delete", iconColor: themeObservable.theme.deleteBtnIcon.color) {
                     self.action(.delete)
-                }.frame(width: 70, height: 60)
+                }.frame(width: 70, height: Constants.size.fileListCellHeight)
                     .background(themeObservable.theme.deleteBtnBg.color)
 
                 themeObservable.theme.deleteBtnBg.color.frame(width: -self.offset.width)
@@ -362,6 +363,6 @@ struct BookmarkCell: View {
                 }
             )
 
-        }.frame(maxWidth: .infinity, minHeight: 60, maxHeight: .infinity)
+        }.frame(maxWidth: .infinity, minHeight: Constants.size.fileListCellHeight, maxHeight: .infinity)
     }
 }

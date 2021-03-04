@@ -20,8 +20,8 @@ struct BookListView: View {
                         Spacer().frame(width: 50)
                         Spacer()
 
-                        Text("Playlist").bold()
-                            .font(Font.m3b.navigationTitle)
+                        Text("Playlist")
+                            .font(Constants.font.b16)
                             .foregroundColor(themeObservable.theme.tint.color)
 
                         Spacer()
@@ -75,14 +75,14 @@ struct PlayRateSelector: View {
 
                 VStack(alignment: .center, spacing: 0) {
                     Text("Tempo")
-                        .font(Font.custom(.helveticaNeue, size: 15))
-                        .frame(height: 30)
+                        .padding(.vertical, 7)
+                        .font(Constants.font.r16)
 
                     ForEach(PlayRateSelector.playRates, id: \.self) { value in
                         HSeparatorView()
                         Text(value.description)
-                            .font(Font.custom(selectedRate == value ? .helveticaNeueBold : .helveticaNeue, size: 15))
-                            .frame(height: 30)
+                            .font(selectedRate == value ? Constants.font.b14 : Constants.font.r14)
+                            .padding(.vertical, 7)
                             .onTapGesture {
                                 self.selectAction(value)
                                 self.isShown = false
@@ -90,7 +90,7 @@ struct PlayRateSelector: View {
                     }
 
                 }.padding(.horizontal, 20)
-                    .frame(width: 100)
+                    .frame(width: Constants.size.playRateSelectorWidth)
                     .foregroundColor(themeObservable.theme.tint.color)
                     .lineLimit(1)
 
@@ -102,7 +102,7 @@ struct PlayRateSelector: View {
                     .frame(width: 25, height: 15)
                     .offset(y: -2)
 
-                Spacer().frame(height: PlayerView.playerHeight - 70)
+                Spacer().frame(height: Constants.size.playerHeight - 70)
             }.shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 10)
         }
     }
@@ -121,8 +121,6 @@ struct AddBookmarkForm: View {
     private let file: AudioFile
     private let title: String
     private let action: (Int, String) -> Void
-
-    private let formWidth: CGFloat = 300
 
     init(isShown: Binding<Bool>, file: AudioFile, action: @escaping (Int, String) -> Void) {
         print("AddBookmarkForm init")
@@ -152,7 +150,7 @@ struct AddBookmarkForm: View {
 
             VStack(alignment: .center, spacing: 0) {
                 Text(title)
-                    .font(Font.custom(.helveticaNeue, size: 13))
+                    .font(Constants.font.r14)
                     .lineLimit(2)
 
                 HStack(alignment: .center, spacing: 0) {
@@ -161,7 +159,7 @@ struct AddBookmarkForm: View {
                     }
 
                     Text(DateTimeUtils.secToHHMMSS(notifier.time))
-                        .font(Font.custom(.helveticaThin, size: 26))
+                        .font(Constants.font.t26)
                         .lineLimit(1)
 
                     IconButton(iconName: "next", iconColor: themeObservable.theme.tint.color) {
@@ -172,7 +170,7 @@ struct AddBookmarkForm: View {
                 VStack(alignment: .leading, spacing: -20) {
                     if notifier.comment.count == 0 {
                         Text("Optional comment")
-                            .font(Font.custom(.helveticaNeue, size: 13))
+                            .font(Constants.font.r14)
                             .lineLimit(1)
                             .opacity(0.8)
                             .padding(.horizontal, 14)
@@ -184,20 +182,20 @@ struct AddBookmarkForm: View {
                     TextEditor(text: $notifier.comment)
                         .textFieldStyle(PlainTextFieldStyle())
                         .padding(.horizontal, 10)
-                        .font(Font.custom(.helveticaNeue, size: 13))
+                        .font(Constants.font.r14)
                         .background(RoundedRectangle(cornerRadius: 4).fill(themeObservable.theme.inputBg.color))
                         .foregroundColor(themeObservable.theme.inputText.color)
-                        .frame(height: 100)
+                        .frame(height: Constants.size.popupWidth / 3)
                 }
 
-                TextButton(text: "Add Bookmark", textColor: themeObservable.theme.tint.color, font: Font.m3b.applyButton) {
+                TextButton(text: "Add Bookmark", textColor: themeObservable.theme.tint.color, font: Constants.font.b14) {
                     self.action(notifier.time, notifier.comment)
                     self.isShown = false
                 }
 
             }.padding(.horizontal, 20)
                 .padding(.top, 20)
-                .frame(width: formWidth)
+                .frame(width: Constants.size.popupWidth)
                 .foregroundColor(themeObservable.theme.tint.color)
                 .background(themeObservable.theme.popupBg.color)
                 .cornerRadius(20)
@@ -315,14 +313,14 @@ struct BookCell: View {
                     Spacer()
 
                     Text(title)
-                        .font(Font.custom(.helveticaNeue, size: 17))
-                        .minimumScaleFactor(11 / 17)
+                        .font(Constants.font.r15)
+                        .minimumScaleFactor(12 / 15)
                         .lineLimit(2)
                         .multilineTextAlignment(.center)
 
                     HStack(alignment: .center, spacing: 2) {
                         Text(self.notifier.subtitle)
-                            .font(Font.custom(.helveticaNeue, size: 12))
+                            .font(Constants.font.r12)
                             .lineLimit(1)
 
                         Spacer().frame(width: 5)
@@ -332,7 +330,7 @@ struct BookCell: View {
                                 .renderingMode(.template)
                                 .allowsHitTesting(false)
                             Text(bookmarkColl.count.description)
-                                .font(Font.custom(.helveticaNeue, size: 12))
+                                .font(Constants.font.r12)
                                 .lineLimit(1)
                         }
                     }
@@ -345,11 +343,11 @@ struct BookCell: View {
 
                 IconButton(iconName: "open", iconColor: book.playState == .stopped ? themeObservable.theme.text.color : themeObservable.theme.play.color) {
                     self.action(.open)
-                }.frame(width: 50, height: 70)
+                }.frame(width: 50, height: Constants.size.bookListCellHeight)
 
                 IconButton(iconName: "delete", iconColor: themeObservable.theme.deleteBtnIcon.color) {
                     self.action(.delete)
-                }.frame(width: 70, height: 70)
+                }.frame(width: 70, height: Constants.size.bookListCellHeight)
                     .background(themeObservable.theme.deleteBtnBg.color)
 
                 themeObservable.theme.deleteBtnBg.color.frame(width: -self.offset.width)
@@ -373,6 +371,6 @@ struct BookCell: View {
                     }
                 }
             )
-        }.frame(height: 70)
+        }.frame(height: Constants.size.bookListCellHeight)
     }
 }

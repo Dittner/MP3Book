@@ -94,7 +94,7 @@ struct TabBarButton: View {
                 .renderingMode(.template)
 
             Text(title)
-                .font(Font.custom(.helveticaNeue, size: 11))
+                .font(Constants.font.r11)
                 .lineLimit(1)
         }
         .padding(8)

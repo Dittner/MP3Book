@@ -72,6 +72,7 @@
 		5BD0EF8925D852FD006CF6B0 /* XCTestCase++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0EF8825D852FD006CF6B0 /* XCTestCase++.swift */; };
 		5BE0996525DD1C53000A7183 /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE0996425DD1C53000A7183 /* SliderView.swift */; };
 		5BE0996A25DDAACD000A7183 /* SystemVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE0996925DDAACD000A7183 /* SystemVolume.swift */; };
+		5BE8234825EACAED00BADE9A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE8234725EACAED00BADE9A /* Constants.swift */; };
 		5BE8CAB225C8993C00834AD6 /* MP3BookApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE8CAB125C8993C00834AD6 /* MP3BookApp.swift */; };
 		5BE8CAB425C8993C00834AD6 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE8CAB325C8993C00834AD6 /* LibraryView.swift */; };
 		5BE8CAB925C8993D00834AD6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5BE8CAB825C8993D00834AD6 /* Preview Assets.xcassets */; };
@@ -124,6 +125,8 @@
 		5B1C3DEB25D46B3600B6F15A /* BookListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListVM.swift; sourceTree = "<group>"; };
 		5B1C3DF325D46B6E00B6F15A /* PlaylistContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistContext.swift; sourceTree = "<group>"; };
 		5B1C3DF825D46CB800B6F15A /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
+		5B22D8B325F11F7C003F29A3 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		5B22D8B425F11F7C003F29A3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5B364F3F25E6D150009F4037 /* AlertBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBox.swift; sourceTree = "<group>"; };
 		5B364F4725E703E6009F4037 /* ValidationDomainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationDomainService.swift; sourceTree = "<group>"; };
 		5B39F0EA25C89F5F00BC132C /* AudioFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFile.swift; sourceTree = "<group>"; };
@@ -176,6 +179,7 @@
 		5BD0EF8825D852FD006CF6B0 /* XCTestCase++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase++.swift"; sourceTree = "<group>"; };
 		5BE0996425DD1C53000A7183 /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
 		5BE0996925DDAACD000A7183 /* SystemVolume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemVolume.swift; sourceTree = "<group>"; };
+		5BE8234725EACAED00BADE9A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5BE8CAAE25C8993C00834AD6 /* MP3Book.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MP3Book.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BE8CAB125C8993C00834AD6 /* MP3BookApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MP3BookApp.swift; sourceTree = "<group>"; };
 		5BE8CAB325C8993C00834AD6 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
@@ -264,6 +268,7 @@
 				5BE0996425DD1C53000A7183 /* SliderView.swift */,
 				5BE92F0B25DED3C40029CC59 /* DownArrow.swift */,
 				5B1C3DBF25D3E0B800B6F15A /* ActivityIndicator.swift */,
+				5BE8234725EACAED00BADE9A /* Constants.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -458,6 +463,8 @@
 		5BE8CAA525C8993C00834AD6 = {
 			isa = PBXGroup;
 			children = (
+				5B22D8B325F11F7C003F29A3 /* LICENSE */,
+				5B22D8B425F11F7C003F29A3 /* README.md */,
 				5B5197A625E9487D00FA5CA4 /* Localizable.strings */,
 				5BB422BC25E5B86600C1FABC /* MP3Book.entitlements */,
 				5BE8CAB025C8993C00834AD6 /* de_dittner_mp3book */,
@@ -826,6 +833,7 @@
 				5B364F4825E703E6009F4037 /* ValidationDomainService.swift in Sources */,
 				5B6382E125D5D5B500B86CAC /* BookSerializer.swift in Sources */,
 				5B15E3C425D6FC6D0033E4FB /* PlaylistFile.swift in Sources */,
+				5BE8234825EACAED00BADE9A /* Constants.swift in Sources */,
 				5B94D8EB25D00D3D0054B23C /* BookListView.swift in Sources */,
 				5BBD49B225D94DF7009480B4 /* PlaylistDomainEntity.swift in Sources */,
 				5BB048F925E7B880004655C7 /* ReloadAudioFilesFromIPodLibraryService.swift in Sources */,

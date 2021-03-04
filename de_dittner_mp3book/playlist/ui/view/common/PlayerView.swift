@@ -35,7 +35,6 @@ struct PlayerView: View {
     @State var progress: Double = 0.0
 
     let action: (PlayerAction) -> Void
-    static let playerHeight: CGFloat = 170
 
     static let fakeBook = Book(uid: UID(), folderPath: "", title: "", files: [AudioFile(uid: 0, id: "0", name: "", source: .documents, path: "", duration: 0, index: 0, dispatcher: PlaylistDispatcher())], bookmarks: [], sortType: .none, dispatcher: PlaylistDispatcher())
 
@@ -78,8 +77,8 @@ struct PlayerView: View {
             .assign(to: \.time, on: notifier)
             .store(in: &disposeBag)
     }
-    
-    func getTitle(playMode: PlayMode, index: Int, count:Int) -> String {
+
+    func getTitle(playMode: PlayMode, index: Int, count: Int) -> String {
         if playMode == .audioFile {
             return (notifier.index + 1).description + "/" + notifier.count.description
         } else {
@@ -93,7 +92,7 @@ struct PlayerView: View {
                 Text(DateTimeUtils.secToHHMMSS(notifier.time))
                 Spacer()
                 Text(getTitle(playMode: book.playMode, index: notifier.index, count: notifier.count))
-                
+
                 if book.playMode == .bookmark {
                     Image("bookmarkSmall")
                         .renderingMode(.template)
@@ -103,7 +102,7 @@ struct PlayerView: View {
                 Spacer()
                 Text(DateTimeUtils.secToHHMMSS(notifier.duration))
             }
-            .font(Font.custom(.helveticaNeue, size: 13))
+            .font(Constants.font.r12)
             .lineLimit(1)
 
             SliderView(progress: $notifier.progress, minValue: 0, maxValue: notifier.duration.asDouble, trackColor: themeObservable.theme.sliderTrack.color) { progress in
@@ -115,7 +114,7 @@ struct PlayerView: View {
             HStack(alignment: .top, spacing: 0) {
                 HStack(alignment: .center, spacing: 2) {
                     Text(systemVolume.value.description + "%")
-                        .font(Font.custom(.helveticaNeue, size: 13))
+                        .font(Constants.font.r12)
                         .lineLimit(1)
 
                     Image("volume")
@@ -127,7 +126,7 @@ struct PlayerView: View {
                 Spacer()
 
                 VStack(alignment: .center, spacing: 2) {
-                    TextButton(text: "-15s", textColor: themeObservable.theme.tint.color, font: Font.custom(.helveticaNeueBold, size: 15)) {
+                    TextButton(text: "-15s", textColor: themeObservable.theme.tint.color, font: Constants.font.b14) {
                         if self.notifier.progress > 15 {
                             self.action(.updateProgress(value: self.notifier.progress - 15))
                         } else {
@@ -145,7 +144,7 @@ struct PlayerView: View {
                 Spacer()
 
                 VStack(alignment: .center, spacing: 2) {
-                    TextButton(text: "\(String(format: "%.1f", book.rate))x", textColor: themeObservable.theme.tint.color, font: Font.custom(.helveticaNeueBold, size: 15)) {
+                    TextButton(text: "\(String(format: "%.1f", book.rate))x", textColor: themeObservable.theme.tint.color, font: Constants.font.b14) {
                         withAnimation {
                             self.action(.selectRate)
                         }
@@ -161,7 +160,7 @@ struct PlayerView: View {
                 Spacer()
 
                 VStack(alignment: .center, spacing: 2) {
-                    TextButton(text: "+15s", textColor: themeObservable.theme.tint.color, font: Font.custom(.helveticaNeueBold, size: 15)) {
+                    TextButton(text: "+15s", textColor: themeObservable.theme.tint.color, font: Constants.font.b14) {
                         guard let curFile = self.book.coll.curFile else { return }
                         if curFile.duration.asDouble - self.notifier.progress > 15 {
                             self.action(.updateProgress(value: self.notifier.progress + 15))
@@ -188,19 +187,18 @@ struct PlayerView: View {
                     .frame(width: 50, height: 50, alignment: .center)
 
                     Text(notifier.bookmarksCount.description)
-                        .font(Font.custom(.helveticaNeue, size: 13))
+                        .font(Constants.font.r12)
                         .lineLimit(1)
                         .frame(width: 50, alignment: .center)
 
                 }.offset(x: 15)
             }
-            .font(Font.custom(.helveticaNeue, size: 13))
             .lineLimit(1)
         }
         .foregroundColor(themeObservable.theme.tint.color)
         .padding()
         .allowsHitTesting(self.notifier.duration != 0)
-        .frame(height: PlayerView.playerHeight)
+        .frame(height: Constants.size.playerHeight)
         .background(Rectangle()
             .fill(LinearGradient(gradient: Gradient(colors: themeObservable.theme.playerColors), startPoint: .top, endPoint: .bottom))
             .cornerRadius(radius: 20, corners: [.topLeft, .topRight]))
