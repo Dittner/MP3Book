@@ -41,7 +41,7 @@ struct AudioFileListView: View {
                         }
                     }
                 }
-                
+
                 if let selectedBook = vm.selectedBook {
                     PlayModeTabBar(book: selectedBook)
                         .navigationBarShadow()
@@ -73,7 +73,6 @@ struct FileListContent: View {
 
     var body: some View {
         if let selectedBook = vm.selectedBook {
-
             VStack(alignment: .center, spacing: -20) {
                 FileList(book: selectedBook, vm: vm)
 
@@ -314,7 +313,7 @@ struct BookmarkCell: View {
                             .lineLimit(1)
                             .multilineTextAlignment(.leading)
 
-                        VStack(alignment: .leading, spacing: 5) {
+                        VStack(alignment: .leading, spacing: 4) {
                             Text(title)
                                 .font(Constants.font.r12)
                                 .lineLimit(2)

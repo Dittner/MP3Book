@@ -10,7 +10,7 @@ import SwiftUI
 
 class OutputPort<Element> {
     let subject = CurrentValueSubject<[Element], Never>([])
-    
+
     func write(_ elements: [Element]) {
         subject.send(elements)
     }

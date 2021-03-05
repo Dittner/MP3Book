@@ -12,10 +12,10 @@ struct Bookmark: Identifiable {
     let file: AudioFile
     let time: Int
     let comment: String
-    
-    init(uid: UID, file:AudioFile, time:Int, comment:String) {
+
+    init(uid: UID, file: AudioFile, time: Int, comment: String) {
         self.uid = uid
-        self.id = uid.description
+        id = uid.description
         self.file = file
         self.time = time
         self.comment = comment
@@ -30,7 +30,7 @@ extension Bookmark: Comparable {
             } else {
                 return lhs.time < rhs.time
             }
-            
+
         } else {
             return lhs.file.name < rhs.file.name
         }

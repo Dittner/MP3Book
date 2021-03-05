@@ -9,7 +9,7 @@ import AVFoundation
 import Foundation
 
 enum DocumentsAppServiceError: DetailedError {
-    case readMP3ContentFailed(details: String, mp3FileURL:String)
+    case readMP3ContentFailed(details: String, mp3FileURL: String)
     case getFileUrlsFailed(details: String)
 }
 

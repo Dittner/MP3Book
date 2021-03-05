@@ -11,7 +11,7 @@ import SwiftUI
 class AlertBox: ObservableObject {
     static var shared = AlertBox()
 
-    @Published var message: AlertMessage? = nil
+    @Published var message: AlertMessage?
 
     func show(title: LocalizedStringKey, details: LocalizedStringKey) {
         if message == nil {

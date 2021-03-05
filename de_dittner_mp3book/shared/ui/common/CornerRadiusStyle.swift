@@ -12,7 +12,6 @@ struct CornerRadiusStyle: ViewModifier {
     var corners: UIRectCorner
 
     struct CornerRadiusShape: Shape {
-
         var radius = CGFloat.infinity
         var corners = UIRectCorner.allCorners
 
@@ -32,5 +31,4 @@ extension View {
     func cornerRadius(radius: CGFloat, corners: UIRectCorner) -> some View {
         ModifiedContent(content: self, modifier: CornerRadiusStyle(radius: radius, corners: corners))
     }
-    
 }

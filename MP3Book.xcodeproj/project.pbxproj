@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		10C83C78AF582FE0C99A04A3 /* Pods_MP3BookTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F92E17A955478CC2DF74A7DB /* Pods_MP3BookTests.framework */; };
+		57F075778197E8B16855E367 /* Pods_MP3Book_MP3BookUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF6459B7DCDB7987A2144151 /* Pods_MP3Book_MP3BookUITests.framework */; };
 		5B039B5425E5BABD00EAC650 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B039B5325E5BABD00EAC650 /* StoreKit.framework */; };
 		5B15E38F25D6A5610033E4FB /* BookRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B15E38E25D6A5610033E4FB /* BookRepositoryTests.swift */; };
 		5B15E3AC25D6CB070033E4FB /* URLS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B15E3AB25D6CB070033E4FB /* URLS.swift */; };
@@ -72,6 +74,7 @@
 		5BD0EF8925D852FD006CF6B0 /* XCTestCase++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0EF8825D852FD006CF6B0 /* XCTestCase++.swift */; };
 		5BE0996525DD1C53000A7183 /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE0996425DD1C53000A7183 /* SliderView.swift */; };
 		5BE0996A25DDAACD000A7183 /* SystemVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE0996925DDAACD000A7183 /* SystemVolume.swift */; };
+		5BE7D30625F2422F00304B0C /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 5BE7D30525F2422F00304B0C /* .swiftlint.yml */; };
 		5BE8234825EACAED00BADE9A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE8234725EACAED00BADE9A /* Constants.swift */; };
 		5BE8CAB225C8993C00834AD6 /* MP3BookApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE8CAB125C8993C00834AD6 /* MP3BookApp.swift */; };
 		5BE8CAB425C8993C00834AD6 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE8CAB325C8993C00834AD6 /* LibraryView.swift */; };
@@ -89,6 +92,7 @@
 		5BF7534325CDC8C300C3F1E0 /* DocumentsAppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF7534225CDC8C300C3F1E0 /* DocumentsAppService.swift */; };
 		5BF7534E25CDCB0200C3F1E0 /* DocumentsAppServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF7534D25CDCA9200C3F1E0 /* DocumentsAppServiceTests.swift */; };
 		5BF7535925CDD12D00C3F1E0 /* IPodAppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF7535825CDD12D00C3F1E0 /* IPodAppService.swift */; };
+		9BEB1D62AD9BC0787114D0D6 /* Pods_MP3Book.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2791770DD19F1FAF5D91714E /* Pods_MP3Book.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +113,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		10F387436316E3079E333954 /* Pods-MP3Book-MP3BookUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MP3Book-MP3BookUITests.debug.xcconfig"; path = "Target Support Files/Pods-MP3Book-MP3BookUITests/Pods-MP3Book-MP3BookUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		2791770DD19F1FAF5D91714E /* Pods_MP3Book.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MP3Book.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		51ED1AAD82707855939B12F7 /* Pods-MP3BookTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MP3BookTests.debug.xcconfig"; path = "Target Support Files/Pods-MP3BookTests/Pods-MP3BookTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5B039B5325E5BABD00EAC650 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		5B15E38E25D6A5610033E4FB /* BookRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRepositoryTests.swift; sourceTree = "<group>"; };
 		5B15E3AB25D6CB070033E4FB /* URLS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLS.swift; sourceTree = "<group>"; };
@@ -179,6 +186,7 @@
 		5BD0EF8825D852FD006CF6B0 /* XCTestCase++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase++.swift"; sourceTree = "<group>"; };
 		5BE0996425DD1C53000A7183 /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
 		5BE0996925DDAACD000A7183 /* SystemVolume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemVolume.swift; sourceTree = "<group>"; };
+		5BE7D30525F2422F00304B0C /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		5BE8234725EACAED00BADE9A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5BE8CAAE25C8993C00834AD6 /* MP3Book.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MP3Book.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BE8CAB125C8993C00834AD6 /* MP3BookApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MP3BookApp.swift; sourceTree = "<group>"; };
@@ -202,6 +210,12 @@
 		5BF7534225CDC8C300C3F1E0 /* DocumentsAppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsAppService.swift; sourceTree = "<group>"; };
 		5BF7534D25CDCA9200C3F1E0 /* DocumentsAppServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsAppServiceTests.swift; sourceTree = "<group>"; };
 		5BF7535825CDD12D00C3F1E0 /* IPodAppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPodAppService.swift; sourceTree = "<group>"; };
+		810651857663490D3C857D14 /* Pods-MP3BookTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MP3BookTests.release.xcconfig"; path = "Target Support Files/Pods-MP3BookTests/Pods-MP3BookTests.release.xcconfig"; sourceTree = "<group>"; };
+		8D2AC4F16824008499CFBF54 /* Pods-MP3Book-MP3BookUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MP3Book-MP3BookUITests.release.xcconfig"; path = "Target Support Files/Pods-MP3Book-MP3BookUITests/Pods-MP3Book-MP3BookUITests.release.xcconfig"; sourceTree = "<group>"; };
+		9AAC111CAD0EC2725A1698A3 /* Pods-MP3Book.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MP3Book.debug.xcconfig"; path = "Target Support Files/Pods-MP3Book/Pods-MP3Book.debug.xcconfig"; sourceTree = "<group>"; };
+		9E2C0E4057D855C01E379A21 /* Pods-MP3Book.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MP3Book.release.xcconfig"; path = "Target Support Files/Pods-MP3Book/Pods-MP3Book.release.xcconfig"; sourceTree = "<group>"; };
+		AF6459B7DCDB7987A2144151 /* Pods_MP3Book_MP3BookUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MP3Book_MP3BookUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F92E17A955478CC2DF74A7DB /* Pods_MP3BookTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MP3BookTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +226,7 @@
 				5B039B5425E5BABD00EAC650 /* StoreKit.framework in Frameworks */,
 				5B62634925D538AB008CADA4 /* AVFoundation.framework in Frameworks */,
 				5B62634B25D538C0008CADA4 /* AudioToolbox.framework in Frameworks */,
+				9BEB1D62AD9BC0787114D0D6 /* Pods_MP3Book.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,6 +234,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10C83C78AF582FE0C99A04A3 /* Pods_MP3BookTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,6 +242,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57F075778197E8B16855E367 /* Pods_MP3Book_MP3BookUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +362,9 @@
 				5B039B5325E5BABD00EAC650 /* StoreKit.framework */,
 				5B62634A25D538C0008CADA4 /* AudioToolbox.framework */,
 				5B62634825D538AB008CADA4 /* AVFoundation.framework */,
+				2791770DD19F1FAF5D91714E /* Pods_MP3Book.framework */,
+				AF6459B7DCDB7987A2144151 /* Pods_MP3Book_MP3BookUITests.framework */,
+				F92E17A955478CC2DF74A7DB /* Pods_MP3BookTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -463,6 +483,7 @@
 		5BE8CAA525C8993C00834AD6 = {
 			isa = PBXGroup;
 			children = (
+				5BE7D30525F2422F00304B0C /* .swiftlint.yml */,
 				5B22D8B325F11F7C003F29A3 /* LICENSE */,
 				5B22D8B425F11F7C003F29A3 /* README.md */,
 				5B5197A625E9487D00FA5CA4 /* Localizable.strings */,
@@ -472,6 +493,7 @@
 				5BE8CACD25C8993D00834AD6 /* MP3BookUITests */,
 				5BE8CAAF25C8993C00834AD6 /* Products */,
 				5B62634725D538AB008CADA4 /* Frameworks */,
+				C02225E6CDEC823D08CADDAC /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -657,6 +679,19 @@
 			path = application;
 			sourceTree = "<group>";
 		};
+		C02225E6CDEC823D08CADDAC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9AAC111CAD0EC2725A1698A3 /* Pods-MP3Book.debug.xcconfig */,
+				9E2C0E4057D855C01E379A21 /* Pods-MP3Book.release.xcconfig */,
+				10F387436316E3079E333954 /* Pods-MP3Book-MP3BookUITests.debug.xcconfig */,
+				8D2AC4F16824008499CFBF54 /* Pods-MP3Book-MP3BookUITests.release.xcconfig */,
+				51ED1AAD82707855939B12F7 /* Pods-MP3BookTests.debug.xcconfig */,
+				810651857663490D3C857D14 /* Pods-MP3BookTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -664,9 +699,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5BE8CAD325C8993D00834AD6 /* Build configuration list for PBXNativeTarget "MP3Book" */;
 			buildPhases = (
+				3D4C982CFA90212A10458B44 /* [CP] Check Pods Manifest.lock */,
 				5BE8CAAA25C8993C00834AD6 /* Sources */,
 				5BE8CAAB25C8993C00834AD6 /* Frameworks */,
 				5BE8CAAC25C8993C00834AD6 /* Resources */,
+				5B785AA925F239DE00AFD16F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -681,6 +718,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5BE8CAD625C8993D00834AD6 /* Build configuration list for PBXNativeTarget "MP3BookTests" */;
 			buildPhases = (
+				36A7EABA76F397373CABF081 /* [CP] Check Pods Manifest.lock */,
 				5BE8CABB25C8993D00834AD6 /* Sources */,
 				5BE8CABC25C8993D00834AD6 /* Frameworks */,
 				5BE8CABD25C8993D00834AD6 /* Resources */,
@@ -699,6 +737,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5BE8CAD925C8993D00834AD6 /* Build configuration list for PBXNativeTarget "MP3BookUITests" */;
 			buildPhases = (
+				16CA2784111C9CDA409D9D65 /* [CP] Check Pods Manifest.lock */,
 				5BE8CAC625C8993D00834AD6 /* Sources */,
 				5BE8CAC725C8993D00834AD6 /* Frameworks */,
 				5BE8CAC825C8993D00834AD6 /* Resources */,
@@ -762,6 +801,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BE7D30625F2422F00304B0C /* .swiftlint.yml in Resources */,
 				5BF7532925CDBDC000C3F1E0 /* George Orwell – 1984 in Resources */,
 				5BF7530A25CDBC5900C3F1E0 /* test.mp3 in Resources */,
 				5BE8CAB925C8993D00834AD6 /* Preview Assets.xcassets in Resources */,
@@ -788,6 +828,92 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		16CA2784111C9CDA409D9D65 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MP3Book-MP3BookUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		36A7EABA76F397373CABF081 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MP3BookTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3D4C982CFA90212A10458B44 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MP3Book-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5B785AA925F239DE00AFD16F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Swiftlint/swiftlint\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5BE8CAAA25C8993C00834AD6 /* Sources */ = {
@@ -1033,6 +1159,7 @@
 		};
 		5BE8CAD425C8993D00834AD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9AAC111CAD0EC2725A1698A3 /* Pods-MP3Book.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1058,6 +1185,7 @@
 		};
 		5BE8CAD525C8993D00834AD6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9E2C0E4057D855C01E379A21 /* Pods-MP3Book.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1083,6 +1211,7 @@
 		};
 		5BE8CAD725C8993D00834AD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 51ED1AAD82707855939B12F7 /* Pods-MP3BookTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1105,6 +1234,7 @@
 		};
 		5BE8CAD825C8993D00834AD6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 810651857663490D3C857D14 /* Pods-MP3BookTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1127,6 +1257,7 @@
 		};
 		5BE8CADA25C8993D00834AD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 10F387436316E3079E333954 /* Pods-MP3Book-MP3BookUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1147,6 +1278,7 @@
 		};
 		5BE8CADB25C8993D00834AD6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8D2AC4F16824008499CFBF54 /* Pods-MP3Book-MP3BookUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

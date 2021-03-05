@@ -69,16 +69,14 @@ class IPodAppService {
     private func createPlaylist(_ playlist: MPMediaItemCollection) -> Playlist? {
         var files: [PlaylistFile] = []
         var totalDuration: Int = 0
-        for item in playlist.items {
-            if item.mediaType == .music {
-                let file = PlaylistFile(mediaItem: item)
-                totalDuration += Int(item.playbackDuration)
-                files.append(file)
-            }
+        for item in playlist.items where item.mediaType == .music {
+            let file = PlaylistFile(mediaItem: item)
+            totalDuration += Int(item.playbackDuration)
+            files.append(file)
         }
 
         if files.count > 0 {
-            let title = playlist.value(forProperty: MPMediaPlaylistPropertyName) as! String
+            let title = playlist.value(forProperty: MPMediaPlaylistPropertyName) as? String ?? "No name"
             let res = Playlist(playlistPersistentID: playlist.persistentID, title: title, totalDuration: totalDuration, files: files)
 
             return res

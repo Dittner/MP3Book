@@ -87,7 +87,7 @@ struct PlayerView: View {
     }
 
     var body: some View {
-        VStack(alignment: .center, spacing: 2) {
+        VStack(alignment: .center, spacing: 5) {
             HStack(alignment: .top, spacing: 0) {
                 Text(DateTimeUtils.secToHHMMSS(notifier.time))
                 Spacer()
@@ -114,7 +114,7 @@ struct PlayerView: View {
             HStack(alignment: .top, spacing: 0) {
                 HStack(alignment: .center, spacing: 2) {
                     Text(systemVolume.value.description + "%")
-                        .font(Constants.font.r12)
+                        .font(Constants.font.r11)
                         .lineLimit(1)
 
                     Image("volume")
@@ -187,7 +187,7 @@ struct PlayerView: View {
                     .frame(width: 50, height: 50, alignment: .center)
 
                     Text(notifier.bookmarksCount.description)
-                        .font(Constants.font.r12)
+                        .font(Constants.font.r11)
                         .lineLimit(1)
                         .frame(width: 50, alignment: .center)
 

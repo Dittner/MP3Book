@@ -46,7 +46,7 @@ class BookSerializerTests: XCTestCase {
             if b1file.duration != b2file.duration { return false }
             if b1file.index != b2file.index { return false }
         }
-        
+
         for (index, b1mark) in b1.bookmarkColl.bookmarks.enumerated() {
             let b2mark = b2.bookmarkColl.bookmarks[index]
 

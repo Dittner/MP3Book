@@ -63,7 +63,7 @@ class AudioFileColl: FileCollection, ObservableObject {
     var curFileIndexPublisher: Published<Int>.Publisher { $curFileIndex }
 
     // curFile
-    @Published private(set) var curFile: AudioFile? = nil
+    @Published private(set) var curFile: AudioFile?
     var curFilePublished: Published<AudioFile?> { _curFile }
     var curFilePublisher: Published<AudioFile?>.Publisher { $curFile }
 
@@ -104,7 +104,7 @@ class BookmarkColl: FileCollection, ObservableObject {
     var curFileIndexPublisher: Published<Int>.Publisher { $curFileIndex }
 
     // curFile
-    @Published private(set) var curFile: AudioFile? = nil
+    @Published private(set) var curFile: AudioFile?
     var curFilePublished: Published<AudioFile?> { _curFile }
     var curFilePublisher: Published<AudioFile?>.Publisher { $curFile }
 
@@ -113,7 +113,7 @@ class BookmarkColl: FileCollection, ObservableObject {
     var countPublished: Published<Int> { _count }
     var countPublisher: Published<Int>.Publisher { $count }
 
-    @Published private(set) var curBookmark: Bookmark? = nil
+    @Published private(set) var curBookmark: Bookmark?
     @Published private(set) var bookmarks: [Bookmark] = []
 
     private var disposeBag: Set<AnyCancellable> = []

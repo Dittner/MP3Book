@@ -14,7 +14,7 @@ enum MediaPlayerState: Int {
     case playing
 }
 
-protocol MediaAPINotificationDelegate {
+protocol MediaAPINotificationDelegate: AnyObject {
     func mediaAPIDidStartPlayFile()
     func mediaAPIDidFinishPlayFile()
     func mediaAPIDidCompletePlayFile()
@@ -36,7 +36,7 @@ enum MediaAPIError: DetailedError {
 
 class MediaAPI {
     private let mediaPlayer: AVPlayer
-    var delegate: MediaAPINotificationDelegate!
+    weak var delegate: MediaAPINotificationDelegate?
 
     init() {
         mediaPlayer = AVPlayer(playerItem: nil)
@@ -61,28 +61,28 @@ class MediaAPI {
         commandCenter.changePlaybackPositionCommand.isEnabled = true
 
         commandCenter.playCommand.addTarget { [unowned self] _ in
-            self.delegate.mediaAPIWillPlay()
+            self.delegate?.mediaAPIWillPlay()
             return .success
         }
 
         commandCenter.pauseCommand.addTarget { [unowned self] _ in
-            self.delegate.mediaAPIWillStop()
+            self.delegate?.mediaAPIWillStop()
             return .success
         }
 
         commandCenter.previousTrackCommand.addTarget { [unowned self] _ in
-            self.delegate.mediaAPIWillPlayPrevFile()
+            self.delegate?.mediaAPIWillPlayPrevFile()
             return .success
         }
 
         commandCenter.nextTrackCommand.addTarget { [unowned self] _ in
-            self.delegate.mediaAPIWillPlayNextFile()
+            self.delegate?.mediaAPIWillPlayNextFile()
             return .success
         }
 
         commandCenter.changePlaybackPositionCommand.addTarget { [unowned self] event in
             if let event = event as? MPChangePlaybackPositionCommandEvent {
-                self.delegate.mediaAPIWillUpdatePosition(value: event.positionTime)
+                self.delegate?.mediaAPIWillUpdatePosition(value: event.positionTime)
                 return .success
             } else {
                 return .commandFailed
@@ -105,11 +105,11 @@ class MediaAPI {
         switch interruptionType {
         case .began:
             if userInfo[AVAudioSessionInterruptionWasSuspendedKey] == nil {
-                delegate.mediaAPIInterruptionBegan()
+                delegate?.mediaAPIInterruptionBegan()
                 logInfo(msg: "Interruption is began: \(notification.description)")
             }
         case .ended:
-            delegate.mediaAPIInterruptionEnded()
+            delegate?.mediaAPIInterruptionEnded()
             logInfo(msg: "Interruption is ended: \(notification.description)")
         @unknown default:
             logWarn(msg: "Unknown interruptionType: \(interruptionType)")
@@ -134,11 +134,11 @@ class MediaAPI {
     }
 
     @objc func mediaPlayerDidPlayToEndTime(notification: NSNotification) {
-        delegate.mediaAPIDidCompletePlayFile()
+        delegate?.mediaAPIDidCompletePlayFile()
     }
 
     @objc func mediaPlayerDecodeErrorDidOccur(notification: NSNotification) {
-        delegate.mediaAPIErrorOccurred(error: MediaAPIError.fileDecodingFailed(details: notification.description))
+        delegate?.mediaAPIErrorOccurred(error: MediaAPIError.fileDecodingFailed(details: notification.description))
     }
 
     // -------------------------------------
@@ -190,10 +190,10 @@ class MediaAPI {
             if playState != oldValue {
                 if playState == .playing {
                     addPeriodicTimeObserver()
-                    delegate.mediaAPIDidStartPlayFile()
+                    delegate?.mediaAPIDidStartPlayFile()
                 } else {
                     removePeriodicTimeObserver()
-                    delegate.mediaAPIDidFinishPlayFile()
+                    delegate?.mediaAPIDidFinishPlayFile()
                 }
             }
         }
@@ -207,11 +207,10 @@ class MediaAPI {
         // Queue on which to invoke the callback
         let mainQueue = DispatchQueue.main
         // Add time observer
-        timeObserverToken = mediaPlayer.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) {
-            [weak self] time in
+        timeObserverToken = mediaPlayer.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) {[weak self] time in
             guard let self = self else { return }
             if time.seconds > 0 {
-                self.delegate.mediaAPIDidPlaybackTimeChange(time: Int(time.seconds.rounded()))
+                self.delegate?.mediaAPIDidPlaybackTimeChange(time: Int(time.seconds.rounded()))
             }
         }
     }
@@ -225,7 +224,7 @@ class MediaAPI {
 
     private func timerProcessing() {
         if playState == .playing {
-            delegate.mediaAPIDidPlaybackTimeChange(time: currentTime)
+            delegate?.mediaAPIDidPlaybackTimeChange(time: currentTime)
         }
     }
 
@@ -245,7 +244,7 @@ class MediaAPI {
             mediaPlayer.playImmediately(atRate: playRate)
             playState = .playing
         } else {
-            delegate.mediaAPIErrorOccurred(error: MediaAPIError.fileNotPlayable)
+            delegate?.mediaAPIErrorOccurred(error: MediaAPIError.fileNotPlayable)
         }
     }
 

@@ -12,7 +12,6 @@ class Constants {
     static let size: SizeConstants = SizeConstants()
 }
 
-
 class FontConstants {
     let b16: Font
     let b14: Font
@@ -60,14 +59,14 @@ class SizeConstants {
     let playerHeight: CGFloat
     let playRateSelectorWidth: CGFloat
     let navigationBarHeight: CGFloat
-    
+
     init() {
         if UIDevice.current.userInterfaceIdiom == .phone {
             popupWidth = 300
             bookListCellHeight = 70
             folderListCellHeight = 70
             fileListCellHeight = 60
-            playerHeight = 170
+            playerHeight = 180
             playRateSelectorWidth = 100
             navigationBarHeight = 60
         } else {
@@ -75,8 +74,8 @@ class SizeConstants {
             bookListCellHeight = 80
             folderListCellHeight = 80
             fileListCellHeight = 70
-            playerHeight = 180
-            playRateSelectorWidth = 150
+            playerHeight = 200
+            playRateSelectorWidth = 120
             navigationBarHeight = 60
         }
     }

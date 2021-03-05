@@ -10,7 +10,6 @@ import SwiftUI
 struct LibraryView: View {
     @Environment(\.presentationMode) var presentation
     @ObservedObject var themeObservable = ThemeObservable.shared
-    
 
     var body: some View {
         VStack(alignment: .center, spacing: -20) {
@@ -21,7 +20,7 @@ struct LibraryView: View {
                     }
 
                     Spacer()
-                    
+
                     Text("Library").bold()
                         .font(Constants.font.b16)
                         .foregroundColor(themeObservable.theme.tint.color)
@@ -137,12 +136,12 @@ struct ListCell: View {
                 .allowsHitTesting(false)
                 .frame(width: isSubFolder ? 75 : 50)
 
-            VStack(alignment: .center, spacing: 2) {
+            VStack(alignment: .center, spacing: 4) {
                 Spacer()
 
                 Text(title)
                     .font(Constants.font.r15)
-                    .minimumScaleFactor(12/15)
+                    .minimumScaleFactor(12 / 15)
                     .lineLimit(2)
                     .multilineTextAlignment(.center)
 
@@ -155,7 +154,7 @@ struct ListCell: View {
                 HSeparatorView(horizontalPadding: -50)
 
             }.frame(maxWidth: .infinity)
-            
+
             Spacer()
                 .frame(width: isSubFolder ? 25 : 0)
 

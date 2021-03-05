@@ -82,7 +82,7 @@ struct PlayRateSelector: View {
                         HSeparatorView()
                         Text(value.description)
                             .font(selectedRate == value ? Constants.font.b14 : Constants.font.r14)
-                            .padding(.vertical, 7)
+                            .padding(.vertical, 8)
                             .onTapGesture {
                                 self.selectAction(value)
                                 self.isShown = false
@@ -309,7 +309,7 @@ struct BookCell: View {
                     .animation(.none)
                     .frame(width: 50)
 
-                VStack(alignment: .center, spacing: 2) {
+                VStack(alignment: .center, spacing: 4) {
                     Spacer()
 
                     Text(title)

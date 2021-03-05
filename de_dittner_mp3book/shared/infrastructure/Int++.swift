@@ -7,7 +7,7 @@
 
 import Foundation
 extension Int {
-    var asDouble:Double {
+    var asDouble: Double {
         return Double(self)
     }
 }

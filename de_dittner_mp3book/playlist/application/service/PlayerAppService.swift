@@ -13,7 +13,7 @@ enum PlayerAppServiceError: DetailedError {
 }
 
 class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
-    @Published private(set) var book: Book? = nil
+    @Published private(set) var book: Book?
     private var fileColl: FileCollection?
 
     private let api: MediaAPI
@@ -26,7 +26,7 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
     var subscription: AnyCancellable?
     func play(_ b: Book) {
         api.stop()
-        
+
         if let curBook = book, curBook.uid != b.uid {
             curBook.playState = .stopped
             api.setPlayRate(value: b.rate)

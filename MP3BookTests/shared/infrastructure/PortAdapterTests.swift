@@ -5,17 +5,17 @@
 //  Created by Alexander Dittner on 05.02.2021.
 //
 
+import Combine
 @testable import MP3Book
 import XCTest
-import Combine
 
 class PortAdapterTests: XCTestCase {
     func testPortNotification() throws {
         let port = OutputPort<Person>()
-        
+
         var isFirstRequestProcessed = false
         var isSecondRequestProcessed = false
-        
+
         let subscription = port.subject.sink { persons in
             if !isFirstRequestProcessed {
                 isFirstRequestProcessed = true
@@ -26,16 +26,16 @@ class PortAdapterTests: XCTestCase {
                 XCTAssertEqual(persons[0].name, "Bob")
                 XCTAssertEqual(persons[1].name, "John")
             } else {
-                XCTFail()
+                XCTFail("More notifications as required")
             }
         }
-                
+
         XCTAssertTrue(isFirstRequestProcessed)
-        
+
         port.write([Person(id: "1", name: "Bob"), Person(id: "2", name: "John")])
-        
+
         XCTAssertTrue(isSecondRequestProcessed)
-        
+
         subscription.cancel()
     }
 }

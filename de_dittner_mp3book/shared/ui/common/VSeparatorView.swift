@@ -10,17 +10,16 @@ import SwiftUI
 
 struct VSeparatorView: View {
     @ObservedObject var themeObservable = ThemeObservable.shared
-    
-    let verticalPadding:CGFloat
-    let color:Color
-    
-    init(color:Color, verticalPadding:CGFloat = 0) {
+
+    let verticalPadding: CGFloat
+    let color: Color
+
+    init(color: Color, verticalPadding: CGFloat = 0) {
         self.color = color
         self.verticalPadding = verticalPadding
     }
-    
+
     var body: some View {
-        
         color
             .padding(.vertical, verticalPadding)
             .frame(width: 0.5)

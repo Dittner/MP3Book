@@ -23,7 +23,7 @@ class DocumentsAppServiceTests: XCTestCase {
         let destDemoFolderURL = URLS.documentsURL.appendingPathComponent(destFolderName)
         let copyService = DemoFileAppService()
         try copyService.copyDemoFile(srcFileName: srcFolderName, to: destDemoFolderURL)
-        
+
         let docsService = DocumentsAppService()
         let content = try docsService.readFrom(dirUrl: destDemoFolderURL)
 

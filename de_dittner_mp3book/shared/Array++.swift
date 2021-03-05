@@ -15,10 +15,8 @@ extension Array where Element: Hashable {
 
 extension Array where Element: Identifiable {
     func getFirstIndexOf(item: Element) -> Int? {
-        for (index, e) in enumerated() {
-            if e.id == item.id {
-                return index
-            }
+        for (index, e) in enumerated() where e.id == item.id {
+            return index
         }
         return nil
     }

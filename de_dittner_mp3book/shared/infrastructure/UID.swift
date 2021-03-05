@@ -9,7 +9,7 @@ import Foundation
 typealias UID = Int64
 
 extension UID {
-    private static var ids:UID = UID(Date().timeIntervalSince1970)
+    private static var ids: UID = UID(Date().timeIntervalSince1970)
 
     init() {
         UID.ids += 1

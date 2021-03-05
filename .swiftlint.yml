@@ -1,0 +1,15 @@
+excluded:
+- Carthage
+- Pods
+- SwiftLint/Common/3rdPartyLib
+
+disabled_rules: # rule identifiers to exclude from running
+- line_length
+- function_body_length
+- cyclomatic_complexity
+
+identifier_name:
+  min_length: 1
+
+type_name:
+  min_length: 1

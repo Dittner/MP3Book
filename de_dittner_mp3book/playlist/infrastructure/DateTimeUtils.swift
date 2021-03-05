@@ -7,7 +7,7 @@
 
 import Foundation
 class DateTimeUtils {
-    public class func secToHHMMSS(_ sec:Int) -> String {
+    public class func secToHHMMSS(_ sec: Int) -> String {
         if sec < 3600 {
             return String(format: "%02d:%02d", Int(sec / 60), Int(sec % 60))
         } else {

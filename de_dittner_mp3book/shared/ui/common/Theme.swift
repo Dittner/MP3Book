@@ -35,21 +35,21 @@ struct LightTheme: Theme {
     let id: String = "light"
     let transparent: UIColor = UIColor(rgb: 0, alpha: 0.001)
     let tint: UIColor = UIColor(rgb: 0x5A595C)
-    let toolbarColors = [Color(rgb: 0xf1f1eb), Color(rgb: 0xe7e7e1)]
-    let playerColors = [Color(rgb: 0xe2ddda), Color(rgb: 0xebe0e1)]
-    let appBgColors = [Color(rgb: 0xf2f2ec), Color(rgb: 0xf2f2ec), Color(rgb: 0xece1e0)]
+    let toolbarColors = [Color(rgb: 0xF1F1EB), Color(rgb: 0xE7E7E1)]
+    let playerColors = [Color(rgb: 0xE2DDDA), Color(rgb: 0xEBE0E1)]
+    let appBgColors = [Color(rgb: 0xF2F2EC), Color(rgb: 0xF2F2EC), Color(rgb: 0xECE1E0)]
     let text: UIColor = UIColor(rgb: 0x5A595C)
     let selectedText: UIColor = UIColor(rgb: 0x5A595C)
     let play: UIColor = UIColor(rgb: 0xAB466A)
     let separator: UIColor = UIColor(rgb: 0, alpha: 0.1)
     let sliderTrack: UIColor = UIColor(rgb: 0, alpha: 0.2)
-    let listCellBg: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.5)
-    let tabBarBg: UIColor = UIColor(rgb: 0xdeded9)
+    let listCellBg: UIColor = UIColor(rgb: 0xFFFFFF, alpha: 0.5)
+    let tabBarBg: UIColor = UIColor(rgb: 0xDEDED9)
     let tabBarSelected: UIColor = UIColor(rgb: 0xAB466A)
-    let popupBg: UIColor = UIColor(rgb: 0xe7e7e1)
-    let inputBg: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.5)
+    let popupBg: UIColor = UIColor(rgb: 0xE7E7E1)
+    let inputBg: UIColor = UIColor(rgb: 0xFFFFFF, alpha: 0.5)
     let inputText: UIColor = UIColor(rgb: 0x5A595C)
-    let deleteBtnBg: UIColor = UIColor(rgb: 0xead6dc)
+    let deleteBtnBg: UIColor = UIColor(rgb: 0xEAD6DC)
     let deleteBtnIcon: UIColor = UIColor(rgb: 0x5A595C)
 }
 
@@ -57,28 +57,28 @@ struct DarkTheme: Theme {
     let id: String = "dark"
     let transparent: UIColor = UIColor(rgb: 0, alpha: 0.001)
     let tint: UIColor = UIColor(rgb: 0xB2B1A8)
-    let toolbarColors = [Color(rgb: 0x101011), Color(rgb: 0x1c1c1d)]
-    let playerColors = [Color(rgb: 0x1b1819), Color(rgb: 0x161213)]
+    let toolbarColors = [Color(rgb: 0x101011), Color(rgb: 0x1C1C1D)]
+    let playerColors = [Color(rgb: 0x1B1819), Color(rgb: 0x161213)]
     let appBgColors = [Color(rgb: 0x101011), Color(rgb: 0x131414), Color(rgb: 0x161213)]
     let text: UIColor = UIColor(rgb: 0x5A595C)
     let selectedText: UIColor = UIColor(rgb: 0xEBEAE3)
-    let play: UIColor = UIColor(rgb: 0xebd6ba)
-    let separator: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.1)
-    let sliderTrack: UIColor = UIColor(rgb: 0xffFFff, alpha: 0.2)
+    let play: UIColor = UIColor(rgb: 0xEBD6BA)
+    let separator: UIColor = UIColor(rgb: 0xFFFFFF, alpha: 0.1)
+    let sliderTrack: UIColor = UIColor(rgb: 0xFFFFFF, alpha: 0.2)
     let listCellBg: UIColor = UIColor(rgb: 0, alpha: 0.001)
     let tabBarBg: UIColor = UIColor(rgb: 0x131414)
     let tabBarSelected: UIColor = UIColor(rgb: 0xEBEAE3)
     let popupBg: UIColor = UIColor(rgb: 0x323035)
     let inputBg: UIColor = UIColor(rgb: 0, alpha: 0.5)
     let inputText: UIColor = UIColor(rgb: 0xB2B1A8)
-    let deleteBtnBg: UIColor = UIColor(rgb: 0x4f1d35)
+    let deleteBtnBg: UIColor = UIColor(rgb: 0x4F1D35)
     let deleteBtnIcon: UIColor = UIColor(rgb: 0xB2B1A8)
 }
 
 class ThemeObservable: ObservableObject {
     @Published var theme: Theme
-    
-    static var shared:ThemeObservable = ThemeObservable()
+
+    static var shared: ThemeObservable = ThemeObservable()
 
     private let light: Theme
     private let dark: Theme
@@ -87,14 +87,14 @@ class ThemeObservable: ObservableObject {
         dark = DarkTheme()
         theme = light
     }
-    
+
     func selectDarkTheme() {
         if theme.id != dark.id {
             theme = dark
             logInfo(msg: "Selected theme: \(theme.id)")
         }
     }
-    
+
     func selectLightTheme() {
         if theme.id != light.id {
             theme = light

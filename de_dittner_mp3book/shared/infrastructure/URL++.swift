@@ -10,11 +10,11 @@ extension URL {
     func isMP3() -> Bool {
         return pathExtension.lowercased() == "mp3"
     }
-    
+
     func fileExists() -> Bool {
-        return FileManager.default.fileExists(atPath: self.path)
+        return FileManager.default.fileExists(atPath: path)
     }
-    
+
     func isIPodItemLink() -> Bool {
         let iPodPrefix = "ipod-library"
         if description.count > iPodPrefix.count {
@@ -22,5 +22,5 @@ extension URL {
             return res == iPodPrefix
         }
         return false
-    }    
+    }
 }

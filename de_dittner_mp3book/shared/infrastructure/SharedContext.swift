@@ -59,7 +59,7 @@ class SharedContext {
         #else
             aboutLog += "release mode\n"
         #endif
-        
+
         logInfo(msg: aboutLog)
     }
 

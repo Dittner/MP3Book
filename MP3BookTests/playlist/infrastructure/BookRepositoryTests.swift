@@ -22,14 +22,14 @@ class BookRepositoryTests: XCTestCase {
         storageURL = URLS.libraryURL.appendingPathComponent("Test/book")
         try copyTestFilesToDocuments()
     }
-    
+
     override func tearDownWithError() throws {
         let destDemoFolderURL = URLS.documentsURL.appendingPathComponent(destFolderName)
         if FileManager.default.fileExists(atPath: destDemoFolderURL.path) {
             try FileManager.default.removeItem(atPath: destDemoFolderURL.path)
         }
     }
-    
+
     func copyTestFilesToDocuments() throws {
         try removeTestStorage()
         try removeTestFiles()
@@ -70,7 +70,7 @@ class BookRepositoryTests: XCTestCase {
         let dispatcher = PlaylistDispatcher()
         let audioFileSerializer = AudioFileSerializer(dispatcher: dispatcher)
         let bookSerializer = BookSerializer(fileSerializer: audioFileSerializer, dispatcher: dispatcher)
-        let bookRepository = try JSONBookRepository(serializer: bookSerializer, dispatcher: dispatcher, storeTo: storageURL)
+        let bookRepository = JSONBookRepository(serializer: bookSerializer, dispatcher: dispatcher, storeTo: storageURL)
         let addBooksToPlaylistDomainService = AddBooksToPlaylistDomainService(repo: bookRepository)
         let foldersToBooksMapper = FolderToMP3BookMapper(repo: bookRepository, dispatcher: dispatcher)
 
@@ -94,7 +94,7 @@ class BookRepositoryTests: XCTestCase {
                 XCTAssertEqual(books[1].title, self.fakeFolder.title)
 
             } else {
-                XCTFail()
+                XCTFail("More notifications as required")
             }
         }
 
@@ -154,7 +154,7 @@ class BookRepositoryTests: XCTestCase {
             }.store(in: &disposeBag)
 
         repo.storeChanges()
-        
+
         wait(for: [expectation], timeout: 5.0)
     }
 
@@ -163,7 +163,7 @@ class BookRepositoryTests: XCTestCase {
         let dispatcher = PlaylistDispatcher()
         let audioFileSerializer = AudioFileSerializer(dispatcher: dispatcher)
         let bookSerializer = BookSerializer(fileSerializer: audioFileSerializer, dispatcher: dispatcher)
-        let bookRepository = try JSONBookRepository(serializer: bookSerializer, dispatcher: dispatcher, storeTo: storageURL)
+        let bookRepository = JSONBookRepository(serializer: bookSerializer, dispatcher: dispatcher, storeTo: storageURL)
 
         waitWhenRepoIsReady(repo: bookRepository, dispatcher: dispatcher)
 
@@ -176,7 +176,7 @@ class BookRepositoryTests: XCTestCase {
                 // addedToPlaylist prop has been changed after processing in the addBooksToPlaylistDomainService
                 XCTAssertFalse(books[0].addedToPlaylist)
             } else {
-                XCTFail()
+                XCTFail("Repo has not the stored book")
             }
         }.store(in: &disposeBag)
 

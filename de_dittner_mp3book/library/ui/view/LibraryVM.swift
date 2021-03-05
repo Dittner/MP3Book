@@ -76,8 +76,8 @@ class Wrapper<Element: Identifiable>: ObservableObject, Identifiable {
     let data: Element
     let id: ID
 
-    init(_ e: Element) {
+    init(_ e: Element) where Element.ID == ID {
         data = e
-        id = e.id as! ID
+        id = e.id
     }
 }

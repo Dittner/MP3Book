@@ -26,23 +26,23 @@ class JSONBookRepository: IBookRepository {
     private let dispatcher: PlaylistDispatcher
     private(set) var isReady: Bool = false
 
-    init(serializer: IBookSerializer, dispatcher: PlaylistDispatcher, storeTo: URL) throws {
+    init(serializer: IBookSerializer, dispatcher: PlaylistDispatcher, storeTo: URL) {
         logInfo(msg: "JSONBookRepository init, url: \(storeTo)")
         self.serializer = serializer
         self.dispatcher = dispatcher
         url = storeTo
 
-        try createStorageIfNeeded()
+        createStorageIfNeeded()
         readBooksFromDisc()
         subscribeToDispatcher()
     }
 
-    private func createStorageIfNeeded() throws {
+    private func createStorageIfNeeded() {
         if !FileManager.default.fileExists(atPath: url.path) {
             do {
                 try FileManager.default.createDirectory(atPath: url.path, withIntermediateDirectories: true, attributes: nil)
             } catch {
-                throw JSONBookRepositoryError.createStorageDirFailed(details: error.localizedDescription)
+                logErr(msg: JSONBookRepositoryError.createStorageDirFailed(details: error.localizedDescription).localizedDescription)
             }
         }
     }
@@ -58,7 +58,10 @@ class JSONBookRepository: IBookRepository {
                 for fileURL in urls {
                     do {
                         let data = try Data(contentsOf: fileURL)
-                        let dict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+                        guard let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+                            logErr(msg: "Failed to deserialize book, url: \(fileURL), details: deserialized data type should conform to [String: Any]")
+                            continue
+                        }
                         let b = try self.serializer.deserialize(data: dict)
                         if self.bookSourceExists(b) {
                             self.hash[b.id] = b

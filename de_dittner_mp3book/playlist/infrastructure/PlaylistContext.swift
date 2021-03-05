@@ -25,7 +25,7 @@ class PlaylistContext {
         let audioFileSerializer = AudioFileSerializer(dispatcher: dispatcher)
         let bookSerializer = BookSerializer(fileSerializer: audioFileSerializer, dispatcher: dispatcher)
 
-        bookRepository = try! JSONBookRepository(serializer: bookSerializer, dispatcher: dispatcher, storeTo: storageURL)
+        bookRepository = JSONBookRepository(serializer: bookSerializer, dispatcher: dispatcher, storeTo: storageURL)
         addBooksToPlaylistDomainService = AddBooksToPlaylistDomainService(repo: bookRepository)
 
         playerAppService = PlayerAppService(api: MediaAPI())
