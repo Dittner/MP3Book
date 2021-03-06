@@ -10,7 +10,7 @@ import SwiftUI
 struct NavigationBarShadow: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .shadow(color: Color.black.opacity(0.1), radius: 0, x: 0, y: 1)
+            .shadow(color: Color.black.opacity(0.1), radius: 0, x: 0, y: 0.5)
     }
 }
 

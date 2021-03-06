@@ -95,6 +95,7 @@ class MediaAPI {
                                                object: nil)
     }
 
+    private var wasInterrupted: Bool = false
     @objc func handleInterruption(notification: Notification) {
         guard let userInfo = notification.userInfo,
               let interruptionTypeRawValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
@@ -105,12 +106,16 @@ class MediaAPI {
         switch interruptionType {
         case .began:
             if userInfo[AVAudioSessionInterruptionWasSuspendedKey] == nil {
+                wasInterrupted = true
                 delegate?.mediaAPIInterruptionBegan()
                 logInfo(msg: "Interruption is began: \(notification.description)")
             }
         case .ended:
-            delegate?.mediaAPIInterruptionEnded()
-            logInfo(msg: "Interruption is ended: \(notification.description)")
+            if wasInterrupted {
+                wasInterrupted = false
+                delegate?.mediaAPIInterruptionEnded()
+                logInfo(msg: "Interruption is ended: \(notification.description)")
+            }
         @unknown default:
             logWarn(msg: "Unknown interruptionType: \(interruptionType)")
         }
@@ -207,7 +212,7 @@ class MediaAPI {
         // Queue on which to invoke the callback
         let mainQueue = DispatchQueue.main
         // Add time observer
-        timeObserverToken = mediaPlayer.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) {[weak self] time in
+        timeObserverToken = mediaPlayer.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) { [weak self] time in
             guard let self = self else { return }
             if time.seconds > 0 {
                 self.delegate?.mediaAPIDidPlaybackTimeChange(time: Int(time.seconds.rounded()))

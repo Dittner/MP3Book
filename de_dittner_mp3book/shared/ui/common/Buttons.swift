@@ -99,8 +99,8 @@ struct TabBarButton: View {
         }
         .padding(8)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(onPressed || selected ? theme.tabBarBg.color : theme.toolbarColors[1])
-        .foregroundColor(onPressed || selected ? theme.tabBarSelected.color : theme.text.color)
+        .background(onPressed || selected ? theme.tabBarSelectedBg.color : theme.toolbarColors[1])
+        .foregroundColor(onPressed || selected ? theme.tabBarSelectedText.color : theme.text.color)
         .zIndex(10)
         .onTapGesture {
             self.onAction()

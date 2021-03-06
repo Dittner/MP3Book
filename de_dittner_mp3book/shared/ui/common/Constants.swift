@@ -63,8 +63,8 @@ class SizeConstants {
     init() {
         if UIDevice.current.userInterfaceIdiom == .phone {
             popupWidth = 300
-            bookListCellHeight = 70
-            folderListCellHeight = 70
+            bookListCellHeight = 75
+            folderListCellHeight = 75
             fileListCellHeight = 60
             playerHeight = 180
             playRateSelectorWidth = 100

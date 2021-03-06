@@ -22,8 +22,8 @@ protocol Theme {
     var separator: UIColor { get }
     var sliderTrack: UIColor { get }
     var listCellBg: UIColor { get }
-    var tabBarBg: UIColor { get }
-    var tabBarSelected: UIColor { get }
+    var tabBarSelectedBg: UIColor { get }
+    var tabBarSelectedText: UIColor { get }
     var popupBg: UIColor { get }
     var inputBg: UIColor { get }
     var inputText: UIColor { get }
@@ -35,17 +35,17 @@ struct LightTheme: Theme {
     let id: String = "light"
     let transparent: UIColor = UIColor(rgb: 0, alpha: 0.001)
     let tint: UIColor = UIColor(rgb: 0x5A595C)
-    let toolbarColors = [Color(rgb: 0xF1F1EB), Color(rgb: 0xE7E7E1)]
-    let playerColors = [Color(rgb: 0xE2DDDA), Color(rgb: 0xEBE0E1)]
-    let appBgColors = [Color(rgb: 0xF2F2EC), Color(rgb: 0xF2F2EC), Color(rgb: 0xECE1E0)]
+    let toolbarColors = [Color(rgb: 0xf7f7f6), Color(rgb: 0xf2f2f1)]
+    let playerColors = [Color(rgb: 0xefeeed), Color(rgb: 0xf4f1f1)]
+    let appBgColors = [Color(rgb: 0xf7f7f6), Color(rgb: 0xf7f7f6), Color(rgb: 0xf4f1f1)]
     let text: UIColor = UIColor(rgb: 0x5A595C)
     let selectedText: UIColor = UIColor(rgb: 0x5A595C)
     let play: UIColor = UIColor(rgb: 0xAB466A)
     let separator: UIColor = UIColor(rgb: 0, alpha: 0.1)
     let sliderTrack: UIColor = UIColor(rgb: 0, alpha: 0.2)
     let listCellBg: UIColor = UIColor(rgb: 0xFFFFFF, alpha: 0.5)
-    let tabBarBg: UIColor = UIColor(rgb: 0xDEDED9)
-    let tabBarSelected: UIColor = UIColor(rgb: 0xAB466A)
+    let tabBarSelectedBg: UIColor = UIColor(rgb: 0xe4e4e3)
+    let tabBarSelectedText: UIColor = UIColor(rgb: 0xAB466A)
     let popupBg: UIColor = UIColor(rgb: 0xE7E7E1)
     let inputBg: UIColor = UIColor(rgb: 0xFFFFFF, alpha: 0.5)
     let inputText: UIColor = UIColor(rgb: 0x5A595C)
@@ -66,8 +66,8 @@ struct DarkTheme: Theme {
     let separator: UIColor = UIColor(rgb: 0xFFFFFF, alpha: 0.1)
     let sliderTrack: UIColor = UIColor(rgb: 0xFFFFFF, alpha: 0.2)
     let listCellBg: UIColor = UIColor(rgb: 0, alpha: 0.001)
-    let tabBarBg: UIColor = UIColor(rgb: 0x131414)
-    let tabBarSelected: UIColor = UIColor(rgb: 0xEBEAE3)
+    let tabBarSelectedBg: UIColor = UIColor(rgb: 0x131414)
+    let tabBarSelectedText: UIColor = UIColor(rgb: 0xEBEAE3)
     let popupBg: UIColor = UIColor(rgb: 0x323035)
     let inputBg: UIColor = UIColor(rgb: 0, alpha: 0.5)
     let inputText: UIColor = UIColor(rgb: 0xB2B1A8)
