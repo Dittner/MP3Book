@@ -5,7 +5,7 @@ A simple player for listening to audiobooks, lectures, music in MP3 format. Enjo
 
 <p align="center">
     <a href="https://apps.apple.com/us/app/mp3-book/id1494599422?l=de&amp;ls=1">
-        <img src="./demo/appStoreIcon.svg" alt="App Store">
+        <img src="./de_dittner_mp3book/resources/demo/appStoreIcon.svg" alt="App Store">
     </a>
 </p>
 

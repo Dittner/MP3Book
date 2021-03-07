@@ -36,17 +36,28 @@ class FontConstants {
             l13 = Font.custom(.helveticaLight, size: 13)
             t26 = Font.custom(.helveticaThin, size: 26)
             t16 = Font.custom(.helveticaThin, size: 16)
+        } else if UIDevice.current.maxSizeInPx < 2100 {
+            b16 = Font.custom(.helveticaNeueBold, size: 18)
+            b14 = Font.custom(.helveticaNeueBold, size: 17)
+            r16 = Font.custom(.helveticaNeue, size: 18)
+            r15 = Font.custom(.helveticaNeue, size: 17)
+            r14 = Font.custom(.helveticaNeue, size: 16)
+            r12 = Font.custom(.helveticaNeue, size: 14)
+            r11 = Font.custom(.helveticaNeue, size: 13)
+            l13 = Font.custom(.helveticaLight, size: 15)
+            t26 = Font.custom(.helveticaThin, size: 30)
+            t16 = Font.custom(.helveticaThin, size: 18)
         } else {
-            b16 = Font.custom(.helveticaNeueBold, size: 17)
-            b14 = Font.custom(.helveticaNeueBold, size: 15)
-            r16 = Font.custom(.helveticaNeue, size: 17)
-            r15 = Font.custom(.helveticaNeue, size: 16)
-            r14 = Font.custom(.helveticaNeue, size: 15)
-            r12 = Font.custom(.helveticaNeue, size: 13)
-            r11 = Font.custom(.helveticaNeue, size: 12)
-            l13 = Font.custom(.helveticaLight, size: 14)
-            t26 = Font.custom(.helveticaThin, size: 28)
-            t16 = Font.custom(.helveticaThin, size: 17)
+            b16 = Font.custom(.helveticaNeueBold, size: 21)
+            b14 = Font.custom(.helveticaNeueBold, size: 19)
+            r16 = Font.custom(.helveticaNeue, size: 21)
+            r15 = Font.custom(.helveticaNeue, size: 20)
+            r14 = Font.custom(.helveticaNeue, size: 19)
+            r12 = Font.custom(.helveticaNeue, size: 17)
+            r11 = Font.custom(.helveticaNeue, size: 16)
+            l13 = Font.custom(.helveticaLight, size: 18)
+            t26 = Font.custom(.helveticaThin, size: 35)
+            t16 = Font.custom(.helveticaThin, size: 21)
         }
     }
 }
@@ -59,6 +70,8 @@ class SizeConstants {
     let playerHeight: CGFloat
     let playRateSelectorWidth: CGFloat
     let navigationBarHeight: CGFloat
+    let playModeTabBarHeight: CGFloat
+    let playerSliderHeight: CGFloat
 
     init() {
         if UIDevice.current.userInterfaceIdiom == .phone {
@@ -69,7 +82,9 @@ class SizeConstants {
             playerHeight = 180
             playRateSelectorWidth = 100
             navigationBarHeight = 60
-        } else {
+            playModeTabBarHeight = 65
+            playerSliderHeight = 24
+        } else if UIDevice.current.maxSizeInPx < 2100 {
             popupWidth = 450
             bookListCellHeight = 80
             folderListCellHeight = 80
@@ -77,6 +92,18 @@ class SizeConstants {
             playerHeight = 200
             playRateSelectorWidth = 120
             navigationBarHeight = 60
+            playModeTabBarHeight = 70
+            playerSliderHeight = 28
+        } else {
+            popupWidth = 450
+            bookListCellHeight = 90
+            folderListCellHeight = 90
+            fileListCellHeight = 80
+            playerHeight = 220
+            playRateSelectorWidth = 150
+            navigationBarHeight = 70
+            playModeTabBarHeight = 70
+            playerSliderHeight = 32
         }
     }
 }

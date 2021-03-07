@@ -133,7 +133,7 @@ struct PlayModeTabBar: View {
             }
         }
         .zIndex(1)
-        .frame(height: 65)
+        .frame(height: Constants.size.playModeTabBarHeight)
         .cornerRadius(radius: 20, corners: [.bottomLeft, .bottomRight])
         .padding(.bottom, 0)
     }

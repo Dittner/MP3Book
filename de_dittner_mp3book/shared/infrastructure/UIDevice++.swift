@@ -15,6 +15,12 @@ extension UIDevice {
         #endif
     }
 
+    var maxSizeInPx: Int {
+        let maxWidth = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) * UIScreen.main.scale
+        logInfo(msg: "max device width: \(maxWidth)")
+        return Int(max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) * UIScreen.main.scale)
+    }
+
     var modelName: String {
         var identifier: String = ""
 

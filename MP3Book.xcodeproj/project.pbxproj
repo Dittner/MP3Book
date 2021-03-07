@@ -56,7 +56,6 @@
 		5B9EA85425CC1BF0009B14A5 /* UIDevice++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9EA85125CC1BF0009B14A5 /* UIDevice++.swift */; };
 		5B9EA85625CC1BF0009B14A5 /* URL++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9EA85325CC1BF0009B14A5 /* URL++.swift */; };
 		5B9EA87D25CC5C5F009B14A5 /* record.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5B9EA87A25CC5C5F009B14A5 /* record.mp3 */; };
-		5B9EA87E25CC5C5F009B14A5 /* readme_screenshoots.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5B9EA87B25CC5C5F009B14A5 /* readme_screenshoots.jpg */; };
 		5B9EA87F25CC5C5F009B14A5 /* appStoreIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 5B9EA87C25CC5C5F009B14A5 /* appStoreIcon.svg */; };
 		5B9EA88425CC5F16009B14A5 /* DetailedError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9EA88325CC5F16009B14A5 /* DetailedError.swift */; };
 		5BA4553B25DA5E32001160CF /* PlaylistBooksToHashMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA4553A25DA5E32001160CF /* PlaylistBooksToHashMapper.swift */; };
@@ -64,6 +63,7 @@
 		5BA4555325DAE5D7001160CF /* PlayerAppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA4555225DAE5D7001160CF /* PlayerAppService.swift */; };
 		5BA4555825DAE6AC001160CF /* MediaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA4555725DAE6AC001160CF /* MediaAPI.swift */; };
 		5BB048F925E7B880004655C7 /* ReloadAudioFilesFromIPodLibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB048F825E7B880004655C7 /* ReloadAudioFilesFromIPodLibraryService.swift */; };
+		5BB1B00125F50A5A002CBC31 /* readme_screenshoot.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BB1B00025F50A5A002CBC31 /* readme_screenshoot.png */; };
 		5BBD49B225D94DF7009480B4 /* PlaylistDomainEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBD49B125D94DF7009480B4 /* PlaylistDomainEntity.swift */; };
 		5BD0EF4B25D80A00006CF6B0 /* AddBooksToPlaylistDomainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0EF4A25D80A00006CF6B0 /* AddBooksToPlaylistDomainService.swift */; };
 		5BD0EF5825D821F8006CF6B0 /* BookSerializerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0EF5725D821F8006CF6B0 /* BookSerializerTests.swift */; };
@@ -169,7 +169,6 @@
 		5B9EA85125CC1BF0009B14A5 /* UIDevice++.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice++.swift"; sourceTree = "<group>"; };
 		5B9EA85325CC1BF0009B14A5 /* URL++.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL++.swift"; sourceTree = "<group>"; };
 		5B9EA87A25CC5C5F009B14A5 /* record.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = record.mp3; sourceTree = "<group>"; };
-		5B9EA87B25CC5C5F009B14A5 /* readme_screenshoots.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = readme_screenshoots.jpg; sourceTree = "<group>"; };
 		5B9EA87C25CC5C5F009B14A5 /* appStoreIcon.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = appStoreIcon.svg; sourceTree = "<group>"; };
 		5B9EA88325CC5F16009B14A5 /* DetailedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedError.swift; sourceTree = "<group>"; };
 		5BA4553A25DA5E32001160CF /* PlaylistBooksToHashMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistBooksToHashMapper.swift; sourceTree = "<group>"; };
@@ -177,6 +176,7 @@
 		5BA4555225DAE5D7001160CF /* PlayerAppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerAppService.swift; sourceTree = "<group>"; };
 		5BA4555725DAE6AC001160CF /* MediaAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaAPI.swift; sourceTree = "<group>"; };
 		5BB048F825E7B880004655C7 /* ReloadAudioFilesFromIPodLibraryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadAudioFilesFromIPodLibraryService.swift; sourceTree = "<group>"; };
+		5BB1B00025F50A5A002CBC31 /* readme_screenshoot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = readme_screenshoot.png; sourceTree = "<group>"; };
 		5BB422BC25E5B86600C1FABC /* MP3Book.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MP3Book.entitlements; sourceTree = "<group>"; };
 		5BBD49B125D94DF7009480B4 /* PlaylistDomainEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistDomainEntity.swift; sourceTree = "<group>"; };
 		5BD0EF4A25D80A00006CF6B0 /* AddBooksToPlaylistDomainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBooksToPlaylistDomainService.swift; sourceTree = "<group>"; };
@@ -464,8 +464,8 @@
 		5B9EA87925CC5C45009B14A5 /* demo */ = {
 			isa = PBXGroup;
 			children = (
+				5BB1B00025F50A5A002CBC31 /* readme_screenshoot.png */,
 				5B9EA87C25CC5C5F009B14A5 /* appStoreIcon.svg */,
-				5B9EA87B25CC5C5F009B14A5 /* readme_screenshoots.jpg */,
 				5B9EA87A25CC5C5F009B14A5 /* record.mp3 */,
 			);
 			path = demo;
@@ -802,6 +802,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5BE7D30625F2422F00304B0C /* .swiftlint.yml in Resources */,
+				5BB1B00125F50A5A002CBC31 /* readme_screenshoot.png in Resources */,
 				5BF7532925CDBDC000C3F1E0 /* George Orwell – 1984 in Resources */,
 				5BF7530A25CDBC5900C3F1E0 /* test.mp3 in Resources */,
 				5BE8CAB925C8993D00834AD6 /* Preview Assets.xcassets in Resources */,
@@ -809,7 +810,6 @@
 				5B63739C25E18EB200FB7BBE /* Assets.xcassets in Resources */,
 				5B5197A425E9487D00FA5CA4 /* Localizable.strings in Resources */,
 				5B9EA87D25CC5C5F009B14A5 /* record.mp3 in Resources */,
-				5B9EA87E25CC5C5F009B14A5 /* readme_screenshoots.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -102,7 +102,7 @@ struct PlayRateSelector: View {
                     .frame(width: 25, height: 15)
                     .offset(y: -2)
 
-                Spacer().frame(height: Constants.size.playerHeight - 70)
+                Spacer().frame(height: Constants.size.playerHeight * 0.55)
             }.shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 10)
         }
     }

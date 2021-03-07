@@ -16,8 +16,8 @@ struct SliderView: View {
     let maxValue: Double
     let distance: Double
 
-    let thumbRadius: CGFloat = 12
-    let sliderHeight: CGFloat = 24
+    let sliderHeight: CGFloat = Constants.size.playerSliderHeight
+    let thumbRadius: CGFloat = Constants.size.playerSliderHeight / 2
     let trackHeight: CGFloat
     let trackColor: Color
 
