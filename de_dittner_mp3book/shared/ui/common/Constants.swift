@@ -72,6 +72,7 @@ class SizeConstants {
     let navigationBarHeight: CGFloat
     let playModeTabBarHeight: CGFloat
     let playerSliderHeight: CGFloat
+    let actionBtnSize: CGFloat
 
     init() {
         if UIDevice.current.userInterfaceIdiom == .phone {
@@ -84,6 +85,7 @@ class SizeConstants {
             navigationBarHeight = 60
             playModeTabBarHeight = 65
             playerSliderHeight = 24
+            actionBtnSize = 50
         } else if UIDevice.current.maxSizeInPx < 2100 {
             popupWidth = 450
             bookListCellHeight = 80
@@ -94,6 +96,7 @@ class SizeConstants {
             navigationBarHeight = 60
             playModeTabBarHeight = 70
             playerSliderHeight = 28
+            actionBtnSize = 60
         } else {
             popupWidth = 450
             bookListCellHeight = 90
@@ -104,6 +107,7 @@ class SizeConstants {
             navigationBarHeight = 70
             playModeTabBarHeight = 70
             playerSliderHeight = 32
+            actionBtnSize = 75
         }
     }
 }

@@ -37,7 +37,7 @@ struct AudioFileListView: View {
                                 vm.resortFiles()
                             }
                         } else {
-                            Spacer().frame(width: 50)
+                            Spacer().frame(width: Constants.size.actionBtnSize)
                         }
                     }
                 }
@@ -224,7 +224,7 @@ struct FileCell: View {
                 Image(notifier.playState == .playing ? "pause" : "play")
                     .renderingMode(.template)
                     .allowsHitTesting(false)
-                    .frame(width: 50)
+                    .frame(width: Constants.size.actionBtnSize)
 
                 Text(title)
                     .font(Constants.font.r14)
@@ -243,7 +243,7 @@ struct FileCell: View {
 
             Spacer()
 
-            HSeparatorView(horizontalPadding: -50)
+            HSeparatorView(horizontalPadding: -Constants.size.actionBtnSize)
         }
         .frame(height: Constants.size.fileListCellHeight)
         .background(themeObservable.theme.transparent.color)
@@ -305,7 +305,7 @@ struct BookmarkCell: View {
                         Image(notifier.playState == .playing ? "pause" : "play")
                             .renderingMode(.template)
                             .allowsHitTesting(false)
-                            .frame(width: 50)
+                            .frame(width: Constants.size.actionBtnSize)
                             .animation(.none)
 
                         Text(time)
@@ -331,7 +331,7 @@ struct BookmarkCell: View {
 
                     Spacer()
 
-                    HSeparatorView(horizontalPadding: -50)
+                    HSeparatorView(horizontalPadding: -Constants.size.actionBtnSize)
                 }.frame(width: geometry.size.width)
 
                 IconButton(iconName: "delete", iconColor: themeObservable.theme.deleteBtnIcon.color) {

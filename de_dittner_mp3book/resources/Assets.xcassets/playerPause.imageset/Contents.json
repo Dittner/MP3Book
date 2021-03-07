@@ -1,13 +1,17 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "filename" : "playerPauseBtn.pdf"
+      "filename" : "pause.pdf",
+      "idiom" : "iphone"
+    },
+    {
+      "filename" : "playerPause.pdf",
+      "idiom" : "ipad"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   },
   "properties" : {
     "preserves-vector-representation" : true

@@ -2,7 +2,11 @@
   "images" : [
     {
       "filename" : "addBookmark.pdf",
-      "idiom" : "universal"
+      "idiom" : "iphone"
+    },
+    {
+      "filename" : "addComment.pdf",
+      "idiom" : "ipad"
     }
   ],
   "info" : {

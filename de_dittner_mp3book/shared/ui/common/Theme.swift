@@ -56,7 +56,7 @@ struct LightTheme: Theme {
 struct DarkTheme: Theme {
     let id: String = "dark"
     let transparent: UIColor = UIColor(rgb: 0, alpha: 0.001)
-    let tint: UIColor = UIColor(rgb: 0xB2B1A8)
+    let tint: UIColor = UIColor(rgb: 0xC9C8C3)
     let toolbarColors = [Color(rgb: 0x101011), Color(rgb: 0x1C1C1D)]
     let playerColors = [Color(rgb: 0x1B1819), Color(rgb: 0x161213)]
     let appBgColors = [Color(rgb: 0x101011), Color(rgb: 0x131414), Color(rgb: 0x161213)]

@@ -2,7 +2,11 @@
   "images" : [
     {
       "filename" : "damaged.pdf",
-      "idiom" : "universal"
+      "idiom" : "iphone"
+    },
+    {
+      "filename" : "damaged-1.pdf",
+      "idiom" : "ipad"
     }
   ],
   "info" : {

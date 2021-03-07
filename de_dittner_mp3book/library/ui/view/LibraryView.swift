@@ -60,7 +60,7 @@ struct LibraryContent: View {
                             .foregroundColor(themeObservable.theme.text.color)
                             .frame(height: 20, alignment: .center)
 
-                        HSeparatorView(horizontalPadding: -50)
+                        HSeparatorView(horizontalPadding: 0)
 
                         ForEach(vm.wrappedFolders) { wrappedFolder in
                             WrapperFolderCell(w: wrappedFolder)
@@ -73,7 +73,7 @@ struct LibraryContent: View {
                                 .foregroundColor(themeObservable.theme.text.color)
                                 .frame(height: 20, alignment: .center)
 
-                            HSeparatorView(horizontalPadding: -50)
+                            HSeparatorView(horizontalPadding: 0)
 
                             ForEach(vm.wrappedPlaylists) { wrappedPlaylist in
                                 WrapperPlaylistCell(w: wrappedPlaylist)
@@ -134,7 +134,7 @@ struct ListCell: View {
             Image("folder")
                 .renderingMode(.template)
                 .allowsHitTesting(false)
-                .frame(width: isSubFolder ? 75 : 50)
+                .frame(width: isSubFolder ? 1.5 * Constants.size.actionBtnSize : Constants.size.actionBtnSize)
 
             VStack(alignment: .center, spacing: 4) {
                 Spacer()
@@ -151,17 +151,17 @@ struct ListCell: View {
 
                 Spacer()
 
-                HSeparatorView(horizontalPadding: -50)
+                HSeparatorView(horizontalPadding: (isSubFolder ? -1.5 * Constants.size.actionBtnSize : -Constants.size.actionBtnSize))
 
             }.frame(maxWidth: .infinity)
 
             Spacer()
-                .frame(width: isSubFolder ? 25 : 0)
+                .frame(width: isSubFolder ? Constants.size.actionBtnSize / 2 : 0)
 
             Image(selected ? "checkBoxSelected" : "checkBox")
                 .renderingMode(.template)
                 .allowsHitTesting(false)
-                .frame(width: 50)
+                .frame(width: Constants.size.actionBtnSize)
         }
         .frame(height: Constants.size.folderListCellHeight)
         .background(selected ? themeObservable.theme.listCellBg.color : themeObservable.theme.transparent.color)

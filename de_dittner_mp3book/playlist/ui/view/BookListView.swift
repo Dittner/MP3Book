@@ -17,7 +17,7 @@ struct BookListView: View {
             VStack(alignment: .center, spacing: -20) {
                 NavigationBar {
                     HStack {
-                        Spacer().frame(width: 50)
+                        Spacer().frame(width: Constants.size.actionBtnSize)
                         Spacer()
 
                         Text("Playlist")
@@ -307,7 +307,7 @@ struct BookCell: View {
                     .renderingMode(.template)
                     .allowsHitTesting(false)
                     .animation(.none)
-                    .frame(width: 50)
+                    .frame(width: Constants.size.actionBtnSize)
 
                 VStack(alignment: .center, spacing: 4) {
                     Spacer()
@@ -337,13 +337,13 @@ struct BookCell: View {
 
                     Spacer()
 
-                    HSeparatorView(horizontalPadding: -50)
+                    HSeparatorView(horizontalPadding: -Constants.size.actionBtnSize)
 
-                }.frame(width: geometry.size.width > 100 ? geometry.size.width - 100 : 100)
+                }.frame(width: geometry.size.width > 2 * Constants.size.actionBtnSize ? geometry.size.width - 2 * Constants.size.actionBtnSize : 100)
 
                 IconButton(iconName: "open", iconColor: book.playState == .stopped ? themeObservable.theme.text.color : themeObservable.theme.play.color) {
                     self.action(.open)
-                }.frame(width: 50, height: Constants.size.bookListCellHeight)
+                }.frame(width: Constants.size.actionBtnSize, height: Constants.size.bookListCellHeight)
 
                 IconButton(iconName: "delete", iconColor: themeObservable.theme.deleteBtnIcon.color) {
                     self.action(.delete)

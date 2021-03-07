@@ -2,7 +2,11 @@
   "images" : [
     {
       "filename" : "audioFile.pdf",
-      "idiom" : "universal"
+      "idiom" : "iphone"
+    },
+    {
+      "filename" : "audioFile-1.pdf",
+      "idiom" : "ipad"
     }
   ],
   "info" : {

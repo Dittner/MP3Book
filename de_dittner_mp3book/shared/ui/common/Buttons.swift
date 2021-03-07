@@ -10,7 +10,7 @@ import SwiftUI
 struct IconButton: View {
     var iconName: String
     var iconColor: Color
-    var width: CGFloat = 50
+    var width: CGFloat = Constants.size.actionBtnSize
     var height: CGFloat = 50
     let onAction: () -> Void
 

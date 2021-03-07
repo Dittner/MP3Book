@@ -50,9 +50,14 @@ class SharedContext {
         aboutLog += "v." + ver + "." + build + "\n"
 
         let device = UIDevice.current
+        let scaleFactor = UIScreen.main.scale
+        let deviceSize = UIScreen.main.bounds
         aboutLog += "simulator: " + device.isSimulator.description + "\n"
         aboutLog += "device: " + device.modelName + "\n"
         aboutLog += "os: " + device.systemName + " " + device.systemVersion + "\n"
+        aboutLog += "device scaleFactor: \(scaleFactor)\n"
+        aboutLog += "device size: \(Int(deviceSize.width * scaleFactor))/\(Int(deviceSize.height * scaleFactor))\n"
+
         #if DEBUG
             aboutLog += "debug mode\n"
             aboutLog += "docs folder: \\" + URLS.documentsURL.description
