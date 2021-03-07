@@ -20,3 +20,17 @@
 "CheckPlaylist %@" = "Check if the playlist «%@» exists and it is copied on the iOS device";
 "CheckFileExistInAppData %@" = "Check the app's directory if the file «%@» exists";
 "CheckFileExistInMediaLib %@ %@" = "Check if the playlist «%@» exists and it has a file «%@»";
+"howToAddFiles" = "How to add audio files to the MP3-Book?";
+
+"ManualMac" = "1. Open a Finder window.
+2. Connect your iPhone, iPad, or iPod touch to your computer with a USB cable.
+3. Select your device in the Finder.
+4. Click the Files tab to see a list of apps that can share files.
+5. Select the folders with mp3-files that you want to copy.
+6. Drag the folders to the MP3-Book app on your device. The Finder copies the files to your device.";
+
+"ManualWin1-2" = "1. Connect your device to your computer.
+2. In the iTunes app on your PC, click the Device button near the top left of the iTunes window.";
+"ManualWin3" = "3. Click File Sharing.";
+"ManualWin4-5" = "4. In the list on the left, select MP3Book on your device.
+5. Transfer files from your computer to your device: Click Add, select the folders with audio-files you want to transfer, then click Add.";

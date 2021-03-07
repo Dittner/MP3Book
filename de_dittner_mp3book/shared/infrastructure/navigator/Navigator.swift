@@ -12,6 +12,7 @@ enum ScreenID: String {
     case bookList
     case audioFileList
     case library
+    case manual
 }
 
 struct ScreenPosition {

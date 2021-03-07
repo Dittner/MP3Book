@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct LibraryView: View {
-    @Environment(\.presentationMode) var presentation
     @ObservedObject var themeObservable = ThemeObservable.shared
+    @ObservedObject var vm = LibraryVM.shared
 
     var body: some View {
         VStack(alignment: .center, spacing: -20) {
             NavigationBar {
                 HStack {
                     TextButton(text: "Cancel", textColor: themeObservable.theme.tint.color, font: Constants.font.r14) {
-                        LibraryVM.shared.cancel()
+                        vm.cancel()
                     }
 
                     Spacer()
@@ -29,12 +29,13 @@ struct LibraryView: View {
                     Spacer()
 
                     TextButton(text: "Done", textColor: themeObservable.theme.tint.color, font: Constants.font.b14) {
-                        LibraryVM.shared.apply()
+                        vm.apply()
                     }
                 }.padding()
             }.navigationBarShadow()
 
             LibraryContent()
+                .frame(maxWidth: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
         }
     }
@@ -80,6 +81,14 @@ struct LibraryContent: View {
                             }
                         }
                     }
+
+                    TextButton(text: "howToAddFiles", textColor: themeObservable.theme.tint.color, font: Constants.font.b14, height: Constants.size.folderListCellHeight) {
+                        vm.openManual()
+                    }
+
+                    HSeparatorView(horizontalPadding: 0)
+
+                    Spacer()
                 }
             }
             .clipped()
@@ -151,7 +160,7 @@ struct ListCell: View {
 
                 Spacer()
 
-                HSeparatorView(horizontalPadding: (isSubFolder ? -1.5 * Constants.size.actionBtnSize : -Constants.size.actionBtnSize))
+                HSeparatorView(horizontalPadding: isSubFolder ? -1.5 * Constants.size.actionBtnSize : -Constants.size.actionBtnSize)
 
             }.frame(maxWidth: .infinity)
 

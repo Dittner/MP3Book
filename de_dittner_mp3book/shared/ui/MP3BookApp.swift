@@ -79,6 +79,13 @@ struct ContentView: View {
                         .offset(x: pos, y: 0)
                         .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
                 }
+
+                if let pos = navigator.screenPosition.xPosition(id: .manual) {
+                    ManualView()
+                        .background(AppBG())
+                        .offset(x: pos, y: 0)
+                        .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
+                }
             }
             .onAppear {
                 navigator.appWidth = geo.size.width

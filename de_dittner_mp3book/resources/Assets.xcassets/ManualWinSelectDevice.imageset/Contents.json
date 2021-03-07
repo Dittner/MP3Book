@@ -1,0 +1,25 @@
+{
+  "images" : [
+    {
+      "filename" : "EN_SelectDeviceInITunes.png",
+      "idiom" : "universal"
+    },
+    {
+      "filename" : "DE_SelectDeviceInITunes.png",
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
+      "filename" : "RU_SelectDeviceInITunes.png",
+      "idiom" : "universal",
+      "locale" : "ru"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "localizable" : true
+  }
+}

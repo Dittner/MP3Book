@@ -1,0 +1,25 @@
+{
+  "images" : [
+    {
+      "filename" : "EN_SharedFiles.png",
+      "idiom" : "universal"
+    },
+    {
+      "filename" : "DE_SharedFiles.png",
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
+      "filename" : "RU_SharedFiles.png",
+      "idiom" : "universal",
+      "locale" : "ru"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "localizable" : true
+  }
+}

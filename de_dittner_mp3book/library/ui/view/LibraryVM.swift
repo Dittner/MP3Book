@@ -69,6 +69,10 @@ class LibraryVM: ViewModel, ObservableObject {
         context.playlistsPort.write(wrappedPlaylists.filter { $0.selected }.map { $0.data })
         navigator.goBack(to: .bookList)
     }
+
+    func openManual() {
+        navigator.navigate(to: .manual)
+    }
 }
 
 class Wrapper<Element: Identifiable>: ObservableObject, Identifiable {
