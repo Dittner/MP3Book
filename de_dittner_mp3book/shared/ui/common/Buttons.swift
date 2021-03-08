@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct IconButton: View {
-    var iconName: String
-    var iconColor: Color
+    var name: FontIcon
+    var size: CGFloat
+    var color: Color
     var width: CGFloat = Constants.size.actionBtnSize
     var height: CGFloat = 50
     let onAction: () -> Void
@@ -17,11 +18,12 @@ struct IconButton: View {
     @State private var onPressed = false
 
     var body: some View {
-        Image(iconName)
-            .renderingMode(.template)
+        Text(name.rawValue)
+            .lineLimit(1)
+            .font(.custom("mp3bookIcons", size: size * Constants.scaleFactor))
             .frame(width: width, height: height)
             .contentShape(Rectangle())
-            .foregroundColor(onPressed ? iconColor.opacity(0.5) : iconColor)
+            .foregroundColor(onPressed ? color.opacity(0.5) : color)
             .onTapGesture {
                 self.onAction()
             }
@@ -78,7 +80,8 @@ struct PressActions: ViewModifier {
 }
 
 struct TabBarButton: View {
-    var icon: String
+    var icon: FontIcon
+    var iconSize: CGFloat
     var title: LocalizedStringKey
     var theme: Theme
     let selected: Bool
@@ -90,8 +93,8 @@ struct TabBarButton: View {
         VStack(alignment: .center, spacing: 2) {
             Spacer()
 
-            Image(icon)
-                .renderingMode(.template)
+            Icon(name: icon, size: iconSize)
+                .allowsHitTesting(false)
 
             Text(title)
                 .font(Constants.font.r11)

@@ -12,16 +12,17 @@ class ManualVM: ViewModel, ObservableObject {
     static var shared: ManualVM = ManualVM(id: .manual)
     @Published var isMacOSSelected: Bool = true
 
-    private let context: LibraryContext
-
     override init(id: ScreenID) {
         logInfo(msg: "ManualVM init")
-        context = LibraryContext.shared
-
         super.init(id: id)
     }
 
     func goBack() {
         navigator.goBack(to: .library)
+    }
+
+    func removeManual() {
+        UserDefaults.standard.set(true, forKey: "isManualHidden")
+        goBack()
     }
 }

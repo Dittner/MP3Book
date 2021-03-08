@@ -15,11 +15,21 @@ struct ManualView: View {
         VStack(alignment: .center, spacing: -20) {
             NavigationBar {
                 HStack {
-                    IconButton(iconName: "back", iconColor: themeObservable.theme.tint.color) {
+                    IconButton(name: .back, size: 18, color: themeObservable.theme.tint.color) {
                         self.vm.goBack()
                     }
 
                     Spacer()
+
+                    Text("ManualTitle")
+                        .font(Constants.font.b16)
+                        .foregroundColor(themeObservable.theme.tint.color)
+
+                    Spacer()
+
+                    IconButton(name: .delete, size: 18, color: themeObservable.theme.tint.color) {
+                        self.vm.removeManual()
+                    }
                 }
             }
 
@@ -97,13 +107,13 @@ struct OSTabBar: View {
 
     var body: some View {
         HStack(alignment: .bottom, spacing: 0) {
-            TabBarButton(icon: "winLogo", title: "Windows", theme: themeObservable.theme, selected: !vm.isMacOSSelected) {
+            TabBarButton(icon: .winLogo, iconSize: 15, title: "Windows", theme: themeObservable.theme, selected: !vm.isMacOSSelected) {
                 if self.vm.isMacOSSelected {
                     self.vm.isMacOSSelected = false
                 }
             }
 
-            TabBarButton(icon: "appleLogo", title: "MacOS", theme: themeObservable.theme, selected: vm.isMacOSSelected) {
+            TabBarButton(icon: .appleLogo, iconSize: 15, title: "MacOS", theme: themeObservable.theme, selected: vm.isMacOSSelected) {
                 if !self.vm.isMacOSSelected {
                     vm.isMacOSSelected = true
                 }

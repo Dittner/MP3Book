@@ -26,7 +26,7 @@ struct BookListView: View {
 
                         Spacer()
 
-                        IconButton(iconName: "add", iconColor: themeObservable.theme.tint.color) {
+                        IconButton(name: .add, size: 18, color: themeObservable.theme.tint.color) {
                             self.vm.addBooks()
                         }
                     }
@@ -154,7 +154,7 @@ struct AddBookmarkForm: View {
                     .lineLimit(2)
 
                 HStack(alignment: .center, spacing: 0) {
-                    IconButton(iconName: "prev", iconColor: themeObservable.theme.tint.color) {
+                    IconButton(name: .back, size: 18, color: themeObservable.theme.tint.color) {
                         self.decreaseTime()
                     }
 
@@ -162,7 +162,7 @@ struct AddBookmarkForm: View {
                         .font(Constants.font.t26)
                         .lineLimit(1)
 
-                    IconButton(iconName: "next", iconColor: themeObservable.theme.tint.color) {
+                    IconButton(name: .next, size: 18, color: themeObservable.theme.tint.color) {
                         self.increaseTime()
                     }
                 }
@@ -303,8 +303,7 @@ struct BookCell: View {
     var body: some View {
         GeometryReader { geometry in
             HStack(alignment: .center, spacing: 0) {
-                Image(book.isDamaged ? "damaged" : book.playState == .playing ? "pause" : "play")
-                    .renderingMode(.template)
+                Icon(name: book.isDamaged ? .damaged : book.playState == .playing ? .pause : .play, size: 12)
                     .allowsHitTesting(false)
                     .animation(.none)
                     .frame(width: Constants.size.actionBtnSize)
@@ -326,9 +325,9 @@ struct BookCell: View {
                         Spacer().frame(width: 5)
 
                         if bookmarkColl.count > 0 {
-                            Image("bookmarkSmall")
-                                .renderingMode(.template)
+                            Icon(name: .bookmarkSmall, size: 12)
                                 .allowsHitTesting(false)
+
                             Text(bookmarkColl.count.description)
                                 .font(Constants.font.r12)
                                 .lineLimit(1)
@@ -338,14 +337,14 @@ struct BookCell: View {
                     Spacer()
 
                     HSeparatorView(horizontalPadding: -Constants.size.actionBtnSize)
+                }
+                .frame(width: geometry.size.width > 2 * Constants.size.actionBtnSize ? geometry.size.width - 2 * Constants.size.actionBtnSize : 100)
 
-                }.frame(width: geometry.size.width > 2 * Constants.size.actionBtnSize ? geometry.size.width - 2 * Constants.size.actionBtnSize : 100)
-
-                IconButton(iconName: "open", iconColor: book.playState == .stopped ? themeObservable.theme.text.color : themeObservable.theme.play.color) {
+                IconButton(name: .open, size: 14, color: book.playState == .stopped ? themeObservable.theme.text.color : themeObservable.theme.play.color) {
                     self.action(.open)
                 }.frame(width: Constants.size.actionBtnSize, height: Constants.size.bookListCellHeight)
 
-                IconButton(iconName: "delete", iconColor: themeObservable.theme.deleteBtnIcon.color) {
+                IconButton(name: .delete, size: 18, color: themeObservable.theme.deleteBtnIcon.color) {
                     self.action(.delete)
                 }.frame(width: 70, height: Constants.size.bookListCellHeight)
                     .background(themeObservable.theme.deleteBtnBg.color)

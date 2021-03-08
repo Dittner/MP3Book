@@ -94,8 +94,7 @@ struct PlayerView: View {
                 Text(getTitle(playMode: book.playMode, index: notifier.index, count: notifier.count))
 
                 if book.playMode == .bookmark {
-                    Image("bookmarkSmall")
-                        .renderingMode(.template)
+                    Icon(name: .bookmarkSmall, size: 12)
                         .allowsHitTesting(false)
                         .offset(x: 2, y: 2)
                 }
@@ -117,8 +116,7 @@ struct PlayerView: View {
                         .font(Constants.font.r11)
                         .lineLimit(1)
 
-                    Image("volume")
-                        .renderingMode(.template)
+                    Icon(name: .volume, size: 12)
                         .allowsHitTesting(false)
 
                 }.frame(width: 50, height: 50, alignment: .leading)
@@ -135,7 +133,7 @@ struct PlayerView: View {
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    IconButton(iconName: "playerBackward", iconColor: themeObservable.theme.tint.color) {
+                    IconButton(name: .playerBackward, size: 12, color: themeObservable.theme.tint.color) {
                         self.action(.playPrev)
                     }
                     .frame(width: 50, height: 50, alignment: .center)
@@ -151,7 +149,7 @@ struct PlayerView: View {
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    IconButton(iconName: book.playState == .playing ? "playerPause" : "playerPlay", iconColor: themeObservable.theme.tint.color) {
+                    IconButton(name: book.playState == .playing ? .playerPause : .playerPlay, size: 18, color: themeObservable.theme.tint.color) {
                         self.action(book.playState == .playing ? .pause : .play(b: book))
                     }
                     .frame(width: 50, height: 50, alignment: .center)
@@ -170,7 +168,7 @@ struct PlayerView: View {
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    IconButton(iconName: "playerForward", iconColor: themeObservable.theme.tint.color) {
+                    IconButton(name: .playerForward, size: 11, color: themeObservable.theme.tint.color) {
                         self.action(.playNext)
                     }
                     .frame(width: 50, height: 50, alignment: .center)
@@ -179,7 +177,7 @@ struct PlayerView: View {
                 Spacer()
 
                 VStack(alignment: .trailing, spacing: -10) {
-                    IconButton(iconName: "addBookmark", iconColor: themeObservable.theme.tint.color) {
+                    IconButton(name: .addBookmark, size: 24, color: themeObservable.theme.tint.color) {
                         withAnimation {
                             self.action(.addBookmark)
                         }

@@ -18,7 +18,7 @@ struct AudioFileListView: View {
             VStack(alignment: .center, spacing: -20) {
                 NavigationBar {
                     HStack(alignment: .center, spacing: 0) {
-                        IconButton(iconName: "back", iconColor: themeObservable.theme.tint.color) {
+                        IconButton(name: .back, size: 18, color: themeObservable.theme.tint.color) {
                             self.vm.goBack()
                         }
 
@@ -33,7 +33,7 @@ struct AudioFileListView: View {
                         Spacer()
 
                         if vm.selectedBook?.source == .iPodLibrary {
-                            IconButton(iconName: "sort", iconColor: themeObservable.theme.tint.color) {
+                            IconButton(name: .sort, size: 18, color: themeObservable.theme.tint.color) {
                                 vm.resortFiles()
                             }
                         } else {
@@ -120,13 +120,13 @@ struct PlayModeTabBar: View {
 
     var body: some View {
         HStack(alignment: .bottom, spacing: 0) {
-            TabBarButton(icon: "bookmark", title: getBookmarksTitle(), theme: themeObservable.theme, selected: book.playMode == .bookmark) {
+            TabBarButton(icon: .bookmark, iconSize: 15, title: getBookmarksTitle(), theme: themeObservable.theme, selected: book.playMode == .bookmark) {
                 if self.book.playMode != .bookmark {
                     self.book.playMode = .bookmark
                 }
             }
 
-            TabBarButton(icon: "audioFile", title: getAudioFilesTitle(), theme: themeObservable.theme, selected: book.playMode == .audioFile) {
+            TabBarButton(icon: .audioFile, iconSize: 15, title: getAudioFilesTitle(), theme: themeObservable.theme, selected: book.playMode == .audioFile) {
                 if self.book.playMode != .audioFile {
                     self.book.playMode = .audioFile
                 }
@@ -221,8 +221,7 @@ struct FileCell: View {
             Spacer()
 
             HStack(alignment: .center, spacing: 0) {
-                Image(notifier.playState == .playing ? "pause" : "play")
-                    .renderingMode(.template)
+                Icon(name: notifier.playState == .playing ? .pause : .play, size: 12)
                     .allowsHitTesting(false)
                     .frame(width: Constants.size.actionBtnSize)
 
@@ -302,8 +301,7 @@ struct BookmarkCell: View {
                     Spacer()
 
                     HStack(alignment: .center, spacing: 0) {
-                        Image(notifier.playState == .playing ? "pause" : "play")
-                            .renderingMode(.template)
+                        Icon(name: notifier.playState == .playing ? .pause : .play, size: 12)
                             .allowsHitTesting(false)
                             .frame(width: Constants.size.actionBtnSize)
                             .animation(.none)
@@ -334,7 +332,7 @@ struct BookmarkCell: View {
                     HSeparatorView(horizontalPadding: -Constants.size.actionBtnSize)
                 }.frame(width: geometry.size.width)
 
-                IconButton(iconName: "delete", iconColor: themeObservable.theme.deleteBtnIcon.color) {
+                IconButton(name: .delete, size: 18, color: themeObservable.theme.deleteBtnIcon.color) {
                     self.action(.delete)
                 }.frame(width: 70, height: Constants.size.fileListCellHeight)
                     .background(themeObservable.theme.deleteBtnBg.color)

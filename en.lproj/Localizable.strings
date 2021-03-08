@@ -22,6 +22,8 @@
 "CheckFileExistInMediaLib %@ %@" = "Check if the playlist «%@» exists and it has a file «%@»";
 "howToAddFiles" = "How to add audio files to the MP3-Book?";
 
+"ManualTitle" = "Manual";
+
 "ManualMac" = "1. Open a Finder window.
 2. Connect your iPhone, iPad, or iPod touch to your computer with a USB cable.
 3. Select your device in the Finder.
@@ -32,5 +34,5 @@
 "ManualWin1-2" = "1. Connect your device to your computer.
 2. In the iTunes app on your PC, click the Device button near the top left of the iTunes window.";
 "ManualWin3" = "3. Click File Sharing.";
-"ManualWin4-5" = "4. In the list on the left, select MP3Book on your device.
+"ManualWin4-5" = "4. In the list on the left, select MP3-Book on your device.
 5. Transfer files from your computer to your device: Click Add, select the folders with audio-files you want to transfer, then click Add.";

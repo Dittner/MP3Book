@@ -243,6 +243,15 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
             }
             .store(in: &disposeBag)
 
+        $playState
+            .removeDuplicates()
+            .dropFirst()
+            .filter { $0 != .playing }
+            .sink { _ in
+                self.dispatcher.notify(.bookStateChanged(book: self))
+            }
+            .store(in: &disposeBag)
+
         $isDamaged
             .removeDuplicates()
             .dropFirst()

@@ -22,6 +22,8 @@
 "CheckFileExistInMediaLib %@ %@" = "Überprüfen Sie die Medienbibliothek, ob die Playlist «%@» vorhanden ist und sie enthält die Audiodatei «%@»";
 "howToAddFiles" = "Wie kann ich meine Audiodateien in die App kopieren?";
 
+"ManualTitle" = "Handbuch";
+
 "ManualMac" = "1. Öffne ein Finder-Fenster.
 2. Schließe dein iPhone, iPad oder deinen iPod touch über ein USB-Kabel an deinen Computer an.
 3. Wähle dein Gerät im Finder aus.
@@ -32,5 +34,5 @@
 "ManualWin1-2" = "1. Schließe dein Gerät an deinen Computer an.
 2. Klicke in der iTunes-App auf dem PC auf die Schaltfläche »Gerät« oben links im iTunes-Fenster.";
 "ManualWin3" = "3. Klicke auf »Dateifreigabe«.";
-"ManualWin4-5" = "4. Wähle links in der Liste die App MP3Book auf dem Gerät aus.
+"ManualWin4-5" = "4. Wähle links in der Liste die App MP3-Book auf dem Gerät aus.
 5. Um Datei vom Computer auf dein Gerät zu übertragen, klicke auf »Hinzufügen«, wähle die Ordner mit Audiodateien aus, und klicke auf »Hinzufügen«.";

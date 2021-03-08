@@ -46,29 +46,17 @@ struct LibraryContent: View {
     @ObservedObject var themeObservable = ThemeObservable.shared
 
     var body: some View {
-        if vm.isLoading {
-            Spacer()
-            ActivityIndicator(isAnimating: $vm.isLoading)
-            Spacer()
-        } else {
-            ScrollView {
-                Spacer().frame(height: 20)
-                LazyVStack(alignment: .center, spacing: 0) {
-                    if vm.wrappedFolders.count > 0 {
-                        Text("App Data")
-                            .font(Constants.font.r11)
-                            .lineLimit(1)
-                            .foregroundColor(themeObservable.theme.text.color)
-                            .frame(height: 20, alignment: .center)
-
-                        HSeparatorView(horizontalPadding: 0)
-
-                        ForEach(vm.wrappedFolders) { wrappedFolder in
-                            WrapperFolderCell(w: wrappedFolder)
-                        }
-
-                        if vm.wrappedPlaylists.count > 0 {
-                            Text("Media Library")
+        VStack(alignment: .center, spacing: 0) {
+            if vm.isLoading {
+                Spacer()
+                ActivityIndicator(isAnimating: $vm.isLoading)
+                Spacer()
+            } else {
+                ScrollView {
+                    Spacer().frame(height: 20)
+                    LazyVStack(alignment: .center, spacing: 0) {
+                        if vm.wrappedFolders.count > 0 {
+                            Text("App Data")
                                 .font(Constants.font.r11)
                                 .lineLimit(1)
                                 .foregroundColor(themeObservable.theme.text.color)
@@ -76,22 +64,40 @@ struct LibraryContent: View {
 
                             HSeparatorView(horizontalPadding: 0)
 
-                            ForEach(vm.wrappedPlaylists) { wrappedPlaylist in
-                                WrapperPlaylistCell(w: wrappedPlaylist)
+                            ForEach(vm.wrappedFolders) { wrappedFolder in
+                                WrapperFolderCell(w: wrappedFolder)
+                            }
+
+                            if vm.wrappedPlaylists.count > 0 {
+                                Text("Media Library")
+                                    .font(Constants.font.r11)
+                                    .lineLimit(1)
+                                    .foregroundColor(themeObservable.theme.text.color)
+                                    .frame(height: 20, alignment: .center)
+
+                                HSeparatorView(horizontalPadding: 0)
+
+                                ForEach(vm.wrappedPlaylists) { wrappedPlaylist in
+                                    WrapperPlaylistCell(w: wrappedPlaylist)
+                                }
                             }
                         }
-                    }
 
-                    TextButton(text: "howToAddFiles", textColor: themeObservable.theme.tint.color, font: Constants.font.b14, height: Constants.size.folderListCellHeight) {
+                        Spacer()
+
+                    }.frame(maxHeight: .infinity)
+                }
+                .clipped()
+
+                if !vm.isManualHidden {
+                    TextButton(text: "howToAddFiles", textColor: themeObservable.theme.tint.color, font: Constants.font.b14, height: 100) {
                         vm.openManual()
-                    }
-
-                    HSeparatorView(horizontalPadding: 0)
-
-                    Spacer()
+                    }.frame(maxWidth: .infinity)
+                        .background(Rectangle()
+                            .fill(LinearGradient(gradient: Gradient(colors: themeObservable.theme.playerColors), startPoint: .top, endPoint: .bottom))
+                            .cornerRadius(radius: 20, corners: [.topLeft, .topRight]))
                 }
             }
-            .clipped()
         }
     }
 }
@@ -140,8 +146,7 @@ struct ListCell: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
-            Image("folder")
-                .renderingMode(.template)
+            Icon(name: .folder, size: 12)
                 .allowsHitTesting(false)
                 .frame(width: isSubFolder ? 1.5 * Constants.size.actionBtnSize : Constants.size.actionBtnSize)
 
@@ -167,8 +172,7 @@ struct ListCell: View {
             Spacer()
                 .frame(width: isSubFolder ? Constants.size.actionBtnSize / 2 : 0)
 
-            Image(selected ? "checkBoxSelected" : "checkBox")
-                .renderingMode(.template)
+            Icon(name: selected ? .checkBoxSelected : .checkBox, size: 14)
                 .allowsHitTesting(false)
                 .frame(width: Constants.size.actionBtnSize)
         }

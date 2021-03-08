@@ -14,6 +14,7 @@ class LibraryVM: ViewModel, ObservableObject {
     @Published var isLoading = false
     @Published var wrappedFolders: [Wrapper<Folder>] = []
     @Published var wrappedPlaylists: [Wrapper<Playlist>] = []
+    @Published var isManualHidden: Bool = false
 
     private let context: LibraryContext
 
@@ -27,6 +28,7 @@ class LibraryVM: ViewModel, ObservableObject {
     override func screenActivated() {
         super.screenActivated()
         loadFiles()
+        isManualHidden = UserDefaults.standard.bool(forKey: "isManualHidden")
     }
 
     func loadFiles() {

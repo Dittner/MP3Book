@@ -8,8 +8,19 @@
 import SwiftUI
 
 class Constants {
-    static let font: FontConstants = FontConstants()
-    static let size: SizeConstants = SizeConstants()
+    static let scaleFactor: CGFloat = getScaleFactor()
+    static let font = FontConstants(getScaleFactor())
+    static let size = SizeConstants(getScaleFactor())
+
+    private static func getScaleFactor() -> CGFloat {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return 1
+        } else if UIDevice.current.maxSizeInPx < 2100 {
+            return 1
+        } else {
+            return 4 / 3
+        }
+    }
 }
 
 class FontConstants {
@@ -24,42 +35,44 @@ class FontConstants {
     let t26: Font
     let t16: Font
 
-    init() {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            b16 = Font.custom(.helveticaNeueBold, size: 16)
-            b14 = Font.custom(.helveticaNeueBold, size: 14)
-            r16 = Font.custom(.helveticaNeue, size: 16)
-            r15 = Font.custom(.helveticaNeue, size: 15)
-            r14 = Font.custom(.helveticaNeue, size: 14)
-            r12 = Font.custom(.helveticaNeue, size: 12)
-            r11 = Font.custom(.helveticaNeue, size: 11)
-            l13 = Font.custom(.helveticaLight, size: 13)
-            t26 = Font.custom(.helveticaThin, size: 26)
-            t16 = Font.custom(.helveticaThin, size: 16)
-        } else if UIDevice.current.maxSizeInPx < 2100 {
-            b16 = Font.custom(.helveticaNeueBold, size: 18)
-            b14 = Font.custom(.helveticaNeueBold, size: 17)
-            r16 = Font.custom(.helveticaNeue, size: 18)
-            r15 = Font.custom(.helveticaNeue, size: 17)
-            r14 = Font.custom(.helveticaNeue, size: 16)
-            r12 = Font.custom(.helveticaNeue, size: 14)
-            r11 = Font.custom(.helveticaNeue, size: 13)
-            l13 = Font.custom(.helveticaLight, size: 15)
-            t26 = Font.custom(.helveticaThin, size: 30)
-            t16 = Font.custom(.helveticaThin, size: 18)
-        } else {
-            b16 = Font.custom(.helveticaNeueBold, size: 21)
-            b14 = Font.custom(.helveticaNeueBold, size: 19)
-            r16 = Font.custom(.helveticaNeue, size: 21)
-            r15 = Font.custom(.helveticaNeue, size: 20)
-            r14 = Font.custom(.helveticaNeue, size: 19)
-            r12 = Font.custom(.helveticaNeue, size: 17)
-            r11 = Font.custom(.helveticaNeue, size: 16)
-            l13 = Font.custom(.helveticaLight, size: 18)
-            t26 = Font.custom(.helveticaThin, size: 35)
-            t16 = Font.custom(.helveticaThin, size: 21)
-        }
+    init(_ scaleFactor: CGFloat) {
+        b16 = Font.custom(.helveticaNeueBold, size: 16 * scaleFactor)
+        b14 = Font.custom(.helveticaNeueBold, size: 14 * scaleFactor)
+        r16 = Font.custom(.helveticaNeue, size: 16 * scaleFactor)
+        r15 = Font.custom(.helveticaNeue, size: 15 * scaleFactor)
+        r14 = Font.custom(.helveticaNeue, size: 14 * scaleFactor)
+        r12 = Font.custom(.helveticaNeue, size: 12 * scaleFactor)
+        r11 = Font.custom(.helveticaNeue, size: 11 * scaleFactor)
+        l13 = Font.custom(.helveticaLight, size: 13 * scaleFactor)
+        t26 = Font.custom(.helveticaThin, size: 26 * scaleFactor)
+        t16 = Font.custom(.helveticaThin, size: 16 * scaleFactor)
     }
+}
+
+enum FontIcon: String {
+    case add = "\u{e900}"
+    case addBookmark = "\u{e901}"
+    case appleLogo = "\u{e902}"
+    case audioFile = "\u{e903}"
+    case back = "\u{e904}"
+    case bookmark = "\u{e905}"
+    case bookmarkSmall = "\u{e906}"
+    case checkBox = "\u{e907}"
+    case checkBoxSelected = "\u{e908}"
+    case damaged = "\u{e909}"
+    case delete = "\u{e90a}"
+    case folder = "\u{e90b}"
+    case next = "\u{e90c}"
+    case open = "\u{e90d}"
+    case pause = "\u{e90e}"
+    case play = "\u{e90f}"
+    case playerBackward = "\u{e910}"
+    case playerForward = "\u{e911}"
+    case playerPause = "\u{e912}"
+    case playerPlay = "\u{e913}"
+    case sort = "\u{e914}"
+    case volume = "\u{e915}"
+    case winLogo = "\u{e916}"
 }
 
 class SizeConstants {
@@ -74,40 +87,16 @@ class SizeConstants {
     let playerSliderHeight: CGFloat
     let actionBtnSize: CGFloat
 
-    init() {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            popupWidth = 300
-            bookListCellHeight = 75
-            folderListCellHeight = 75
-            fileListCellHeight = 60
-            playerHeight = 180
-            playRateSelectorWidth = 100
-            navigationBarHeight = 60
-            playModeTabBarHeight = 65
-            playerSliderHeight = 24
-            actionBtnSize = 50
-        } else if UIDevice.current.maxSizeInPx < 2100 {
-            popupWidth = 450
-            bookListCellHeight = 80
-            folderListCellHeight = 80
-            fileListCellHeight = 70
-            playerHeight = 200
-            playRateSelectorWidth = 120
-            navigationBarHeight = 60
-            playModeTabBarHeight = 70
-            playerSliderHeight = 28
-            actionBtnSize = 60
-        } else {
-            popupWidth = 450
-            bookListCellHeight = 90
-            folderListCellHeight = 90
-            fileListCellHeight = 80
-            playerHeight = 220
-            playRateSelectorWidth = 150
-            navigationBarHeight = 70
-            playModeTabBarHeight = 70
-            playerSliderHeight = 32
-            actionBtnSize = 75
-        }
+    init(_ scaleFactor: CGFloat) {
+        popupWidth = 300 * scaleFactor
+        bookListCellHeight = 75 * scaleFactor
+        folderListCellHeight = 75 * scaleFactor
+        fileListCellHeight = 60 * scaleFactor
+        playerHeight = 180 * scaleFactor
+        playRateSelectorWidth = 100 * scaleFactor
+        navigationBarHeight = 60 * scaleFactor
+        playModeTabBarHeight = 65 * scaleFactor
+        playerSliderHeight = 24 * scaleFactor
+        actionBtnSize = 50 * scaleFactor
     }
 }
