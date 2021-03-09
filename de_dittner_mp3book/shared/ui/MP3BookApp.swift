@@ -50,6 +50,7 @@ struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var navigator = Navigator.shared
     @ObservedObject var alertBox = AlertBox.shared
+    let debugLineColor = UIColor(rgb: 0x00C3FF, alpha: 0.5)
 
     var body: some View {
         if colorScheme == .dark {
@@ -86,6 +87,11 @@ struct ContentView: View {
                         .offset(x: pos, y: 0)
                         .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
                 }
+
+//                Color(debugLineColor).frame(width: 0.5).offset(x: -geo.size.width / 2 + Constants.size.actionBtnSize / 2)
+//                Color(debugLineColor).frame(width: 0.5).offset(x: geo.size.width / 2 - Constants.size.actionBtnSize / 2)
+//                Color(debugLineColor).frame(width: 0.5).offset(x: 0)
+//                Color(debugLineColor).frame(height: 0.5).offset(x: 0)
             }
             .onAppear {
                 navigator.appWidth = geo.size.width

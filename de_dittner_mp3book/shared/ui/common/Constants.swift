@@ -16,7 +16,7 @@ class Constants {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return 1
         } else if UIDevice.current.maxSizeInPx < 2100 {
-            return 1
+            return 9 / 8
         } else {
             return 4 / 3
         }

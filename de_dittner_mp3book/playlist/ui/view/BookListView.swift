@@ -172,7 +172,6 @@ struct AddBookmarkForm: View {
                         Text("Optional comment")
                             .font(Constants.font.r14)
                             .lineLimit(1)
-                            .opacity(0.8)
                             .padding(.horizontal, 14)
                             .padding(.vertical, 8)
                             .foregroundColor(themeObservable.theme.inputText.color)

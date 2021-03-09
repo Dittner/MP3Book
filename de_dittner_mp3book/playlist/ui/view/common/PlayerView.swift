@@ -133,7 +133,7 @@ struct PlayerView: View {
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    IconButton(name: .playerBackward, size: 12, color: themeObservable.theme.tint.color) {
+                    IconButton(name: .playerBackward, size: 11, color: themeObservable.theme.tint.color) {
                         self.action(.playPrev)
                     }
                     .frame(width: 50, height: 50, alignment: .center)
@@ -149,7 +149,7 @@ struct PlayerView: View {
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    IconButton(name: book.playState == .playing ? .playerPause : .playerPlay, size: 18, color: themeObservable.theme.tint.color) {
+                    IconButton(name: book.playState == .playing ? .playerPause : .playerPlay, size: 17, color: themeObservable.theme.tint.color) {
                         self.action(book.playState == .playing ? .pause : .play(b: book))
                     }
                     .frame(width: 50, height: 50, alignment: .center)
@@ -177,7 +177,7 @@ struct PlayerView: View {
                 Spacer()
 
                 VStack(alignment: .trailing, spacing: -10) {
-                    IconButton(name: .addBookmark, size: 24, color: themeObservable.theme.tint.color) {
+                    IconButton(name: .addBookmark, size: 22, color: themeObservable.theme.tint.color) {
                         withAnimation {
                             self.action(.addBookmark)
                         }
@@ -189,7 +189,7 @@ struct PlayerView: View {
                         .lineLimit(1)
                         .frame(width: 50, alignment: .center)
 
-                }.offset(x: 15)
+                }.offset(x: 16)
             }
             .lineLimit(1)
         }
