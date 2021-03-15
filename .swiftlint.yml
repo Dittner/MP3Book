@@ -1,6 +1,6 @@
 excluded:
-- Carthage
 - Pods
+- fastlane
 - SwiftLint/Common/3rdPartyLib
 
 disabled_rules: # rule identifiers to exclude from running

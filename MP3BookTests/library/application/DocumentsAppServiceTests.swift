@@ -10,7 +10,7 @@ import XCTest
 
 class DocumentsAppServiceTests: XCTestCase {
     let destFolderName: String = "Test"
-    let srcFolderName: String = "George Orwell – 1984"
+    let srcFolderName: String = "1984"
 
     override func tearDownWithError() throws {
         let destDemoFolderURL = URLS.documentsURL.appendingPathComponent(destFolderName)

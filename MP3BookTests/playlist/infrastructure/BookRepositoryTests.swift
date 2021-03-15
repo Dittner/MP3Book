@@ -69,18 +69,19 @@ class BookRepositoryTests: XCTestCase {
     func convertFoldersAndAddBooksToRepo() throws {
         let dispatcher = PlaylistDispatcher()
         let audioFileSerializer = AudioFileSerializer(dispatcher: dispatcher)
-        let bookSerializer = BookSerializer(fileSerializer: audioFileSerializer, dispatcher: dispatcher)
-        let bookRepository = JSONBookRepository(serializer: bookSerializer, dispatcher: dispatcher, storeTo: storageURL)
-        let addBooksToPlaylistDomainService = AddBooksToPlaylistDomainService(repo: bookRepository)
-        let foldersToBooksMapper = FolderToMP3BookMapper(repo: bookRepository, dispatcher: dispatcher)
+        let serializer = BookSerializer(fileSerializer: audioFileSerializer, dispatcher: dispatcher)
+        let repo = JSONBookRepository(serializer: serializer, dispatcher: dispatcher, storeTo: storageURL)
+        let folderToBookMapper = FolderToBookMapper(repo: repo, dispatcher: dispatcher)
+        let playlistToBookMapper = PlaylistToBookMapper(repo: repo, dispatcher: dispatcher)
+        let factory = BookFactory(repo: repo, folderToBook: folderToBookMapper, playlistToBook: playlistToBookMapper)
 
-        waitWhenRepoIsReady(repo: bookRepository, dispatcher: dispatcher)
+        waitWhenRepoIsReady(repo: repo, dispatcher: dispatcher)
 
         var isFirstRequestProcessed = false
         var isSecondRequestProcessed = false
         var isThirdRequestProcessed = false
 
-        let subscription = bookRepository.subject.sink { books in
+        let subscription = repo.subject.sink { books in
             if !isFirstRequestProcessed {
                 isFirstRequestProcessed = true
                 XCTAssertEqual(books.count, 0)
@@ -100,25 +101,23 @@ class BookRepositoryTests: XCTestCase {
 
         XCTAssertTrue(isFirstRequestProcessed)
 
-        let realBooks = foldersToBooksMapper.convert(from: [realFolder])
-        try addBooksToPlaylistDomainService.add(realBooks, from: .documents)
+        factory.create(from: [realFolder])
 
         XCTAssertTrue(isSecondRequestProcessed)
 
-        let fakeBooks = foldersToBooksMapper.convert(from: [fakeFolder])
-        fakeBook = fakeBooks[0]
-        try addBooksToPlaylistDomainService.add(fakeBooks, from: .documents)
+        factory.create(from: [fakeFolder])
+        fakeBook = repo.read(fakeFolder.id)
 
         XCTAssertTrue(isThirdRequestProcessed)
 
-        XCTAssertTrue(bookRepository.has(realFolder.id))
-        XCTAssertTrue(bookRepository.has(fakeFolder.id))
-        XCTAssertFalse(bookRepository.read(realFolder.id)!.addedToPlaylist)
-        XCTAssertTrue(bookRepository.read(fakeFolder.id)!.addedToPlaylist)
+        XCTAssertTrue(repo.has(realFolder.id))
+        XCTAssertTrue(repo.has(fakeFolder.id))
+        XCTAssertFalse(repo.read(realFolder.id)!.addedToPlaylist)
+        XCTAssertTrue(repo.read(fakeFolder.id)!.addedToPlaylist)
 
         subscription.cancel()
 
-        waitWhenRepoStoredBooks(repo: bookRepository, dispatcher: dispatcher)
+        waitWhenRepoStoredBooks(repo: repo, dispatcher: dispatcher)
     }
 
     func waitWhenRepoIsReady(repo: JSONBookRepository, dispatcher: PlaylistDispatcher) {
