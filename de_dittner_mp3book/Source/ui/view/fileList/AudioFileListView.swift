@@ -105,11 +105,11 @@ struct PlayModeTabBar: View {
     }
 
     func getBookmarksTitle() -> LocalizedStringKey {
-        bookmarkColl.count > 1 ? "\(bookmarkColl.count) bookmarks" : "\(bookmarkColl.count) bookmark"
+        bookmarkColl.count == 1 ? "\(bookmarkColl.count) bookmark" : "\(bookmarkColl.count) bookmarks"
     }
 
     func getAudioFilesTitle() -> LocalizedStringKey {
-        book.audioFileColl.count > 1 ? "\(book.audioFileColl.count) audio files" : "\(book.audioFileColl.count) audio file"
+        book.audioFileColl.count == 1 ? "\(book.audioFileColl.count) audio file" : "\(book.audioFileColl.count) audio files"
     }
 
     var body: some View {

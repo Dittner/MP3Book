@@ -17,6 +17,7 @@ struct LibraryView: View {
                 TextButton(text: "Cancel", textColor: themeObservable.theme.tint.color, font: Constants.font.r14) {
                     vm.cancel()
                 }
+                .padding(.horizontal)
                 .navigationBarLeading(navigationBarSideWidth)
 
                 Text("Library")
@@ -27,9 +28,9 @@ struct LibraryView: View {
                 TextButton(text: "Done", textColor: themeObservable.theme.tint.color, font: Constants.font.b14) {
                     vm.apply()
                 }
+                .padding(.horizontal)
                 .navigationBarTrailing(navigationBarSideWidth)
             }.navigationBarShadow()
-            .padding()
 
             LibraryContent()
                 .frame(maxWidth: .infinity)
@@ -109,7 +110,9 @@ struct WrapperFolderCell: View {
         wrappedFolder = w
         title = w.data.title
         isSubFolder = w.data.depth > 1
-        subTitle = String(w.data.files.count) + " files" + ", " + DateTimeUtils.secToHHMMSS(w.data.totalDuration)
+        let filesCount = w.data.files.count
+        let files = String(format: NSLocalizedString(filesCount == 1 ? "%lld audio file" : "%lld audio files", comment: ""), filesCount)
+        subTitle = "\(files), \(DateTimeUtils.secToHHMMSS(w.data.totalDuration))"
     }
 
     var body: some View {
@@ -125,7 +128,10 @@ struct WrapperPlaylistCell: View {
     init(w: Wrapper<Playlist>) {
         wrappedFolder = w
         title = w.data.title
-        subTitle = String(w.data.files.count) + " files" + ", " + DateTimeUtils.secToHHMMSS(w.data.totalDuration)
+
+        let filesCount = w.data.files.count
+        let files = String(format: NSLocalizedString(filesCount == 1 ? "%lld audio file" : "%lld audio files", comment: ""), filesCount)
+        subTitle = "\(files), \(DateTimeUtils.secToHHMMSS(w.data.totalDuration))"
     }
 
     var body: some View {

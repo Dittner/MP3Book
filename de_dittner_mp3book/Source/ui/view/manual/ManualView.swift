@@ -28,7 +28,7 @@ struct ManualView: View {
                     self.vm.removeManual()
                 }
                 .navigationBarTrailing(navigationBarSideWidth)
-            }.navigationBarShadow()
+            }
 
             OSTabBar()
                 .navigationBarShadow()

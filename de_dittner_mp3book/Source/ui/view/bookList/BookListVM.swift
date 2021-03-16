@@ -63,7 +63,6 @@ class BookListVM: ViewModel, ObservableObject {
             isLoading = false
         } else {
             context.dispatcher.subject
-                .debounce(for: 0.2, scheduler: RunLoop.main)
                 .sink { event in
                     switch event {
                     case .repositoryIsReady:
