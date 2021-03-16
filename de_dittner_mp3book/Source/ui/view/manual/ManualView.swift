@@ -13,25 +13,22 @@ struct ManualView: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: -20) {
-            NavigationBar {
-                HStack {
-                    IconButton(name: .back, size: 18, color: themeObservable.theme.tint.color) {
-                        self.vm.goBack()
-                    }
-
-                    Spacer()
-
-                    Text("ManualTitle")
-                        .font(Constants.font.b16)
-                        .foregroundColor(themeObservable.theme.tint.color)
-
-                    Spacer()
-
-                    IconButton(name: .delete, size: 18, color: themeObservable.theme.tint.color) {
-                        self.vm.removeManual()
-                    }
+            NavigationBar { navigationBarSideWidth in
+                IconButton(name: .back, size: 18, color: themeObservable.theme.tint.color) {
+                    self.vm.goBack()
                 }
-            }
+                .navigationBarLeading(navigationBarSideWidth)
+
+                Text("ManualTitle")
+                    .font(Constants.font.b16)
+                    .foregroundColor(themeObservable.theme.tint.color)
+                    .navigationBarTitle(navigationBarSideWidth)
+
+                IconButton(name: .delete, size: 18, color: themeObservable.theme.tint.color) {
+                    self.vm.removeManual()
+                }
+                .navigationBarTrailing(navigationBarSideWidth)
+            }.navigationBarShadow()
 
             OSTabBar()
                 .navigationBarShadow()

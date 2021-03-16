@@ -13,26 +13,23 @@ struct LibraryView: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: -20) {
-            NavigationBar {
-                HStack {
-                    TextButton(text: "Cancel", textColor: themeObservable.theme.tint.color, font: Constants.font.r14) {
-                        vm.cancel()
-                    }
+            NavigationBar { navigationBarSideWidth in
+                TextButton(text: "Cancel", textColor: themeObservable.theme.tint.color, font: Constants.font.r14) {
+                    vm.cancel()
+                }
+                .navigationBarLeading(navigationBarSideWidth)
 
-                    Spacer()
+                Text("Library")
+                    .font(Constants.font.b16)
+                    .foregroundColor(themeObservable.theme.tint.color)
+                    .navigationBarTitle(navigationBarSideWidth)
 
-                    Text("Library").bold()
-                        .font(Constants.font.b16)
-                        .foregroundColor(themeObservable.theme.tint.color)
-                        .offset(x: -5)
-
-                    Spacer()
-
-                    TextButton(text: "Done", textColor: themeObservable.theme.tint.color, font: Constants.font.b14) {
-                        vm.apply()
-                    }
-                }.padding()
+                TextButton(text: "Done", textColor: themeObservable.theme.tint.color, font: Constants.font.b14) {
+                    vm.apply()
+                }
+                .navigationBarTrailing(navigationBarSideWidth)
             }.navigationBarShadow()
+            .padding()
 
             LibraryContent()
                 .frame(maxWidth: .infinity)

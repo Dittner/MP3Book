@@ -38,7 +38,7 @@ class MP3BookContext {
 
             let folders = uiTestingDocsService.createTestContent().folders
             let books = FolderToBookMapper(repo: uiTestingRepo, dispatcher: dispatcher).convert(from: folders)
-            try? uiTestingRepo.write(books)
+            uiTestingRepo.write(books)
 
             documentsAppService = uiTestingDocsService
             bookRepository = uiTestingRepo

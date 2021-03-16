@@ -16,29 +16,23 @@ struct AudioFileListView: View {
     var body: some View {
         ZStack {
             VStack(alignment: .center, spacing: -20) {
-                NavigationBar {
-                    HStack(alignment: .center, spacing: 0) {
-                        IconButton(name: .back, size: 18, color: themeObservable.theme.tint.color) {
-                            self.vm.goBack()
-                        }
+                NavigationBar { navigationBarSideWidth in
+                    IconButton(name: .back, size: 18, color: themeObservable.theme.tint.color) {
+                        self.vm.goBack()
+                    }
+                    .navigationBarLeading(navigationBarSideWidth)
 
-                        Spacer()
+                    Text(vm.selectedBook?.title ?? "")
+                        .lineLimit(2)
+                        .font(Constants.font.b16)
+                        .foregroundColor(themeObservable.theme.tint.color)
+                        .multilineTextAlignment(.center)
+                        .navigationBarTitle(navigationBarSideWidth)
 
-                        Text(vm.selectedBook?.title ?? "")
-                            .lineLimit(2)
-                            .font(Constants.font.b16)
-                            .foregroundColor(themeObservable.theme.tint.color)
-                            .multilineTextAlignment(.center)
-
-                        Spacer()
-
-                        if vm.selectedBook?.source == .iPodLibrary {
-                            IconButton(name: .sort, size: 18, color: themeObservable.theme.tint.color) {
-                                vm.resortFiles()
-                            }
-                        } else {
-                            Spacer().frame(width: Constants.size.actionBtnSize)
-                        }
+                    if vm.selectedBook?.source == .iPodLibrary {
+                        IconButton(name: .sort, size: 18, color: themeObservable.theme.tint.color) {
+                            vm.resortFiles()
+                        }.navigationBarTrailing(navigationBarSideWidth)
                     }
                 }
 

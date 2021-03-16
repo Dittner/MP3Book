@@ -15,22 +15,18 @@ struct BookListView: View {
     var body: some View {
         ZStack {
             VStack(alignment: .center, spacing: -20) {
-                NavigationBar {
-                    HStack {
-                        Spacer().frame(width: Constants.size.actionBtnSize)
-                        Spacer()
+                NavigationBar { navigationBarSideWidth in
+                    Text("Playlist")
+                        .font(Constants.font.b16)
+                        .foregroundColor(themeObservable.theme.tint.color)
+                        .navigationBarTitle(navigationBarSideWidth)
 
-                        Text("Playlist")
-                            .font(Constants.font.b16)
-                            .foregroundColor(themeObservable.theme.tint.color)
-
-                        Spacer()
-
-                        IconButton(name: .add, size: 18, color: themeObservable.theme.tint.color) {
-                            self.vm.addBooks()
-                        }.accessibilityIdentifier("addBooks")
-                    }
-                }.navigationBarShadow()
+                    IconButton(name: .add, size: 18, color: themeObservable.theme.tint.color) {
+                        self.vm.addBooks()
+                    }.accessibilityIdentifier("addBooks")
+                        .navigationBarTrailing(navigationBarSideWidth)
+                }
+                .navigationBarShadow()
 
                 PlaylistContent(vm: vm)
             }
