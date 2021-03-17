@@ -26,6 +26,10 @@ class MP3BookUITests: XCTestCase {
 
         snapshot("01BookList", waitForLoadingIndicator: true)
 
+        XCUIApplication().scrollViews.otherElements.staticTexts["open-\(UITestBook.freud.rawValue)"].tap()
+        snapshot("02FileList", waitForLoadingIndicator: true)
+        app/*@START_MENU_TOKEN@*/ .staticTexts["back"]/*[[".staticTexts[\"\"]",".staticTexts[\"back\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ .tap()
+
         app/*@START_MENU_TOKEN@*/ .staticTexts["addBooks"]/*[[".staticTexts[\"\"]",".staticTexts[\"addBooks\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ .tap()
 
         snapshot("03Library", waitForLoadingIndicator: true)

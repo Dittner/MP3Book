@@ -14,7 +14,7 @@ struct ManualView: View {
     var body: some View {
         VStack(alignment: .center, spacing: -20) {
             NavigationBar { navigationBarSideWidth in
-                IconButton(name: .back, size: 18, color: themeObservable.theme.tint.color) {
+                IconButton(name: .back, size: 18, color: themeObservable.theme.navigation.color) {
                     self.vm.goBack()
                 }
                 .navigationBarLeading(navigationBarSideWidth)
@@ -24,7 +24,7 @@ struct ManualView: View {
                     .foregroundColor(themeObservable.theme.tint.color)
                     .navigationBarTitle(navigationBarSideWidth)
 
-                IconButton(name: .delete, size: 18, color: themeObservable.theme.tint.color) {
+                IconButton(name: .delete, size: 18, color: themeObservable.theme.navigation.color) {
                     self.vm.removeManual()
                 }
                 .navigationBarTrailing(navigationBarSideWidth)

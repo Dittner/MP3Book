@@ -29,6 +29,7 @@ protocol Theme {
     var inputText: UIColor { get }
     var deleteBtnBg: UIColor { get }
     var deleteBtnIcon: UIColor { get }
+    var navigation: UIColor { get }
 }
 
 struct LightTheme: Theme {
@@ -51,6 +52,7 @@ struct LightTheme: Theme {
     let inputText: UIColor = UIColor(rgb: 0x5A595C)
     let deleteBtnBg: UIColor = UIColor(rgb: 0xEAD6DC)
     let deleteBtnIcon: UIColor = UIColor(rgb: 0x5A595C)
+    let navigation: UIColor = UIColor(rgb: 0x81656f)
 }
 
 struct DarkTheme: Theme {
@@ -73,6 +75,7 @@ struct DarkTheme: Theme {
     let inputText: UIColor = UIColor(rgb: 0xB2B1A8)
     let deleteBtnBg: UIColor = UIColor(rgb: 0x4F1D35)
     let deleteBtnIcon: UIColor = UIColor(rgb: 0xB2B1A8)
+    let navigation: UIColor = UIColor(rgb: 0xe1d7ca)
 }
 
 class ThemeObservable: ObservableObject {

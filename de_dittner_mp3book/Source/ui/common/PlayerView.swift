@@ -86,21 +86,22 @@ struct PlayerView: View {
         VStack(alignment: .center, spacing: 5) {
             HStack(alignment: .top, spacing: 0) {
                 Text(DateTimeUtils.secToHHMMSS(notifier.time))
-                    .frame(width: 150, alignment: .leading)
+                    .font(Constants.font.r12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
-                Spacer()
                 Text(getTitle(index: notifier.index, count: notifier.count))
+                    .font(Constants.font.r12)
+                    .layoutPriority(1)
 
                 if book.playMode == .bookmark {
                     Icon(name: .bookmarkSmall, size: 12)
                         .allowsHitTesting(false)
                         .offset(x: 2, y: 2)
                 }
-                Spacer()
                 Text(DateTimeUtils.secToHHMMSS(notifier.duration))
-                    .frame(width: 150, alignment: .trailing)
+                    .font(Constants.font.r12)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
             }
-            .font(Constants.font.r12)
             .lineLimit(1)
 
             SliderView(progress: $notifier.progress, minValue: 0, maxValue: notifier.duration.asDouble, trackColor: themeObservable.theme.sliderTrack.color) { progress in

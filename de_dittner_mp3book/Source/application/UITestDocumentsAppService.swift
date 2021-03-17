@@ -9,8 +9,6 @@ import Combine
 import Foundation
 
 class UITestDocumentsAppService: DocumentsAppServiceProtocol {
-    private let testBooks = ["George Orwell – 1984", "Sigmund Freud – Die Zukunft einer Illusion", "Достоевский – Записки из подполья"]
-
     func read() throws -> DocumentsContent {
         return createTestContent()
     }
@@ -26,14 +24,15 @@ class UITestDocumentsAppService: DocumentsAppServiceProtocol {
 
         folders.append(demoFolder)
 
-        for folderName in testBooks {
+        let booksNames = UITestBook.allBooks().map { $0.rawValue }
+        for bookName in booksNames {
             var files: [FolderFile] = []
-            for i in 1 ... folderName.count {
-                let fileName = folderName + "/" + (i < 10 ? "0\(i).mp3" : "\(i).mp3")
+            for i in 1 ... bookName.count {
+                let fileName = bookName + "/" + (i < 10 ? "0\(i).mp3" : "\(i).mp3")
                 let testFile = FolderFile(filePath: fileName, name: fileName, duration: fileDuration)
                 files.append(testFile)
             }
-            folders.append(Folder(folderPath: folderName, title: folderName, parentFolderName: nil, totalDuration: files.count * fileDuration, files: files, depth: 1))
+            folders.append(Folder(folderPath: bookName, title: bookName, parentFolderName: nil, totalDuration: files.count * fileDuration, files: files, depth: 1))
         }
 
         return DocumentsContent(folders: folders, files: [], totalDuration: 0)

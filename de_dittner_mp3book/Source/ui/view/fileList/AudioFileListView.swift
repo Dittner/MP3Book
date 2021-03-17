@@ -17,9 +17,10 @@ struct AudioFileListView: View {
         ZStack {
             VStack(alignment: .center, spacing: -20) {
                 NavigationBar { navigationBarSideWidth in
-                    IconButton(name: .back, size: 18, color: themeObservable.theme.tint.color) {
+                    IconButton(name: .back, size: 18, color: themeObservable.theme.navigation.color) {
                         self.vm.goBack()
                     }
+                    .accessibilityIdentifier("back")
                     .navigationBarLeading(navigationBarSideWidth)
 
                     Text(vm.selectedBook?.title ?? "")
@@ -30,7 +31,7 @@ struct AudioFileListView: View {
                         .navigationBarTitle(navigationBarSideWidth)
 
                     if vm.selectedBook?.source == .iPodLibrary {
-                        IconButton(name: .sort, size: 18, color: themeObservable.theme.tint.color) {
+                        IconButton(name: .sort, size: 18, color: themeObservable.theme.navigation.color) {
                             vm.resortFiles()
                         }.navigationBarTrailing(navigationBarSideWidth)
                     }

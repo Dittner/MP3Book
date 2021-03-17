@@ -25,6 +25,8 @@
 		5B364F4825E703E6009F4037 /* PersistenceValidationDomainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B364F4725E703E6009F4037 /* PersistenceValidationDomainService.swift */; };
 		5B39F0EB25C89F5F00BC132C /* AudioFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39F0EA25C89F5F00BC132C /* AudioFile.swift */; };
 		5B39FD9025DC482C00AAAD1D /* Int++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39FD8F25DC482C00AAAD1D /* Int++.swift */; };
+		5B3EE31426021C5E00799180 /* UITestBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3EE31326021C5E00799180 /* UITestBook.swift */; };
+		5B3EE31E26021D1300799180 /* UITestBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3EE31326021C5E00799180 /* UITestBook.swift */; };
 		5B4AC38925E3B72400531956 /* NavigationBarShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4AC38825E3B72400531956 /* NavigationBarShadow.swift */; };
 		5B4AC39225E4247B00531956 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4AC39125E4247B00531956 /* PlayerView.swift */; };
 		5B5197A425E9487D00FA5CA4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5B5197A625E9487D00FA5CA4 /* Localizable.strings */; };
@@ -136,6 +138,7 @@
 		5B364F4725E703E6009F4037 /* PersistenceValidationDomainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceValidationDomainService.swift; sourceTree = "<group>"; };
 		5B39F0EA25C89F5F00BC132C /* AudioFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFile.swift; sourceTree = "<group>"; };
 		5B39FD8F25DC482C00AAAD1D /* Int++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int++.swift"; sourceTree = "<group>"; };
+		5B3EE31326021C5E00799180 /* UITestBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestBook.swift; sourceTree = "<group>"; };
 		5B4AC38825E3B72400531956 /* NavigationBarShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarShadow.swift; sourceTree = "<group>"; };
 		5B4AC39125E4247B00531956 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		5B5197A525E9487D00FA5CA4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -591,6 +594,7 @@
 		5BE8CACD25C8993D00834AD6 /* MP3BookUITests */ = {
 			isa = PBXGroup;
 			children = (
+				5B3EE31326021C5E00799180 /* UITestBook.swift */,
 				5B9D106D25FE3E0900B3DC45 /* SnapshotHelper.swift */,
 				5BE8CACE25C8993D00834AD6 /* MP3BookUITests.swift */,
 				5BE8CAD025C8993D00834AD6 /* Info.plist */,
@@ -811,6 +815,7 @@
 				5BE8CAB225C8993C00834AD6 /* MP3BookApp.swift in Sources */,
 				5BE92F1625DEEFA10029CC59 /* AudioFileListVM.swift in Sources */,
 				5B9EA88425CC5F16009B14A5 /* DetailedError.swift in Sources */,
+				5B3EE31E26021D1300799180 /* UITestBook.swift in Sources */,
 				5B4AC39225E4247B00531956 /* PlayerView.swift in Sources */,
 				5B1C3DEC25D46B3600B6F15A /* BookListVM.swift in Sources */,
 				5B1C3DF925D46CB800B6F15A /* Book.swift in Sources */,
@@ -879,6 +884,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5BE8CACF25C8993D00834AD6 /* MP3BookUITests.swift in Sources */,
+				5B3EE31426021C5E00799180 /* UITestBook.swift in Sources */,
 				5B9D106E25FE3E0900B3DC45 /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -176,7 +176,7 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
 
     @Published private(set) var bookmarkColl: BookmarkColl
     @Published private(set) var audioFileColl: AudioFileColl
-    @Published var coll: FileCollection
+    @Published private(set) var coll: FileCollection
 
     var destroyed: Bool = false
     private(set) var totalDurationAt: [Int: Int] = [:]

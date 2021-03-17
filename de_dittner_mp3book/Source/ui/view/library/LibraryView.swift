@@ -14,9 +14,10 @@ struct LibraryView: View {
     var body: some View {
         VStack(alignment: .center, spacing: -20) {
             NavigationBar { navigationBarSideWidth in
-                TextButton(text: "Cancel", textColor: themeObservable.theme.tint.color, font: Constants.font.r14) {
+                TextButton(text: "Cancel", textColor: themeObservable.theme.navigation.color, font: Constants.font.r14) {
                     vm.cancel()
                 }
+                .accessibilityIdentifier("cancel")
                 .padding(.horizontal)
                 .navigationBarLeading(navigationBarSideWidth)
 
@@ -25,7 +26,7 @@ struct LibraryView: View {
                     .foregroundColor(themeObservable.theme.tint.color)
                     .navigationBarTitle(navigationBarSideWidth)
 
-                TextButton(text: "Done", textColor: themeObservable.theme.tint.color, font: Constants.font.b14) {
+                TextButton(text: "Done", textColor: themeObservable.theme.navigation.color, font: Constants.font.b14) {
                     vm.apply()
                 }
                 .padding(.horizontal)
@@ -88,7 +89,7 @@ struct LibraryContent: View {
                 .clipped()
 
                 if !vm.isManualHidden {
-                    TextButton(text: "howToAddFiles", textColor: themeObservable.theme.tint.color, font: Constants.font.b14, height: 100) {
+                    TextButton(text: "howToAddFiles", textColor: themeObservable.theme.navigation.color, font: Constants.font.b14, height: 100) {
                         vm.openManual()
                     }.frame(maxWidth: .infinity)
                         .background(Rectangle()
@@ -110,9 +111,7 @@ struct WrapperFolderCell: View {
         wrappedFolder = w
         title = w.data.title
         isSubFolder = w.data.depth > 1
-        let filesCount = w.data.files.count
-        let files = String(format: NSLocalizedString(filesCount == 1 ? "%lld audio file" : "%lld audio files", comment: ""), filesCount)
-        subTitle = "\(files), \(DateTimeUtils.secToHHMMSS(w.data.totalDuration))"
+        subTitle = "\(w.data.files.count), \(DateTimeUtils.secToHHMMSS(w.data.totalDuration))"
     }
 
     var body: some View {
@@ -128,10 +127,7 @@ struct WrapperPlaylistCell: View {
     init(w: Wrapper<Playlist>) {
         wrappedFolder = w
         title = w.data.title
-
-        let filesCount = w.data.files.count
-        let files = String(format: NSLocalizedString(filesCount == 1 ? "%lld audio file" : "%lld audio files", comment: ""), filesCount)
-        subTitle = "\(files), \(DateTimeUtils.secToHHMMSS(w.data.totalDuration))"
+        subTitle = "\(w.data.files.count), \(DateTimeUtils.secToHHMMSS(w.data.totalDuration))"
     }
 
     var body: some View {
@@ -162,9 +158,15 @@ struct ListCell: View {
                     .lineLimit(2)
                     .multilineTextAlignment(.center)
 
-                Text(subTitle)
-                    .font(Constants.font.r12)
-                    .lineLimit(1)
+                HStack(alignment: .center, spacing: 1) {
+                    Icon(name: .audioFile, size: 9)
+                        .offset(y: 1)
+                        .allowsHitTesting(false)
+
+                    Text(subTitle)
+                        .font(Constants.font.r12)
+                        .lineLimit(1)
+                }
 
                 Spacer()
 

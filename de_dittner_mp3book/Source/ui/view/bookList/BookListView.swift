@@ -21,7 +21,7 @@ struct BookListView: View {
                         .foregroundColor(themeObservable.theme.tint.color)
                         .navigationBarTitle(navigationBarSideWidth)
 
-                    IconButton(name: .add, size: 18, color: themeObservable.theme.tint.color) {
+                    IconButton(name: .add, size: 18, color: themeObservable.theme.navigation.color) {
                         self.vm.addBooks()
                     }.accessibilityIdentifier("addBooks")
                         .navigationBarTrailing(navigationBarSideWidth)
@@ -337,7 +337,9 @@ struct BookCell: View {
 
                 IconButton(name: .open, size: 14, color: book.playState == .stopped ? themeObservable.theme.text.color : themeObservable.theme.play.color) {
                     self.action(.open)
-                }.frame(width: Constants.size.actionBtnSize, height: Constants.size.bookListCellHeight)
+                }
+                .accessibilityIdentifier("open-\(title)")
+                .frame(width: Constants.size.actionBtnSize, height: Constants.size.bookListCellHeight)
 
                 IconButton(name: .delete, size: 18, color: themeObservable.theme.deleteBtnIcon.color) {
                     self.action(.delete)
