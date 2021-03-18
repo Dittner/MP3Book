@@ -19,26 +19,26 @@ class AudioFile: PlaylistDomainEntity, ObservableObject, Identifiable {
     let duration: Int
     var book: Book!
 
-    init(uid: UID, id: ID, name: String, source: AudioFileSource, path: String, duration: Int, index: Int, dispatcher: PlaylistDispatcher) {
+    init(uid: UID, id: ID, name: String, path: String, duration: Int, index: Int, dispatcher: PlaylistDispatcher) {
         self.uid = uid
         self.id = id
         self.name = name
         self.duration = duration
         self.index = index
-        self.source = source
+        self.source = .documents
         self.path = path
         playlistID = nil
 
         super.init(dispatcher: dispatcher)
     }
 
-    init(uid: UID, id: ID, name: String, source: AudioFileSource, playlistID: UInt64, duration: Int, index: Int, dispatcher: PlaylistDispatcher) {
+    init(uid: UID, id: ID, name: String, playlistID: UInt64, duration: Int, index: Int, dispatcher: PlaylistDispatcher) {
         self.uid = uid
         self.id = id
         self.name = name
         self.duration = duration
         self.index = index
-        self.source = source
+        self.source = .iPodLibrary
         path = nil
         self.playlistID = playlistID
 

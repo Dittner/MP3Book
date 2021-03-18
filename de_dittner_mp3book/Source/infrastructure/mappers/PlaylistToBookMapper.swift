@@ -36,7 +36,7 @@ class PlaylistToBookMapper: PlaylistToBookMapperProtocol {
         var res = [AudioFile]()
         for (index, f) in files.enumerated() {
             let playlistID = f.playlistItem!.persistentID
-            let audioFile = AudioFile(uid: UID(), id: f.id, name: f.name, source: .iPodLibrary, playlistID: playlistID, duration: f.duration, index: index, dispatcher: dispatcher)
+            let audioFile = AudioFile(uid: UID(), id: f.id, name: f.name, playlistID: playlistID, duration: f.duration, index: index, dispatcher: dispatcher)
             res.append(audioFile)
         }
         return res

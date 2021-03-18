@@ -16,3 +16,8 @@ protocol IBookRepository {
     func write(_ books: [Book]) throws
     func remove(_ bookID: ID)
 }
+
+protocol IBookSerializer {
+    func serialize(_ b: Book) throws -> Data
+    func deserialize(data: Data) throws -> Book
+}

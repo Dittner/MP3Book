@@ -29,8 +29,7 @@ class MP3BookContext {
         iPodAppService = IPodAppService()
 
         let storageURL = URLS.libraryURL.appendingPathComponent("Storage/book")
-        let audioFileSerializer = AudioFileSerializer(dispatcher: dispatcher)
-        let bookSerializer = BookSerializer(fileSerializer: audioFileSerializer, dispatcher: dispatcher)
+        let bookSerializer = BookSerializer(dispatcher: dispatcher)
 
         #if UITESTING
             let uiTestingDocsService = UITestDocumentsAppService()

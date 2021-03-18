@@ -45,13 +45,13 @@
 		5B6382C825D576E300B86CAC /* PortAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6382C025D576C300B86CAC /* PortAdapterTests.swift */; };
 		5B6382CE25D5CF2400B86CAC /* IBookRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6382CD25D5CF2400B86CAC /* IBookRepository.swift */; };
 		5B6382D325D5D08900B86CAC /* JSONBookRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6382D225D5D08900B86CAC /* JSONBookRepository.swift */; };
-		5B6382DB25D5D36A00B86CAC /* ISerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6382DA25D5D36A00B86CAC /* ISerializer.swift */; };
 		5B6382E125D5D5B500B86CAC /* BookSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6382E025D5D5B500B86CAC /* BookSerializer.swift */; };
 		5B6382E925D5D93900B86CAC /* AudioFileSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6382E825D5D93900B86CAC /* AudioFileSerializer.swift */; };
 		5B638A0A25F6404D00EEB66B /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B638A0925F6404D00EEB66B /* Icon.swift */; };
 		5B638A1925F66A2E00EEB66B /* mp3bookIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B638A1825F66A2D00EEB66B /* mp3bookIcons.ttf */; };
 		5B69A1C0260015140033E8B9 /* UITestBookRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B69A1BF260015140033E8B9 /* UITestBookRepository.swift */; };
 		5B69A1C8260015660033E8B9 /* UITestDocumentsAppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B69A1C7260015660033E8B9 /* UITestDocumentsAppService.swift */; };
+		5B7BEB332602BC31006253EF /* BookmarkSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7BEB322602BC30006253EF /* BookmarkSerializer.swift */; };
 		5B81E39025FBF09200C8F517 /* 1984 in Resources */ = {isa = PBXBuildFile; fileRef = 5BF7532825CDBDBF00C3F1E0 /* 1984 */; };
 		5B81E39725FBF09700C8F517 /* test.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5BF7530625CDBC2700C3F1E0 /* test.mp3 */; };
 		5B92343325E27E4D0050ACD3 /* VSeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B92343225E27E4C0050ACD3 /* VSeparatorView.swift */; };
@@ -159,13 +159,13 @@
 		5B6382C025D576C300B86CAC /* PortAdapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortAdapterTests.swift; sourceTree = "<group>"; };
 		5B6382CD25D5CF2400B86CAC /* IBookRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBookRepository.swift; sourceTree = "<group>"; };
 		5B6382D225D5D08900B86CAC /* JSONBookRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONBookRepository.swift; sourceTree = "<group>"; };
-		5B6382DA25D5D36A00B86CAC /* ISerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISerializer.swift; sourceTree = "<group>"; };
 		5B6382E025D5D5B500B86CAC /* BookSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookSerializer.swift; sourceTree = "<group>"; };
 		5B6382E825D5D93900B86CAC /* AudioFileSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFileSerializer.swift; sourceTree = "<group>"; };
 		5B638A0925F6404D00EEB66B /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
 		5B638A1825F66A2D00EEB66B /* mp3bookIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = mp3bookIcons.ttf; sourceTree = "<group>"; };
 		5B69A1BF260015140033E8B9 /* UITestBookRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestBookRepository.swift; sourceTree = "<group>"; };
 		5B69A1C7260015660033E8B9 /* UITestDocumentsAppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestDocumentsAppService.swift; sourceTree = "<group>"; };
+		5B7BEB322602BC30006253EF /* BookmarkSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkSerializer.swift; sourceTree = "<group>"; };
 		5B92343225E27E4C0050ACD3 /* VSeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VSeparatorView.swift; sourceTree = "<group>"; };
 		5B94BA4625CF43A900E7127C /* Color++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color++.swift"; sourceTree = "<group>"; };
 		5B94D8EA25D00D3D0054B23C /* BookListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListView.swift; sourceTree = "<group>"; };
@@ -386,7 +386,6 @@
 			isa = PBXGroup;
 			children = (
 				5B6382CD25D5CF2400B86CAC /* IBookRepository.swift */,
-				5B6382DA25D5D36A00B86CAC /* ISerializer.swift */,
 			);
 			path = repository;
 			sourceTree = "<group>";
@@ -394,10 +393,9 @@
 		5B6382DF25D5D5A200B86CAC /* repository */ = {
 			isa = PBXGroup;
 			children = (
-				5B6382D225D5D08900B86CAC /* JSONBookRepository.swift */,
+				5B7BEB402602C906006253EF /* v1 */,
 				5B69A1BF260015140033E8B9 /* UITestBookRepository.swift */,
-				5B6382E025D5D5B500B86CAC /* BookSerializer.swift */,
-				5B6382E825D5D93900B86CAC /* AudioFileSerializer.swift */,
+				5B6382D225D5D08900B86CAC /* JSONBookRepository.swift */,
 			);
 			path = repository;
 			sourceTree = "<group>";
@@ -444,6 +442,16 @@
 				5B5197A625E9487D00FA5CA4 /* Localizable.strings */,
 			);
 			path = locale;
+			sourceTree = "<group>";
+		};
+		5B7BEB402602C906006253EF /* v1 */ = {
+			isa = PBXGroup;
+			children = (
+				5B6382E025D5D5B500B86CAC /* BookSerializer.swift */,
+				5B7BEB322602BC30006253EF /* BookmarkSerializer.swift */,
+				5B6382E825D5D93900B86CAC /* AudioFileSerializer.swift */,
+			);
+			path = v1;
 			sourceTree = "<group>";
 		};
 		5B81E38F25FBF07400C8F517 /* resources */ = {
@@ -653,6 +661,8 @@
 			dependencies = (
 			);
 			name = MP3Book;
+			packageProductDependencies = (
+			);
 			productName = MP3Book;
 			productReference = 5BE8CAAE25C8993C00834AD6 /* MP3Book.app */;
 			productType = "com.apple.product-type.application";
@@ -726,6 +736,8 @@
 				ru,
 			);
 			mainGroup = 5BE8CAA525C8993C00834AD6;
+			packageReferences = (
+			);
 			productRefGroup = 5BE8CAAF25C8993C00834AD6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -850,12 +862,12 @@
 				5B39F0EB25C89F5F00BC132C /* AudioFile.swift in Sources */,
 				5BD0EF7A25D83A13006CF6B0 /* FolderToBookMapper.swift in Sources */,
 				5BD0EF4B25D80A00006CF6B0 /* BookFactory.swift in Sources */,
-				5B6382DB25D5D36A00B86CAC /* ISerializer.swift in Sources */,
 				5BF7534325CDC8C300C3F1E0 /* DocumentsAppService.swift in Sources */,
 				5B0C088C25F5610700040B6B /* ManualVM.swift in Sources */,
 				5B638A0A25F6404D00EEB66B /* Icon.swift in Sources */,
 				5BA4555325DAE5D7001160CF /* PlayerAppService.swift in Sources */,
 				5B15E3AC25D6CB070033E4FB /* URLS.swift in Sources */,
+				5B7BEB332602BC31006253EF /* BookmarkSerializer.swift in Sources */,
 				5B62198A25D132ED000412EB /* CornerRadiusStyle.swift in Sources */,
 				5BF7533D25CDC4E300C3F1E0 /* FolderFile.swift in Sources */,
 				5B94BA4725CF43A900E7127C /* Color++.swift in Sources */,

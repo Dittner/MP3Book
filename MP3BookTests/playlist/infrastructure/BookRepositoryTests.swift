@@ -68,8 +68,7 @@ class BookRepositoryTests: XCTestCase {
 
     func convertFoldersAndAddBooksToRepo() throws {
         let dispatcher = PlaylistDispatcher()
-        let audioFileSerializer = AudioFileSerializer(dispatcher: dispatcher)
-        let serializer = BookSerializer(fileSerializer: audioFileSerializer, dispatcher: dispatcher)
+        let serializer = BookSerializer(dispatcher: dispatcher)
         let repo = JSONBookRepository(serializer: serializer, dispatcher: dispatcher, storeTo: storageURL)
         let folderToBookMapper = FolderToBookMapper(repo: repo, dispatcher: dispatcher)
         let playlistToBookMapper = PlaylistToBookMapper(repo: repo, dispatcher: dispatcher)
@@ -160,8 +159,7 @@ class BookRepositoryTests: XCTestCase {
     private var disposeBag: Set<AnyCancellable> = []
     func readBooksFromRepo() throws {
         let dispatcher = PlaylistDispatcher()
-        let audioFileSerializer = AudioFileSerializer(dispatcher: dispatcher)
-        let bookSerializer = BookSerializer(fileSerializer: audioFileSerializer, dispatcher: dispatcher)
+        let bookSerializer = BookSerializer(dispatcher: dispatcher)
         let bookRepository = JSONBookRepository(serializer: bookSerializer, dispatcher: dispatcher, storeTo: storageURL)
 
         waitWhenRepoIsReady(repo: bookRepository, dispatcher: dispatcher)

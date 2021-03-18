@@ -14,12 +14,12 @@ enum PlayState: Int {
     case playing
 }
 
-enum AudioFilesSortType: Int {
+enum AudioFilesSortType: Int, Codable {
     case none = 0
     case title
 }
 
-enum AudioFileSource: Int {
+enum AudioFileSource: Int, Codable {
     case documents = 0
     case iPodLibrary
 }
@@ -168,15 +168,15 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
     let totalDuration: Int
     let source: AudioFileSource
 
+    @Published private(set) var bookmarkColl: BookmarkColl
+    @Published private(set) var audioFileColl: AudioFileColl
+    @Published private(set) var coll: FileCollection
+
     @Published var playState: PlayState = .stopped
     @Published var rate: Float = 1.0
     @Published var isDamaged: Bool = false
     @Published var addedToPlaylist: Bool = true
     @Published var playMode: PlayMode = .audioFile
-
-    @Published private(set) var bookmarkColl: BookmarkColl
-    @Published private(set) var audioFileColl: AudioFileColl
-    @Published private(set) var coll: FileCollection
 
     var destroyed: Bool = false
     private(set) var totalDurationAt: [Int: Int] = [:]

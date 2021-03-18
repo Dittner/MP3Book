@@ -14,17 +14,15 @@ class BookSerializerTests: XCTestCase {
 
     override func setUpWithError() throws {
         dispatcher = PlaylistDispatcher()
-        let file1 = AudioFile(uid: UID(), id: "file1", name: "file1", source: .documents, path: "1984/file1.mp3", duration: 300, index: 0, dispatcher: dispatcher)
-        let file2 = AudioFile(uid: UID(), id: "file2", name: "file2", source: .documents, path: "1984/file2.mp3", duration: 200, index: 1, dispatcher: dispatcher)
+        let file1 = AudioFile(uid: UID(), id: "file1", name: "file1", path: "1984/file1.mp3", duration: 300, index: 0, dispatcher: dispatcher)
+        let file2 = AudioFile(uid: UID(), id: "file2", name: "file2", path: "1984/file2.mp3", duration: 200, index: 1, dispatcher: dispatcher)
         let mark = Bookmark(uid: UID(), file: file1, time: 60, comment: "No comment")
         book = Book(uid: UID(), folderPath: "documents/1984", title: "1984", files: [file1, file2], bookmarks: [mark], sortType: .none, dispatcher: dispatcher)
     }
 
     func test() throws {
-        let audioFileSerializer = AudioFileSerializer(dispatcher: dispatcher)
-        let bookSerializer = BookSerializer(fileSerializer: audioFileSerializer, dispatcher: dispatcher)
-
-        let serializedData = bookSerializer.serialize(book)
+        let bookSerializer = BookSerializer(dispatcher: dispatcher)
+        let serializedData = try bookSerializer.serialize(book)
         let deserializedBook = try bookSerializer.deserialize(data: serializedData)
 
         XCTAssertTrue(equals(b1: book, b2: deserializedBook))

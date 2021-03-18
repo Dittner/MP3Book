@@ -29,6 +29,7 @@ class JSONBookRepository: IBookRepository {
     init(serializer: IBookSerializer, dispatcher: PlaylistDispatcher, storeTo: URL) {
         logInfo(msg: "JSONBookRepository init, url: \(storeTo)")
         self.serializer = serializer
+
         self.dispatcher = dispatcher
         url = storeTo
 
@@ -58,11 +59,7 @@ class JSONBookRepository: IBookRepository {
                 for fileURL in urls {
                     do {
                         let data = try Data(contentsOf: fileURL)
-                        guard let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-                            logErr(msg: "Failed to deserialize book, url: \(fileURL), details: deserialized data type should conform to [String: Any]")
-                            continue
-                        }
-                        let b = try self.serializer.deserialize(data: dict)
+                        let b = try self.serializer.deserialize(data: data)
                         if self.bookSourceExists(b) {
                             self.hash[b.id] = b
                             books.append(b)
@@ -74,7 +71,7 @@ class JSONBookRepository: IBookRepository {
                             }
                         }
                     } catch {
-                        logErr(msg: "Failed to deserialize book, url: \(fileURL), details: \(error.localizedDescription)")
+                        logErr(msg: "Failed to deserialize a book, url: \(fileURL), details: \(error.localizedDescription)")
                         try self.destroyBook(storeURL: fileURL)
                     }
                 }
@@ -204,8 +201,7 @@ class JSONBookRepository: IBookRepository {
         DispatchQueue.global(qos: .utility).sync {
             do {
                 let fileUrl = self.getBookStoreURL(b)
-                let dict = self.serializer.serialize(b)
-                let data = try JSONSerialization.data(withJSONObject: dict, options: .fragmentsAllowed)
+                let data = try self.serializer.serialize(b)
                 do {
                     try data.write(to: fileUrl)
                 } catch {

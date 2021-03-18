@@ -34,7 +34,7 @@ class FolderToBookMapper: FolderToBookMapperProtocol {
         var res = [AudioFile]()
         let sortedFiles = files.sorted(by: <)
         for (index, f) in sortedFiles.enumerated() {
-            let audioFile = AudioFile(uid: UID(), id: f.id, name: f.name, source: .documents, path: f.path, duration: f.duration, index: index, dispatcher: dispatcher)
+            let audioFile = AudioFile(uid: UID(), id: f.id, name: f.name, path: f.path, duration: f.duration, index: index, dispatcher: dispatcher)
             res.append(audioFile)
         }
         return res
