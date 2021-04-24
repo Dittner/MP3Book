@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "ruby-debug",
+            "request": "launch",
+            "name": "Ruby",
+            "program": "${file}",
+            "programArgs": [
+                "config.yml"
+            ],
+            "useBundler": false
+        },
+        {
+            "type": "ruby-debug",
+            "request": "launch",
+            "name": "RSpec LocalFile",
+            "program": "rspec",
+            "programArgs": [
+                "${relativeFile}"
+            ],
+            "useBundler": true
+        },
+        {
+            "type": "ruby-debug",
+            "request": "launch",
+            "name": "RSpec Selected Line",
+            "program": "rspec",
+            "programArgs": [
+                "${relativeFile}:${lineNumber}"
+            ],
+            "useBundler": true
+        }
+    ]
+}

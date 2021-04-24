@@ -1,0 +1,108 @@
+languages: ["en-EN", "ru-RU", "de-DE"]
+canvas_width: 3726
+canvas_height: 2208
+
+layer0:
+  image: "fastlane/actions/merge_screenshots/assets/iPhone8PlusBg.png"
+  position:
+    x: -68
+    y: -53
+
+layer1:
+  image: 
+    en-EN: "screenshots/dark/en-EN/iPhone 8 Plus-03Library.png"
+    ru-RU: "screenshots/dark/ru-RU/iPhone 8 Plus-03Library.png"
+    de-DE: "screenshots/dark/de-DE/iPhone 8 Plus-03Library.png"
+  position:
+    x: 2621
+    y: 397
+  size:
+    width: 726
+    height: 1285
+  rotate: 10
+
+layer2:
+  image:
+    en-EN: "screenshots/light/en-EN/iPhone 8 Plus-02FileList.png"
+    ru-RU: "screenshots/light/ru-RU/iPhone 8 Plus-02FileList.png"
+    de-DE: "screenshots/light/de-DE/iPhone 8 Plus-02FileList.png"
+  position:
+    x: 1382
+    y: 185
+  size:
+    width: 726
+    height: 1285
+  rotate: 10
+
+layer3:
+  image:
+    en-EN: "screenshots/dark/en-EN/iPhone 8 Plus-01BookList.png"
+    ru-RU: "screenshots/dark/ru-RU/iPhone 8 Plus-01BookList.png"
+    de-DE: "screenshots/dark/de-DE/iPhone 8 Plus-01BookList.png"
+  position:
+    x: 261
+    y: 642
+  size:
+    width: 773
+    height: 1375
+  rotate: 25
+  shadow:
+    sigma: 20
+    dx: 20
+    dy: 20
+    alpha: 0.3
+
+layer4:
+  image:
+    en-EN: "screenshots/light/en-EN/iPhone 8 Plus-01BookList.png"
+    ru-RU: "screenshots/light/ru-RU/iPhone 8 Plus-01BookList.png"
+    de-DE: "screenshots/light/de-DE/iPhone 8 Plus-01BookList.png"
+  position:
+    x: 260
+    y: 556
+  size:
+    width: 773
+    height: 1375
+  shadow:
+    sigma: 20
+    dx: 20
+    dy: 20
+    alpha: 0.3
+
+layer5:
+  text: 
+    en-EN: "+ Free and without ads\n+ Bookmarks\n+ Dark theme"
+    ru-RU: "+ Бесплатно, без рекламы\n+ Закладки\n+ Тёмная тема"
+    de-DE: "+ Kostenlos, ohne Werbung\n+ Lesezeichen\n+ Dark Mode"
+  font: "PlayfairDisplay Medium 70"
+  fontfile: "fastlane/actions/merge_screenshots/font/PlayfairDisplay-Medium.ttf"
+  align: "low" #centre or low or high
+  color: 0x42303c
+  position:
+    x: 1365
+    y: 1842
+  width: 1000
+
+layer6:
+  text:
+    en-EN: "Offline mp3-player\nfor listening to audiobooks, lectures, music"
+    ru-RU: "Оффлайн mp3-плеер\nдля аудиокниг, лекций, музыки"
+    de-DE: "Offline-MP3-Player\nzum Anhören von Hörbüchern, Vorträgen und Musik"
+  font: "PlayfairDisplay Medium 70"
+  fontfile: "fastlane/actions/merge_screenshots/font/PlayfairDisplay-Medium.ttf"
+  align: "centre" #centre or low or high
+  color: 0x42303c
+  position:
+    x: 121
+    y: 240
+  width: 1000
+
+output:
+  frame: 1242
+  en-EN: ["screenshots/en-EN/iPhone8Plus/01BookList.png", "screenshots/en-EN/iPhone8Plus/02FileList.png", "screenshots/en-EN/iPhone8Plus/03Library.png"]
+  ru-RU: ["screenshots/ru-RU/iPhone8Plus/01BookList.png", "screenshots/ru-RU/iPhone8Plus/02FileList.png", "screenshots/ru-RU/iPhone8Plus/03Library.png"]
+  de-DE: ["screenshots/de-DE/iPhone8Plus/01BookList.png", "screenshots/de-DE/iPhone8Plus/02FileList.png", "screenshots/de-DE/iPhone8Plus/03Library.png"]
+
+
+
+

@@ -63,12 +63,12 @@ struct LightTheme: Theme {
 
 struct DarkTheme: Theme {
     let id: String = "dark"
-    let tint: UIColor = UIColor(rgb: 0x999999)
-    let inputText: UIColor = UIColor(rgb: 0x999999)
-    let deleteBtnIcon: UIColor = UIColor(rgb: 0x999999)
-    let navigation: UIColor = UIColor(rgb: 0x999999)
+    let tint: UIColor = UIColor(rgb: 0xA0A0A0)
+    let inputText: UIColor = UIColor(rgb: 0xA0A0A0)
+    let deleteBtnIcon: UIColor = UIColor(rgb: 0xA0A0A0)
+    let navigation: UIColor = UIColor(rgb: 0xA0A0A0)
 
-    let tabBarSelectedText: UIColor = UIColor(rgb: 0x999999)
+    let tabBarSelectedText: UIColor = UIColor(rgb: 0xA0A0A0)
 
     let toolbarColors = [Color(rgb: 0x101011), Color(rgb: 0x1C1C1D)]
     let playerColors = [Color(rgb: 0x1B1819), Color(rgb: 0x161213)]

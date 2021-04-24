@@ -1,0 +1,109 @@
+languages: ["en-EN", "ru-RU", "de-DE"]
+canvas_width: 3726
+canvas_height: 2688
+
+layer0:
+  image: "fastlane/actions/merge_screenshots/assets/iPhone11ProMaxBg.png"
+
+layer1:
+  image: 
+    en-EN: "screenshots/dark/en-EN/iPhone 11 Pro Max-03Library.png"
+    ru-RU: "screenshots/dark/ru-RU/iPhone 11 Pro Max-03Library.png"
+    de-DE: "screenshots/dark/de-DE/iPhone 11 Pro Max-03Library.png"
+  mask: "fastlane/actions/merge_screenshots/assets/iPhone11ProMaxMask.png"
+  position:
+    x: 2595
+    y: 533
+  size:
+    width: 749
+    height: 1619
+  rotate: 10
+
+layer2:
+  image:
+    en-EN: "screenshots/light/en-EN/iPhone 11 Pro Max-02FileList.png"
+    ru-RU: "screenshots/light/ru-RU/iPhone 11 Pro Max-02FileList.png"
+    de-DE: "screenshots/light/de-DE/iPhone 11 Pro Max-02FileList.png"
+  mask: "fastlane/actions/merge_screenshots/assets/iPhone11ProMaxMask.png"
+  position:
+    x: 1353
+    y: 281
+  size:
+    width: 749
+    height: 1619
+  rotate: 10
+
+layer3:
+  image:
+    en-EN: "screenshots/dark/en-EN/iPhone 11 Pro Max-01BookList.png"
+    ru-RU: "screenshots/dark/ru-RU/iPhone 11 Pro Max-01BookList.png"
+    de-DE: "screenshots/dark/de-DE/iPhone 11 Pro Max-01BookList.png"
+  mask: "fastlane/actions/merge_screenshots/assets/iPhone11ProMaxMask.png"
+  position:
+    x: 302
+    y: 855
+  size:
+    width: 749
+    height: 1619
+  rotate: 25
+  shadow:
+    sigma: 20
+    dx: 20
+    dy: 20
+    alpha: 0.3
+
+layer4:
+  image:
+    en-EN: "screenshots/light/en-EN/iPhone 11 Pro Max-01BookList.png"
+    ru-RU: "screenshots/light/ru-RU/iPhone 11 Pro Max-01BookList.png"
+    de-DE: "screenshots/light/de-DE/iPhone 11 Pro Max-01BookList.png"
+  mask: "fastlane/actions/merge_screenshots/assets/iPhone11ProMaxMask.png"
+  position:
+    x: 350
+    y: 720
+  size:
+    width: 749
+    height: 1619
+  shadow:
+    sigma: 20
+    dx: 20
+    dy: 20
+    alpha: 0.3
+
+layer5:
+  text: 
+    en-EN: "+ Free and without ads\n+ Bookmarks\n+ Dark theme"
+    ru-RU: "+ Бесплатно, без рекламы\n+ Закладки\n+ Тёмная тема"
+    de-DE: "+ Kostenlos, ohne Werbung\n+ Lesezeichen\n+ Dark Mode"
+  font: "PlayfairDisplay Medium 80"
+  fontfile: "fastlane/actions/merge_screenshots/font/PlayfairDisplay-Medium.ttf"
+  align: "low" #centre or low or high
+  color: 0x42303c
+  position:
+    x: 1363
+    y: 2117
+  width: 1000
+
+layer6:
+  text:
+    en-EN: "Offline mp3-player for listening to audiobooks, lectures, music"
+    ru-RU: "Оффлайн mp3-плеер для аудиокниг, лекций, музыки"
+    de-DE: "Offline-MP3-Player zum Anhören von Hörbüchern, Vorträgen und Musik"
+  font: "PlayfairDisplay Medium 80"
+  fontfile: "fastlane/actions/merge_screenshots/font/PlayfairDisplay-Medium.ttf"
+  align: "centre" #centre or low or high
+  color: 0x42303c
+  position:
+    x: 121
+    y: 339
+  width: 1000
+
+output:
+  frame: 1242
+  en-EN: ["screenshots/en-EN/iPhone11ProMax/01BookList.png", "screenshots/en-EN/iPhone11ProMax/02FileList.png", "screenshots/en-EN/iPhone11ProMax/03Library.png"]
+  ru-RU: ["screenshots/ru-RU/iPhone11ProMax/01BookList.png", "screenshots/ru-RU/iPhone11ProMax/02FileList.png", "screenshots/ru-RU/iPhone11ProMax/03Library.png"]
+  de-DE: ["screenshots/de-DE/iPhone11ProMax/01BookList.png", "screenshots/de-DE/iPhone11ProMax/02FileList.png", "screenshots/de-DE/iPhone11ProMax/03Library.png"]
+
+
+
+
