@@ -5,17 +5,7 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: merge_screenshots" time="7.576784">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="1: merge_screenshots" time="11.18569">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="2: merge_screenshots" time="12.651082">
+      <testcase classname="fastlane.lanes" name="0: upload_to_app_store" time="82.70679">
         
       </testcase>
     

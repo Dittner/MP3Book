@@ -1,4 +1,4 @@
-languages: ["en-EN", "ru-RU", "de-DE"]
+languages: ["en-US", "ru", "de-DE"]
 canvas_width: 3726
 canvas_height: 2688
 
@@ -7,9 +7,9 @@ layer0:
 
 layer1:
   image: 
-    en-EN: "screenshots/dark/en-EN/iPhone 11 Pro Max-03Library.png"
-    ru-RU: "screenshots/dark/ru-RU/iPhone 11 Pro Max-03Library.png"
-    de-DE: "screenshots/dark/de-DE/iPhone 11 Pro Max-03Library.png"
+    en-US: "fastlane/screenshots/dark/en-US/iPhone 11 Pro Max-03Library.png"
+    ru: "fastlane/screenshots/dark/ru/iPhone 11 Pro Max-03Library.png"
+    de-DE: "fastlane/screenshots/dark/de-DE/iPhone 11 Pro Max-03Library.png"
   mask: "fastlane/actions/merge_screenshots/assets/iPhone11ProMaxMask.png"
   position:
     x: 2595
@@ -21,9 +21,9 @@ layer1:
 
 layer2:
   image:
-    en-EN: "screenshots/light/en-EN/iPhone 11 Pro Max-02FileList.png"
-    ru-RU: "screenshots/light/ru-RU/iPhone 11 Pro Max-02FileList.png"
-    de-DE: "screenshots/light/de-DE/iPhone 11 Pro Max-02FileList.png"
+    en-US: "fastlane/screenshots/light/en-US/iPhone 11 Pro Max-02FileList.png"
+    ru: "fastlane/screenshots/light/ru/iPhone 11 Pro Max-02FileList.png"
+    de-DE: "fastlane/screenshots/light/de-DE/iPhone 11 Pro Max-02FileList.png"
   mask: "fastlane/actions/merge_screenshots/assets/iPhone11ProMaxMask.png"
   position:
     x: 1353
@@ -35,9 +35,9 @@ layer2:
 
 layer3:
   image:
-    en-EN: "screenshots/dark/en-EN/iPhone 11 Pro Max-01BookList.png"
-    ru-RU: "screenshots/dark/ru-RU/iPhone 11 Pro Max-01BookList.png"
-    de-DE: "screenshots/dark/de-DE/iPhone 11 Pro Max-01BookList.png"
+    en-US: "fastlane/screenshots/dark/en-US/iPhone 11 Pro Max-01BookList.png"
+    ru: "fastlane/screenshots/dark/ru/iPhone 11 Pro Max-01BookList.png"
+    de-DE: "fastlane/screenshots/dark/de-DE/iPhone 11 Pro Max-01BookList.png"
   mask: "fastlane/actions/merge_screenshots/assets/iPhone11ProMaxMask.png"
   position:
     x: 302
@@ -54,9 +54,9 @@ layer3:
 
 layer4:
   image:
-    en-EN: "screenshots/light/en-EN/iPhone 11 Pro Max-01BookList.png"
-    ru-RU: "screenshots/light/ru-RU/iPhone 11 Pro Max-01BookList.png"
-    de-DE: "screenshots/light/de-DE/iPhone 11 Pro Max-01BookList.png"
+    en-US: "fastlane/screenshots/light/en-US/iPhone 11 Pro Max-01BookList.png"
+    ru: "fastlane/screenshots/light/ru/iPhone 11 Pro Max-01BookList.png"
+    de-DE: "fastlane/screenshots/light/de-DE/iPhone 11 Pro Max-01BookList.png"
   mask: "fastlane/actions/merge_screenshots/assets/iPhone11ProMaxMask.png"
   position:
     x: 350
@@ -72,8 +72,8 @@ layer4:
 
 layer5:
   text: 
-    en-EN: "+ Free and without ads\n+ Bookmarks\n+ Dark theme"
-    ru-RU: "+ Бесплатно, без рекламы\n+ Закладки\n+ Тёмная тема"
+    en-US: "+ Free and without ads\n+ Bookmarks\n+ Dark theme"
+    ru: "+ Бесплатно, без рекламы\n+ Закладки\n+ Тёмная тема"
     de-DE: "+ Kostenlos, ohne Werbung\n+ Lesezeichen\n+ Dark Mode"
   font: "PlayfairDisplay Medium 80"
   fontfile: "fastlane/actions/merge_screenshots/font/PlayfairDisplay-Medium.ttf"
@@ -86,8 +86,8 @@ layer5:
 
 layer6:
   text:
-    en-EN: "Offline mp3-player for listening to audiobooks, lectures, music"
-    ru-RU: "Оффлайн mp3-плеер для аудиокниг, лекций, музыки"
+    en-US: "Offline mp3-player for listening to audiobooks, lectures, music"
+    ru: "Оффлайн mp3-плеер для аудиокниг, лекций, музыки"
     de-DE: "Offline-MP3-Player zum Anhören von Hörbüchern, Vorträgen und Musik"
   font: "PlayfairDisplay Medium 80"
   fontfile: "fastlane/actions/merge_screenshots/font/PlayfairDisplay-Medium.ttf"
@@ -100,9 +100,10 @@ layer6:
 
 output:
   frame: 1242
-  en-EN: ["screenshots/en-EN/iPhone11ProMax/01BookList.png", "screenshots/en-EN/iPhone11ProMax/02FileList.png", "screenshots/en-EN/iPhone11ProMax/03Library.png"]
-  ru-RU: ["screenshots/ru-RU/iPhone11ProMax/01BookList.png", "screenshots/ru-RU/iPhone11ProMax/02FileList.png", "screenshots/ru-RU/iPhone11ProMax/03Library.png"]
-  de-DE: ["screenshots/de-DE/iPhone11ProMax/01BookList.png", "screenshots/de-DE/iPhone11ProMax/02FileList.png", "screenshots/de-DE/iPhone11ProMax/03Library.png"]
+  folder: "fastlane/screenshots/"
+  en-US: ["iPhone 11 Pro Max-01BookList.png", "iPhone 11 Pro Max-02FileList.png", "iPhone 11 Pro Max-03Library.png"]
+  ru: ["iPhone 11 Pro Max-01BookList.png", "iPhone 11 Pro Max-02FileList.png", "iPhone 11 Pro Max-03Library.png"]
+  de-DE: ["iPhone 11 Pro Max-01BookList.png", "iPhone 11 Pro Max-02FileList.png", "iPhone 11 Pro Max-03Library.png"]
 
 
 

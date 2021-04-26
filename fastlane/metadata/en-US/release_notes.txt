@@ -1,0 +1,1 @@
+Small fixes, updated ui, localization: En, De, Ru

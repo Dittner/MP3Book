@@ -1002,6 +1002,7 @@
 				CODE_SIGN_ENTITLEMENTS = MP3Book.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
 				DEVELOPMENT_TEAM = F3QYFD9Z4F;
 				ENABLE_PREVIEWS = YES;
@@ -1016,6 +1017,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = mp3BookDev;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Test;
 		};
@@ -1191,6 +1193,7 @@
 				CODE_SIGN_ENTITLEMENTS = MP3Book.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
 				DEVELOPMENT_TEAM = F3QYFD9Z4F;
 				ENABLE_PREVIEWS = YES;
@@ -1205,6 +1208,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = mp3BookDev;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -1216,6 +1220,7 @@
 				CODE_SIGN_ENTITLEMENTS = MP3Book.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
 				DEVELOPMENT_TEAM = F3QYFD9Z4F;
 				ENABLE_PREVIEWS = YES;
@@ -1230,6 +1235,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = mp3BookAppStoreProfile;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};

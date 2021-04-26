@@ -1,0 +1,5 @@
+Features:
+• Import a folder of MP3 files or playlists using Finder on your Mac or File Sharing in iTunes
+• Supporting only MP3 format
+• Dark and Light themes
+• Bookmarks with comments

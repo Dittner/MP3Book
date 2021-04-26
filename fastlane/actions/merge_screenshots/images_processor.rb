@@ -157,7 +157,7 @@ class ImagesProcessor
 
     res = Vips::Image.black canvas_width, canvas_height, bands: 3
     res = res.new_from_image([0, 0, 0, 0]).copy(interpretation: 'srgb')
-    puts "LOCALE #{locale}".green
+    puts "LOCALE #{locale}"
     puts "--transparent bg w/h = #{canvas_width}/#{canvas_height}".blue
 
     layer_num = 0
@@ -195,18 +195,20 @@ class ImagesProcessor
     raise 'Config file has not the required param <output.frame>' if config['output']['frame'].nil?
     raise "Config file has not the required param <output.#{locale}>" if config['output'][locale].nil?
 
+    folder = config['output']['folder'] || ""
     frame = config['output']['frame']
     canvas_height = config['canvas_height']
     output_files = config['output'][locale]
 
     indexes = (0..output_files.length - 1).to_a
     indexes.each do |index|
-      file_path = @root + output_files[index]
-      puts "--writing file <#{file_path}>".brown
+      file_path = @root + folder + locale + "/" + output_files[index]
+      puts "--writing file <#{file_path}>".green
       dirname = File.dirname(file_path)
       FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
       fragment = image.extract_area index * frame, 0, frame, canvas_height
+      fragment = fragment.flatten if fragment.has_alpha?
       fragment.write_to_file file_path
     end
   end
