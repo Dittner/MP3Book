@@ -9,17 +9,15 @@ import Combine
 import Foundation
 
 class LibraryVM: ViewModel, ObservableObject {
-    static var shared: LibraryVM = LibraryVM(id: .library)
-
     @Published var isLoading = false
     @Published var wrappedFolders: [Wrapper<Folder>] = []
     @Published var wrappedPlaylists: [Wrapper<Playlist>] = []
     @Published var isManualHidden: Bool = false
-    private let context: MP3BookContext
+    private let context: MP3BookContextProtocol
 
-    override init(id: ScreenID) {
-        context = MP3BookContext.shared
-        super.init(id: id)
+    init(context: MP3BookContextProtocol) {
+        self.context = context
+        super.init(id: .library, navigator: context.ui.navigator)
         logInfo(msg: "LibraryVM init")
     }
 
@@ -36,14 +34,14 @@ class LibraryVM: ViewModel, ObservableObject {
         logInfo(msg: "LibraryVM read files")
         Async.background {
             do {
-                let docsContent = try self.context.documentsAppService.read()
+                let docsContent = try self.context.app.documentsService.read()
                 let processedFolders = docsContent.folders.filter { $0.depth < 3 }.sorted(by: { $0 < $1 }).map { Wrapper<Folder>($0) }
                 processedFolders.forEach { $0.selected = self.isBookAddedToPlaylist($0.data.id) }
 
                 Async.main {
                     self.wrappedFolders = processedFolders
 
-                    self.context.iPodAppService.read { playlists in
+                    self.context.app.iPodService.read { playlists in
                         let processedPlaylists = playlists.sorted { $0 < $1 }.map { Wrapper<Playlist>($0) }
                         processedPlaylists.forEach { $0.selected = self.isBookAddedToPlaylist($0.data.id) }
                         self.wrappedPlaylists = processedPlaylists
@@ -60,7 +58,7 @@ class LibraryVM: ViewModel, ObservableObject {
     }
 
     private func isBookAddedToPlaylist(_ bookID: ID) -> Bool {
-        return context.bookRepository.read(bookID)?.addedToPlaylist ?? false
+        return context.domain.bookRepository.read(bookID)?.addedToPlaylist ?? false
     }
 
     func cancel() {
@@ -68,8 +66,8 @@ class LibraryVM: ViewModel, ObservableObject {
     }
 
     func apply() {
-        context.bookFactory.create(from: wrappedFolders.filter { $0.selected }.map { $0.data })
-        context.bookFactory.create(from: wrappedPlaylists.filter { $0.selected }.map { $0.data })
+        context.domain.bookFactory.create(from: wrappedFolders.filter { $0.selected }.map { $0.data })
+        context.domain.bookFactory.create(from: wrappedPlaylists.filter { $0.selected }.map { $0.data })
         navigator.goBack(to: .bookList)
     }
 

@@ -9,12 +9,11 @@ import Combine
 import Foundation
 
 class ManualVM: ViewModel, ObservableObject {
-    static var shared: ManualVM = ManualVM(id: .manual)
     @Published var isMacOSSelected: Bool = true
 
-    override init(id: ScreenID) {
+    init(context: MP3BookContextProtocol) {
         logInfo(msg: "ManualVM init")
-        super.init(id: id)
+        super.init(id: .manual, navigator: context.ui.navigator)
     }
 
     func goBack() {

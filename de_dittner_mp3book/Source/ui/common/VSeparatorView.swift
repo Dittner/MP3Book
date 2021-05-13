@@ -9,8 +9,6 @@ import Combine
 import SwiftUI
 
 struct VSeparatorView: View {
-    @ObservedObject var themeObservable = ThemeObservable.shared
-
     let verticalPadding: CGFloat
     let color: Color
 

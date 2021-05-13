@@ -28,8 +28,8 @@ class PNotifier: ObservableObject {
 }
 
 struct PlayerView: View {
-    @ObservedObject private var themeObservable = ThemeObservable.shared
-    @ObservedObject private var systemVolume = SystemVolume.shared
+    @EnvironmentObject var themeManager: ThemeManager
+    @EnvironmentObject var systemVolume: SystemVolume
     @ObservedObject var notifier = PNotifier()
     @ObservedObject var book: Book
     @State var progress: Double = 0.0
@@ -104,7 +104,7 @@ struct PlayerView: View {
             }
             .lineLimit(1)
 
-            SliderView(progress: $notifier.progress, minValue: 0, maxValue: notifier.duration.asDouble, trackColor: themeObservable.theme.sliderTrack.color) { progress in
+            SliderView(progress: $notifier.progress, minValue: 0, maxValue: notifier.duration.asDouble, trackColor: themeManager.theme.sliderTrack.color) { progress in
                 self.action(.updateProgress(value: progress))
             }
 
@@ -124,7 +124,7 @@ struct PlayerView: View {
                 Spacer()
 
                 VStack(alignment: .center, spacing: 2) {
-                    TextButton(text: "-15s", textColor: themeObservable.theme.tint.color, font: Constants.font.b14) {
+                    TextButton(text: "-15s", textColor: themeManager.theme.tint.color, font: Constants.font.b14) {
                         if self.notifier.progress > 15 {
                             self.action(.updateProgress(value: self.notifier.progress - 15))
                         } else {
@@ -133,7 +133,7 @@ struct PlayerView: View {
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    IconButton(name: .playerBackward, size: 11, color: themeObservable.theme.tint.color) {
+                    IconButton(name: .playerBackward, size: 11, color: themeManager.theme.tint.color) {
                         self.action(.playPrev)
                     }
                     .frame(width: 50, height: 50, alignment: .center)
@@ -142,14 +142,14 @@ struct PlayerView: View {
                 Spacer()
 
                 VStack(alignment: .center, spacing: 2) {
-                    TextButton(text: "\(String(format: "%.1f", book.rate))x", textColor: themeObservable.theme.tint.color, font: Constants.font.b14) {
+                    TextButton(text: "\(String(format: "%.1f", book.rate))x", textColor: themeManager.theme.tint.color, font: Constants.font.b14) {
                         withAnimation {
                             self.action(.selectRate)
                         }
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    IconButton(name: book.playState == .playing ? .playerPause : .playerPlay, size: 17, color: themeObservable.theme.tint.color) {
+                    IconButton(name: book.playState == .playing ? .playerPause : .playerPlay, size: 17, color: themeManager.theme.tint.color) {
                         self.action(book.playState == .playing ? .pause : .play(b: book))
                     }
                     .frame(width: 50, height: 50, alignment: .center)
@@ -158,7 +158,7 @@ struct PlayerView: View {
                 Spacer()
 
                 VStack(alignment: .center, spacing: 2) {
-                    TextButton(text: "+15s", textColor: themeObservable.theme.tint.color, font: Constants.font.b14) {
+                    TextButton(text: "+15s", textColor: themeManager.theme.tint.color, font: Constants.font.b14) {
                         guard let curFile = self.book.coll.curFile else { return }
                         if curFile.duration.asDouble - self.notifier.progress > 15 {
                             self.action(.updateProgress(value: self.notifier.progress + 15))
@@ -168,7 +168,7 @@ struct PlayerView: View {
                     }
                     .frame(width: 50, height: 50, alignment: .center)
 
-                    IconButton(name: .playerForward, size: 11, color: themeObservable.theme.tint.color) {
+                    IconButton(name: .playerForward, size: 11, color: themeManager.theme.tint.color) {
                         self.action(.playNext)
                     }
                     .frame(width: 50, height: 50, alignment: .center)
@@ -177,7 +177,7 @@ struct PlayerView: View {
                 Spacer()
 
                 VStack(alignment: .trailing, spacing: -10) {
-                    IconButton(name: .addBookmark, size: 22, color: themeObservable.theme.tint.color) {
+                    IconButton(name: .addBookmark, size: 22, color: themeManager.theme.tint.color) {
                         withAnimation {
                             self.action(.addBookmark)
                         }
@@ -193,12 +193,12 @@ struct PlayerView: View {
             }
             .lineLimit(1)
         }
-        .foregroundColor(themeObservable.theme.tint.color)
+        .foregroundColor(themeManager.theme.tint.color)
         .padding()
         .allowsHitTesting(self.notifier.duration != 0)
         .frame(height: Constants.size.playerHeight)
         .background(Rectangle()
-            .fill(LinearGradient(gradient: Gradient(colors: themeObservable.theme.playerColors), startPoint: .top, endPoint: .bottom))
+            .fill(LinearGradient(gradient: Gradient(colors: themeManager.theme.playerColors), startPoint: .top, endPoint: .bottom))
             .cornerRadius(radius: 20, corners: [.topLeft, .topRight]))
     }
 }

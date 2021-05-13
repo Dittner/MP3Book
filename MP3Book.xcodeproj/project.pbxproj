@@ -15,14 +15,15 @@
 		5B15E3B425D6EC950033E4FB /* UID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B15E3B325D6EC950033E4FB /* UID.swift */; };
 		5B15E3BC25D6FBF90033E4FB /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B15E3BB25D6FBF90033E4FB /* Playlist.swift */; };
 		5B15E3C425D6FC6D0033E4FB /* PlaylistFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B15E3C325D6FC6D0033E4FB /* PlaylistFile.swift */; };
+		5B1BE1E6264D2436007812F4 /* PersistenceValidationAppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B364F4725E703E6009F4037 /* PersistenceValidationAppService.swift */; };
 		5B1C3DBA25D3DAA300B6F15A /* LibraryVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C3DB925D3DAA300B6F15A /* LibraryVM.swift */; };
 		5B1C3DC025D3E0B800B6F15A /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C3DBF25D3E0B800B6F15A /* ActivityIndicator.swift */; };
 		5B1C3DCD25D4117100B6F15A /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C3DCC25D4117100B6F15A /* Async.swift */; };
 		5B1C3DD225D4184300B6F15A /* Font++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C3DD125D4184300B6F15A /* Font++.swift */; };
 		5B1C3DEC25D46B3600B6F15A /* BookListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C3DEB25D46B3600B6F15A /* BookListVM.swift */; };
 		5B1C3DF925D46CB800B6F15A /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C3DF825D46CB800B6F15A /* Book.swift */; };
+		5B2A3A86263872BA00176E8E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B2A3A85263872BA00176E8E /* LaunchScreen.storyboard */; };
 		5B364F4025E6D150009F4037 /* AlertBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B364F3F25E6D150009F4037 /* AlertBox.swift */; };
-		5B364F4825E703E6009F4037 /* PersistenceValidationDomainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B364F4725E703E6009F4037 /* PersistenceValidationDomainService.swift */; };
 		5B39F0EB25C89F5F00BC132C /* AudioFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39F0EA25C89F5F00BC132C /* AudioFile.swift */; };
 		5B39FD9025DC482C00AAAD1D /* Int++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39FD8F25DC482C00AAAD1D /* Int++.swift */; };
 		5B3EE31426021C5E00799180 /* UITestBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3EE31326021C5E00799180 /* UITestBook.swift */; };
@@ -69,7 +70,6 @@
 		5BA4555325DAE5D7001160CF /* PlayerAppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA4555225DAE5D7001160CF /* PlayerAppService.swift */; };
 		5BA4555825DAE6AC001160CF /* MediaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA4555725DAE6AC001160CF /* MediaAPI.swift */; };
 		5BB048F925E7B880004655C7 /* ReloadAudioFilesFromIPodLibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB048F825E7B880004655C7 /* ReloadAudioFilesFromIPodLibraryService.swift */; };
-		5BB1B00125F50A5A002CBC31 /* readme_screenshoot.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BB1B00025F50A5A002CBC31 /* readme_screenshoot.png */; };
 		5BBD49B225D94DF7009480B4 /* PlaylistDomainEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBD49B125D94DF7009480B4 /* PlaylistDomainEntity.swift */; };
 		5BD0EF4B25D80A00006CF6B0 /* BookFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0EF4A25D80A00006CF6B0 /* BookFactory.swift */; };
 		5BD0EF5825D821F8006CF6B0 /* BookSerializerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0EF5725D821F8006CF6B0 /* BookSerializerTests.swift */; };
@@ -134,8 +134,9 @@
 		5B1C3DF825D46CB800B6F15A /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		5B22D8B325F11F7C003F29A3 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		5B22D8B425F11F7C003F29A3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		5B2A3A85263872BA00176E8E /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5B364F3F25E6D150009F4037 /* AlertBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBox.swift; sourceTree = "<group>"; };
-		5B364F4725E703E6009F4037 /* PersistenceValidationDomainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceValidationDomainService.swift; sourceTree = "<group>"; };
+		5B364F4725E703E6009F4037 /* PersistenceValidationAppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceValidationAppService.swift; sourceTree = "<group>"; };
 		5B39F0EA25C89F5F00BC132C /* AudioFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFile.swift; sourceTree = "<group>"; };
 		5B39FD8F25DC482C00AAAD1D /* Int++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int++.swift"; sourceTree = "<group>"; };
 		5B3EE31326021C5E00799180 /* UITestBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestBook.swift; sourceTree = "<group>"; };
@@ -269,7 +270,6 @@
 			isa = PBXGroup;
 			children = (
 				5B5A1EE425FFF2DE00FEF67F /* factory */,
-				5BD0EF4925D809DD006CF6B0 /* service */,
 				5B6382CC25D5CEFA00B86CAC /* repository */,
 				5B39F0E925C89F4D00BC132C /* model */,
 				5BD0EF5C25D82F46006CF6B0 /* DomainEventDispatcher.swift */,
@@ -403,8 +403,8 @@
 		5B69A1B126000EA90033E8B9 /* bookList */ = {
 			isa = PBXGroup;
 			children = (
-				5B1C3DEB25D46B3600B6F15A /* BookListVM.swift */,
 				5B94D8EA25D00D3D0054B23C /* BookListView.swift */,
+				5B1C3DEB25D46B3600B6F15A /* BookListVM.swift */,
 			);
 			path = bookList;
 			sourceTree = "<group>";
@@ -412,8 +412,8 @@
 		5B69A1B226000EB40033E8B9 /* fileList */ = {
 			isa = PBXGroup;
 			children = (
-				5BE92F1525DEEFA10029CC59 /* AudioFileListVM.swift */,
 				5BE92F1025DEEF770029CC59 /* AudioFileListView.swift */,
+				5BE92F1525DEEFA10029CC59 /* AudioFileListVM.swift */,
 			);
 			path = fileList;
 			sourceTree = "<group>";
@@ -477,6 +477,7 @@
 		5B9EA84225CC1A5D009B14A5 /* application */ = {
 			isa = PBXGroup;
 			children = (
+				5B364F4725E703E6009F4037 /* PersistenceValidationAppService.swift */,
 				5BB048F825E7B880004655C7 /* ReloadAudioFilesFromIPodLibraryService.swift */,
 				5B9EA84625CC1AC4009B14A5 /* DemoFileAppService.swift */,
 				5BF7534225CDC8C300C3F1E0 /* DocumentsAppService.swift */,
@@ -529,6 +530,7 @@
 				5B638A1825F66A2D00EEB66B /* mp3bookIcons.ttf */,
 				5B63739B25E18EB200FB7BBE /* Assets.xcassets */,
 				5B9EA87925CC5C45009B14A5 /* demo */,
+				5B2A3A85263872BA00176E8E /* LaunchScreen.storyboard */,
 			);
 			path = resources;
 			sourceTree = "<group>";
@@ -541,14 +543,6 @@
 				5B9EA87C25CC5C5F009B14A5 /* appStoreIcon.svg */,
 			);
 			path = demo;
-			sourceTree = "<group>";
-		};
-		5BD0EF4925D809DD006CF6B0 /* service */ = {
-			isa = PBXGroup;
-			children = (
-				5B364F4725E703E6009F4037 /* PersistenceValidationDomainService.swift */,
-			);
-			path = service;
 			sourceTree = "<group>";
 		};
 		5BE8CAA525C8993C00834AD6 = {
@@ -756,9 +750,9 @@
 			files = (
 				5BF693AD25FC17AC000A77EE /* Demo – Three Laws of Robotics in Resources */,
 				5BE7D30625F2422F00304B0C /* .swiftlint.yml in Resources */,
-				5BB1B00125F50A5A002CBC31 /* readme_screenshoot.png in Resources */,
 				5B638A1925F66A2E00EEB66B /* mp3bookIcons.ttf in Resources */,
 				5B9EA87F25CC5C5F009B14A5 /* appStoreIcon.svg in Resources */,
+				5B2A3A86263872BA00176E8E /* LaunchScreen.storyboard in Resources */,
 				5B63739C25E18EB200FB7BBE /* Assets.xcassets in Resources */,
 				5B5197A425E9487D00FA5CA4 /* Localizable.strings in Resources */,
 			);
@@ -819,6 +813,7 @@
 				5B15E3BC25D6FBF90033E4FB /* Playlist.swift in Sources */,
 				5BD0EF7025D83748006CF6B0 /* MP3BookContext.swift in Sources */,
 				5B4AC38925E3B72400531956 /* NavigationBarShadow.swift in Sources */,
+				5B1BE1E6264D2436007812F4 /* PersistenceValidationAppService.swift in Sources */,
 				5B62198425D132B4000412EB /* NavigationBar.swift in Sources */,
 				5BD0EF5D25D82F49006CF6B0 /* DomainEventDispatcher.swift in Sources */,
 				5B69A1C0260015140033E8B9 /* UITestBookRepository.swift in Sources */,
@@ -846,7 +841,6 @@
 				5BD0EF8125D83A18006CF6B0 /* PlaylistToBookMapper.swift in Sources */,
 				5B69A1C8260015660033E8B9 /* UITestDocumentsAppService.swift in Sources */,
 				5B62199025D1358F000412EB /* Theme.swift in Sources */,
-				5B364F4825E703E6009F4037 /* PersistenceValidationDomainService.swift in Sources */,
 				5B6382E125D5D5B500B86CAC /* BookSerializer.swift in Sources */,
 				5B15E3C425D6FC6D0033E4FB /* PlaylistFile.swift in Sources */,
 				5BE8234825EACAED00BADE9A /* Constants.swift in Sources */,
@@ -1002,7 +996,7 @@
 				CODE_SIGN_ENTITLEMENTS = MP3Book.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
 				DEVELOPMENT_TEAM = F3QYFD9Z4F;
 				ENABLE_PREVIEWS = YES;
@@ -1193,7 +1187,7 @@
 				CODE_SIGN_ENTITLEMENTS = MP3Book.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
 				DEVELOPMENT_TEAM = F3QYFD9Z4F;
 				ENABLE_PREVIEWS = YES;
@@ -1220,7 +1214,7 @@
 				CODE_SIGN_ENTITLEMENTS = MP3Book.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
 				DEVELOPMENT_TEAM = F3QYFD9Z4F;
 				ENABLE_PREVIEWS = YES;

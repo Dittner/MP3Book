@@ -91,10 +91,8 @@ struct DarkTheme: Theme {
     let deleteBtnBg: UIColor = UIColor(rgb: 0x4F1D35)
 }
 
-class ThemeObservable: ObservableObject {
+class ThemeManager: ObservableObject {
     @Published var theme: Theme
-
-    static var shared: ThemeObservable = ThemeObservable()
 
     private let light: Theme
     private let dark: Theme

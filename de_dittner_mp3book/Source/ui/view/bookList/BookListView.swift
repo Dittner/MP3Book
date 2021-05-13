@@ -9,8 +9,8 @@ import Combine
 import SwiftUI
 
 struct BookListView: View {
-    @ObservedObject var themeObservable = ThemeObservable.shared
-    @ObservedObject var vm = BookListVM.shared
+    @ObservedObject var vm: BookListVM
+    @EnvironmentObject var themeManager: ThemeManager
 
     var body: some View {
         ZStack {
@@ -18,10 +18,10 @@ struct BookListView: View {
                 NavigationBar { navigationBarSideWidth in
                     Text("Playlist")
                         .font(Constants.font.b16)
-                        .foregroundColor(themeObservable.theme.tint.color)
+                        .foregroundColor(themeManager.theme.tint.color)
                         .navigationBarTitle(navigationBarSideWidth)
 
-                    IconButton(name: .add, size: 18, color: themeObservable.theme.navigation.color) {
+                    IconButton(name: .add, size: 18, color: themeManager.theme.navigation.color) {
                         self.vm.addBooks()
                     }.accessibilityIdentifier("addBooks")
                         .navigationBarTrailing(navigationBarSideWidth)
@@ -45,7 +45,7 @@ struct BookListView: View {
 }
 
 struct PlayRateSelector: View {
-    @ObservedObject var themeObservable = ThemeObservable.shared
+    @EnvironmentObject var themeManager: ThemeManager
     private let selectAction: (Float) -> Void
     private let selectedRate: Float
     @Binding var isShown: Bool
@@ -87,14 +87,14 @@ struct PlayRateSelector: View {
 
                 }.padding(.horizontal, 20)
                     .frame(width: Constants.size.playRateSelectorWidth)
-                    .foregroundColor(themeObservable.theme.tint.color)
+                    .foregroundColor(themeManager.theme.tint.color)
                     .lineLimit(1)
 
-                    .background(themeObservable.theme.popupBg.color)
+                    .background(themeManager.theme.popupBg.color)
                     .cornerRadius(20)
 
                 DownArrow()
-                    .fill(themeObservable.theme.popupBg.color)
+                    .fill(themeManager.theme.popupBg.color)
                     .frame(width: 25, height: 15)
                     .offset(y: -2)
 
@@ -105,7 +105,7 @@ struct PlayRateSelector: View {
 }
 
 struct AddBookmarkForm: View {
-    @ObservedObject var themeObservable = ThemeObservable.shared
+    @EnvironmentObject var themeManager: ThemeManager
     @ObservedObject private var notifier = Notifier()
     @Binding var isShown: Bool
 
@@ -150,7 +150,7 @@ struct AddBookmarkForm: View {
                     .lineLimit(2)
 
                 HStack(alignment: .center, spacing: 0) {
-                    IconButton(name: .back, size: 18, color: themeObservable.theme.tint.color) {
+                    IconButton(name: .back, size: 18, color: themeManager.theme.tint.color) {
                         self.decreaseTime()
                     }
 
@@ -158,7 +158,7 @@ struct AddBookmarkForm: View {
                         .font(Constants.font.t26)
                         .lineLimit(1)
 
-                    IconButton(name: .next, size: 18, color: themeObservable.theme.tint.color) {
+                    IconButton(name: .next, size: 18, color: themeManager.theme.tint.color) {
                         self.increaseTime()
                     }
                 }
@@ -170,7 +170,7 @@ struct AddBookmarkForm: View {
                             .lineLimit(1)
                             .padding(.horizontal, 14)
                             .padding(.vertical, 8)
-                            .foregroundColor(themeObservable.theme.inputText.color)
+                            .foregroundColor(themeManager.theme.inputText.color)
                             .frame(height: 20, alignment: .topLeading)
                     }
 
@@ -178,12 +178,12 @@ struct AddBookmarkForm: View {
                         .textFieldStyle(PlainTextFieldStyle())
                         .padding(.horizontal, 10)
                         .font(Constants.font.r14)
-                        .background(RoundedRectangle(cornerRadius: 4).fill(themeObservable.theme.inputBg.color))
-                        .foregroundColor(themeObservable.theme.inputText.color)
+                        .background(RoundedRectangle(cornerRadius: 4).fill(themeManager.theme.inputBg.color))
+                        .foregroundColor(themeManager.theme.inputText.color)
                         .frame(height: Constants.size.popupWidth / 3)
                 }
 
-                TextButton(text: "Add Bookmark", textColor: themeObservable.theme.tint.color, font: Constants.font.b14) {
+                TextButton(text: "Add Bookmark", textColor: themeManager.theme.tint.color, font: Constants.font.b14) {
                     self.action(notifier.time, notifier.comment)
                     self.isShown = false
                 }
@@ -191,8 +191,8 @@ struct AddBookmarkForm: View {
             }.padding(.horizontal, 20)
                 .padding(.top, 20)
                 .frame(width: Constants.size.popupWidth)
-                .foregroundColor(themeObservable.theme.tint.color)
-                .background(themeObservable.theme.popupBg.color)
+                .foregroundColor(themeManager.theme.tint.color)
+                .background(themeManager.theme.popupBg.color)
                 .cornerRadius(20)
                 .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 10)
         }
@@ -201,11 +201,7 @@ struct AddBookmarkForm: View {
 
 struct PlaylistContent: View {
     @ObservedObject var vm: BookListVM
-
-    init(vm: BookListVM) {
-        print("PlaylistContent")
-        self.vm = vm
-    }
+    @EnvironmentObject var themeManager: ThemeManager
 
     var body: some View {
         if vm.isLoading {
@@ -264,7 +260,7 @@ enum BookCellAction {
 }
 
 struct BookCell: View {
-    @ObservedObject private var themeObservable = ThemeObservable.shared
+    @EnvironmentObject var themeManager: ThemeManager
     @ObservedObject private var book: Book
     @ObservedObject private var bookmarkColl: BookmarkColl
     @ObservedObject private var notifier = Notifier()
@@ -335,21 +331,21 @@ struct BookCell: View {
                 }
                 .frame(width: geometry.size.width > 2 * Constants.size.actionBtnSize ? geometry.size.width - 2 * Constants.size.actionBtnSize : 100)
 
-                IconButton(name: .open, size: 14, color: book.playState == .stopped ? themeObservable.theme.text.color : themeObservable.theme.play.color) {
+                IconButton(name: .open, size: 14, color: book.playState == .stopped ? themeManager.theme.text.color : themeManager.theme.play.color) {
                     self.action(.open)
                 }
                 .accessibilityIdentifier("open-\(title)")
                 .frame(width: Constants.size.actionBtnSize, height: Constants.size.bookListCellHeight)
 
-                IconButton(name: .delete, size: 18, color: themeObservable.theme.deleteBtnIcon.color) {
+                IconButton(name: .delete, size: 18, color: themeManager.theme.deleteBtnIcon.color) {
                     self.action(.delete)
                 }.frame(width: 70, height: Constants.size.bookListCellHeight)
-                    .background(themeObservable.theme.deleteBtnBg.color)
+                    .background(themeManager.theme.deleteBtnBg.color)
 
-                themeObservable.theme.deleteBtnBg.color.frame(width: -self.offset.width)
+                themeManager.theme.deleteBtnBg.color.frame(width: -self.offset.width)
             }
-            .background(themeObservable.theme.transparent.color)
-            .foregroundColor(book.playState == .stopped ? themeObservable.theme.text.color : themeObservable.theme.play.color)
+            .background(themeManager.theme.transparent.color)
+            .foregroundColor(book.playState == .stopped ? themeManager.theme.text.color : themeManager.theme.play.color)
             .onTapGesture {
                 self.action(.select)
             }

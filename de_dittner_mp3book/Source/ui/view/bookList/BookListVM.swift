@@ -10,8 +10,6 @@ import Foundation
 import MediaPlayer
 
 class BookListVM: ViewModel, ObservableObject {
-    static var shared: BookListVM = BookListVM(id: .bookList)
-
     @Published var isLoading = true
     @Published var books: [Book] = []
     @Published var playRateSelectorShown: Bool = false
@@ -21,18 +19,18 @@ class BookListVM: ViewModel, ObservableObject {
     private let player: PlayerAppService
     private var disposeBag: Set<AnyCancellable> = []
     private var playSuspending: Bool = false
-    private let context: MP3BookContext
+    private let context: MP3BookContextProtocol
 
-    override init(id: ScreenID) {
+    init(context: MP3BookContextProtocol) {
         logInfo(msg: "BookListVM init")
-        context = MP3BookContext.shared
-        player = context.playerAppService
+        self.context = context
+        player = context.app.playerService
 
-        super.init(id: id)
+        super.init(id: .bookList, navigator: context.ui.navigator)
 
         waitWhenRepoIsReady()
 
-        context.bookRepository.subject
+        context.domain.bookRepository.subject
             .debounce(for: 0.2, scheduler: RunLoop.main)
             .sink { books in
                 self.books = books.filter { $0.addedToPlaylist }.sorted(by: { $0.title < $1.title })
@@ -59,10 +57,10 @@ class BookListVM: ViewModel, ObservableObject {
     }
 
     private func waitWhenRepoIsReady() {
-        if context.bookRepository.isReady {
+        if context.domain.bookRepository.isReady {
             isLoading = false
         } else {
-            context.dispatcher.subject
+            context.domain.dispatcher.subject
                 .sink { event in
                     switch event {
                     case .repositoryIsReady:
@@ -96,7 +94,7 @@ class BookListVM: ViewModel, ObservableObject {
     }
 
     func openBook(_ b: Book) {
-        AudioFileListVM.shared.selectedBook = b
+        context.ui.viewModels.fileListVM.selectedBook = b
         navigator.navigate(to: .audioFileList)
     }
 

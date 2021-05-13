@@ -10,8 +10,6 @@ import Foundation
 import MediaPlayer
 
 class AudioFileListVM: ViewModel, ObservableObject {
-    static var shared: AudioFileListVM = AudioFileListVM(id: .audioFileList)
-
     @Published var selectedBook: Book?
     @Published var playRateSelectorShown: Bool = false
     @Published var addBookmarkFormShown: Bool = false
@@ -20,11 +18,11 @@ class AudioFileListVM: ViewModel, ObservableObject {
     private var playSuspending: Bool = false
     private var disposeBag: Set<AnyCancellable> = []
 
-    override init(id: ScreenID) {
+    init(context: MP3BookContextProtocol) {
         logInfo(msg: "AudioFileListVM init")
-        player = MP3BookContext.shared.playerAppService
+        player = context.app.playerService
 
-        super.init(id: id)
+        super.init(id: .audioFileList, navigator: context.ui.navigator)
 
         $addBookmarkFormShown.sink { isModalViewShown in
             guard let b = self.selectedBook else { return }

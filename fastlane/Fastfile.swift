@@ -111,7 +111,7 @@ class Fastfile: LaneFile {
                          appIdentifier: appIdentifier,
                          skipBinaryUpload: false,
                          skipScreenshots: true,
-                         skipMetadata: false,
+                         skipMetadata: true,
                          force: true, // skip html review
                          overwriteScreenshots: false,
                          submitForReview: false,

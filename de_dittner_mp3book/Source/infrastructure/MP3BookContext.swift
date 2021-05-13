@@ -9,155 +9,208 @@ import Combine
 import Foundation
 import UIKit
 
-class MP3BookContext {
-    static var shared: MP3BookContext = MP3BookContext()
-    let documentsAppService: DocumentsAppServiceProtocol
-    let iPodAppService: IPodAppService
+protocol MP3BookContextProtocol {
+    var ui: MP3BookContext.UI { get }
+    var app: MP3BookContext.APP { get }
+    var domain: MP3BookContext.Domain { get }
+}
 
-    let bookRepository: IBookRepository
-    let bookFactory: BookFactory
-    let playerAppService: PlayerAppService
-
-    let reloadAudioFilesFromIPodLibraryService: ReloadAudioFilesFromIPodLibraryService
-    let dispatcher: PlaylistDispatcher
+class MP3BookContext: MP3BookContextProtocol {
+    lazy var domain = configDomainLayer()
+    lazy var app = configAppLayer(context: self)
+    lazy var ui = configUILayer(context: self)
 
     init() {
-        MP3BookContext.logAbout()
-        logInfo(msg: "SharedContext initialized")
+        logInfo(msg: "MP3BookContext is initialized")
+    }
 
-        dispatcher = PlaylistDispatcher()
-        iPodAppService = IPodAppService()
+    private func configDomainLayer() -> MP3BookContext.Domain {
+        let dispatcher = PlaylistDispatcher()
 
         let storageURL = URLS.libraryURL.appendingPathComponent("Storage/book")
         let bookSerializer = BookSerializer(dispatcher: dispatcher)
-
-        #if UITESTING
-            let uiTestingDocsService = UITestDocumentsAppService()
-            let uiTestingRepo = UITestBookRepository(dispatcher: dispatcher)
-
-            let folders = uiTestingDocsService.createTestContent().folders
-            let books = FolderToBookMapper(repo: uiTestingRepo, dispatcher: dispatcher).convert(from: folders)
-            uiTestingRepo.write(books)
-
-            documentsAppService = uiTestingDocsService
-            bookRepository = uiTestingRepo
-
-        #else
-            documentsAppService = DocumentsAppService()
-            bookRepository = JSONBookRepository(serializer: bookSerializer, dispatcher: dispatcher, storeTo: storageURL)
-
-        #endif
+        let bookRepository = JSONBookRepository(serializer: bookSerializer, dispatcher: dispatcher, storeTo: storageURL)
 
         let folderToBook = FolderToBookMapper(repo: bookRepository, dispatcher: dispatcher)
         let playlistToBook = PlaylistToBookMapper(repo: bookRepository, dispatcher: dispatcher)
-        bookFactory = BookFactory(repo: bookRepository, folderToBook: folderToBook, playlistToBook: playlistToBook)
+        let bookFactory = BookFactory(repo: bookRepository, folderToBook: folderToBook, playlistToBook: playlistToBook)
 
-        playerAppService = PlayerAppService(api: MediaAPI())
-
-        reloadAudioFilesFromIPodLibraryService = ReloadAudioFilesFromIPodLibraryService(playlistToBookMapper: playlistToBook, iPodAppService: iPodAppService, bookRepo: bookRepository)
+        return MP3BookContext.Domain(bookRepository: bookRepository,
+                                     bookFactory: bookFactory,
+                                     dispatcher: dispatcher)
     }
 
-    // call run to be sure SharedContext has been launched
-    func run() {
-        addDemoFilesIfNeeded()
-        logInfo(msg: "App has 3 modules: SharedContext, LibraryContext, PlaylistContext")
+    private func configAppLayer(context: MP3BookContextProtocol) -> MP3BookContext.APP {
+        let documentsService = DocumentsAppService()
+        let iPodService = IPodAppService()
+        let playerService = PlayerAppService(api: MediaAPI(), context: context)
+
+        let playlistToBook = PlaylistToBookMapper(repo: context.domain.bookRepository,
+                                                  dispatcher: context.domain.dispatcher)
+
+        let reloadFilesService = ReloadAudioFilesFromIPodLibraryService(playlistToBookMapper: playlistToBook,
+                                                                        iPodAppService: iPodService, bookRepo: context.domain.bookRepository)
+
+        let demoFileService = DemoFileAppService(bookRepository: context.domain.bookRepository,
+                                                 documentsAppService: documentsService,
+                                                 dispatcher: context.domain.dispatcher)
+
+        let ab = AlertBox()
+
+        let persistenceService = PersistenceValidationAppService(iPodAppService: iPodService,
+                                                                 reloadFilesService: reloadFilesService,
+                                                                 alertBox: ab)
+
+        return MP3BookContext.APP(documentsService: documentsService,
+                                  iPodService: iPodService,
+                                  playerService: playerService,
+                                  reloadFilesService: reloadFilesService,
+                                  demoFileService: demoFileService,
+                                  persistenceValidationService: persistenceService,
+                                  alertBox: ab)
     }
 
-    private static func logAbout() {
-        var aboutLog: String = "MP3BookLogs\n"
-        let ver: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0"
-        let build: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
-        aboutLog += "v." + ver + "." + build + "\n"
-
-        let device = UIDevice.current
-        let scaleFactor = UIScreen.main.scale
-        let deviceSize = UIScreen.main.bounds
-
-        aboutLog += "device: " + device.modelName + "\n"
-        aboutLog += "os: " + device.systemName + " " + device.systemVersion + "\n"
-        aboutLog += "device scaleFactor: \(scaleFactor)\n"
-        aboutLog += "device size: \(Int(deviceSize.width * scaleFactor))/\(Int(deviceSize.height * scaleFactor))\n"
-        aboutLog += "simulator: " + device.isSimulator.description + "\n"
-
-        #if DEBUG
-            aboutLog += "debug: true\n"
-            aboutLog += "docs folder: \\" + URLS.documentsURL.description + "\n"
-        #else
-            aboutLog += "debug: false\n"
-        #endif
-
-        #if UITESTING
-            aboutLog += "UITESTING: true\n"
-        #else
-            aboutLog += "UITESTING: false\n"
-        #endif
-
-        logInfo(msg: aboutLog)
+    private func configUILayer(context: MP3BookContextProtocol) -> MP3BookContext.UI {
+        return MP3BookContext.UI(navigator: Navigator(),
+                                 themeManager: ThemeManager(),
+                                 systemVolume: SystemVolume(),
+                                 viewModels: UI.VM(context: context))
     }
+}
 
-    private func addDemoFilesIfNeeded() {
-        guard !UserDefaults.standard.bool(forKey: Constants.keys.demoFileShown) else { return }
+extension MP3BookContext {
+    class Domain {
+        let bookRepository: IBookRepository
+        let bookFactory: BookFactory
+        let dispatcher: PlaylistDispatcher
 
-        let demoBook = "Demo – Three Laws of Robotics"
-        let service = DemoFileAppService()
-
-        do {
-            try service.copyDemoFile(srcFileName: demoBook, to: URLS.documentsURL)
-
-            guard let docsContent = try? MP3BookContext.shared.documentsAppService.read() else { return }
-            let folderToBook = FolderToBookMapper(repo: bookRepository, dispatcher: dispatcher)
-            let books = folderToBook.convert(from: docsContent.folders)
-
-            UserDefaults.standard.set(true, forKey: Constants.keys.demoFileShown)
-            try bookRepository.write(books)
-
-        } catch {
-            logErr(msg: error.localizedDescription)
+        init(bookRepository: IBookRepository, bookFactory: BookFactory, dispatcher: PlaylistDispatcher) {
+            self.bookRepository = bookRepository
+            self.bookFactory = bookFactory
+            self.dispatcher = dispatcher
         }
     }
+}
 
-    func notifyBookIsDamaged(_ b: Book) {
-        let validationService = PersistenceValidationDomainService()
+extension MP3BookContext {
+    class UI {
+        let navigator: Navigator
+        let themeManager: ThemeManager
+        let systemVolume: SystemVolume
+        let viewModels: VM
 
-        switch validationService.validate(b: b) {
-        case .bookNotFound:
-            if b.source == .documents {
-                AlertBox.shared.show(title: "NoBookInTheAppData", details: "CheckBookFolder \(b.folderPath!)")
-            } else {
-                AlertBox.shared.show(title: "NoBookInTheMediaLib", details: "CheckPlaylist \(b.title)")
-            }
-        case .fileNotFound:
-            guard let f = b.audioFileColl.curFile else { return }
-            if b.source == .documents {
-                AlertBox.shared.show(title: "NoAudioFile", details: "CheckFileExistInAppData \(f.name)")
-            } else {
-                AlertBox.shared.show(title: "NoAudioFile", details: "CheckFileExistInMediaLib \(b.title) \(f.name)")
-            }
-        default: break
+        init(navigator: Navigator, themeManager: ThemeManager, systemVolume: SystemVolume, viewModels: VM) {
+            self.navigator = navigator
+            self.themeManager = themeManager
+            self.systemVolume = systemVolume
+            self.viewModels = viewModels
         }
     }
+}
 
-    func recoverBook(_ b: Book) {
-        let validationService = PersistenceValidationDomainService()
-        let reloadFilesService = MP3BookContext.shared.reloadAudioFilesFromIPodLibraryService
+extension MP3BookContext.UI {
+    class VM {
+        private let context: MP3BookContextProtocol
 
-        let result = validationService.validate(b: b)
-        switch result {
-        case .ok:
-            b.isDamaged = false
-        case .bookNotFound:
-            b.isDamaged = true
-            notifyBookIsDamaged(b)
-        case .fileNotFound:
-            if b.source == .iPodLibrary {
-                reloadFilesService.run(b)
-                if !b.destroyed {
-                    notifyBookIsDamaged(b)
-                }
-            } else {
-                b.isDamaged = true
-                notifyBookIsDamaged(b)
-            }
+        lazy var bookListVM = BookListVM(context: context)
+        lazy var fileListVM = AudioFileListVM(context: context)
+        lazy var libraryVM = LibraryVM(context: context)
+        lazy var manualVM = ManualVM(context: context)
+
+        init(context: MP3BookContextProtocol) {
+            self.context = context
         }
+    }
+}
+
+extension MP3BookContext {
+    class APP {
+        let documentsService: IDocumentsAppService
+        let iPodService: IPodAppService
+        let playerService: PlayerAppService
+        let reloadAudioFilesFromIPodLibraryService: ReloadAudioFilesFromIPodLibraryService
+        let demoFileService: DemoFileAppService
+        let persistenceValidationService: PersistenceValidationAppService
+        let alertBox: AlertBox
+
+        init(documentsService: IDocumentsAppService,
+             iPodService: IPodAppService,
+             playerService: PlayerAppService,
+             reloadFilesService: ReloadAudioFilesFromIPodLibraryService,
+             demoFileService: DemoFileAppService,
+             persistenceValidationService: PersistenceValidationAppService,
+             alertBox: AlertBox) {
+            self.documentsService = documentsService
+            self.iPodService = iPodService
+            self.playerService = playerService
+            reloadAudioFilesFromIPodLibraryService = reloadFilesService
+            self.demoFileService = demoFileService
+            self.persistenceValidationService = persistenceValidationService
+            self.alertBox = alertBox
+        }
+    }
+}
+
+class StubMP3BookContext: MP3BookContextProtocol {
+    lazy var domain = configDomainLayer()
+    lazy var app = configAppLayer(context: self)
+    lazy var ui = configUILayer(context: self)
+
+    init() {
+        logInfo(msg: "Stub MP3BookContext fot UITesting is initialized")
+    }
+
+    private func configDomainLayer() -> MP3BookContext.Domain {
+        let dispatcher = PlaylistDispatcher()
+        let stubDocsService = UITestDocumentsAppService()
+        let stubRepo = UITestBookRepository(dispatcher: dispatcher)
+        let folders = stubDocsService.createTestContent().folders
+        let books = FolderToBookMapper(repo: stubRepo, dispatcher: dispatcher).convert(from: folders)
+        stubRepo.write(books)
+
+        let folderToBook = FolderToBookMapper(repo: stubRepo, dispatcher: dispatcher)
+        let playlistToBook = PlaylistToBookMapper(repo: stubRepo, dispatcher: dispatcher)
+        let bookFactory = BookFactory(repo: stubRepo, folderToBook: folderToBook, playlistToBook: playlistToBook)
+
+        return MP3BookContext.Domain(bookRepository: stubRepo,
+                                     bookFactory: bookFactory,
+                                     dispatcher: dispatcher)
+    }
+
+    private func configAppLayer(context: MP3BookContextProtocol) -> MP3BookContext.APP {
+        let stubDocumentsService = UITestDocumentsAppService()
+        let iPodService = IPodAppService()
+        let playerService = PlayerAppService(api: MediaAPI(), context: context)
+
+        let playlistToBook = PlaylistToBookMapper(repo: context.domain.bookRepository,
+                                                  dispatcher: context.domain.dispatcher)
+
+        let reloadFilesService = ReloadAudioFilesFromIPodLibraryService(playlistToBookMapper: playlistToBook,
+                                                                        iPodAppService: iPodService, bookRepo: context.domain.bookRepository)
+
+        let demoFileService = DemoFileAppService(bookRepository: context.domain.bookRepository,
+                                                 documentsAppService: stubDocumentsService,
+                                                 dispatcher: context.domain.dispatcher)
+
+        let ab = AlertBox()
+
+        let persistenceService = PersistenceValidationAppService(iPodAppService: iPodService,
+                                                                 reloadFilesService: reloadFilesService,
+                                                                 alertBox: ab)
+
+        return MP3BookContext.APP(documentsService: stubDocumentsService,
+                                  iPodService: iPodService,
+                                  playerService: playerService,
+                                  reloadFilesService: reloadFilesService,
+                                  demoFileService: demoFileService,
+                                  persistenceValidationService: persistenceService,
+                                  alertBox: ab)
+    }
+
+    private func configUILayer(context: MP3BookContextProtocol) -> MP3BookContext.UI {
+        return MP3BookContext.UI(navigator: Navigator(),
+                                 themeManager: ThemeManager(),
+                                 systemVolume: SystemVolume(),
+                                 viewModels: MP3BookContext.UI.VM(context: context))
     }
 }

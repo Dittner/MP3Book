@@ -8,40 +8,40 @@
 import SwiftUI
 
 struct ManualView: View {
-    @ObservedObject var vm = ManualVM.shared
-    @ObservedObject var themeObservable = ThemeObservable.shared
+    @ObservedObject var vm: ManualVM
+    @EnvironmentObject var themeManager: ThemeManager
 
     var body: some View {
         VStack(alignment: .center, spacing: -20) {
             NavigationBar { navigationBarSideWidth in
-                IconButton(name: .back, size: 18, color: themeObservable.theme.navigation.color) {
+                IconButton(name: .back, size: 18, color: themeManager.theme.navigation.color) {
                     self.vm.goBack()
                 }
                 .navigationBarLeading(navigationBarSideWidth)
 
                 Text("ManualTitle")
                     .font(Constants.font.b16)
-                    .foregroundColor(themeObservable.theme.tint.color)
+                    .foregroundColor(themeManager.theme.tint.color)
                     .navigationBarTitle(navigationBarSideWidth)
 
-                IconButton(name: .delete, size: 18, color: themeObservable.theme.navigation.color) {
+                IconButton(name: .delete, size: 18, color: themeManager.theme.navigation.color) {
                     self.vm.removeManual()
                 }
                 .navigationBarTrailing(navigationBarSideWidth)
             }
 
-            OSTabBar()
+            OSTabBar(vm: vm)
                 .navigationBarShadow()
 
-            ManualContent()
+            ManualContent(vm: vm)
                 .edgesIgnoringSafeArea(.bottom)
         }.frame(maxWidth: .infinity)
     }
 }
 
 struct ManualContent: View {
-    @ObservedObject var vm = ManualVM.shared
-    @ObservedObject var themeObservable = ThemeObservable.shared
+    @ObservedObject var vm: ManualVM
+    @EnvironmentObject var themeManager: ThemeManager
 
     var body: some View {
         ScrollView {
@@ -51,6 +51,7 @@ struct ManualContent: View {
                     Text("ManualMac")
                         .baselineOffset(5.0)
                         .multilineTextAlignment(.leading)
+                        .layoutPriority(1)
 
                     Image("ManualMac")
                         .resizable()
@@ -82,11 +83,9 @@ struct ManualContent: View {
                         .baselineOffset(5.0)
                         .multilineTextAlignment(.leading)
                 }
-
-                Spacer()
             }
             .font(Constants.font.r16)
-            .foregroundColor(themeObservable.theme.text.color)
+            .foregroundColor(themeManager.theme.text.color)
             .padding(.horizontal, Constants.size.actionBtnSize / 2)
             Spacer().frame(height: 40)
         }
@@ -95,22 +94,18 @@ struct ManualContent: View {
 }
 
 struct OSTabBar: View {
-    @ObservedObject private var themeObservable = ThemeObservable.shared
-    @ObservedObject var vm = ManualVM.shared
-
-    init() {
-        print("OSTabBar init")
-    }
+    @ObservedObject var vm: ManualVM
+    @EnvironmentObject var themeManager: ThemeManager
 
     var body: some View {
         HStack(alignment: .bottom, spacing: 0) {
-            TabBarButton(icon: .winLogo, iconSize: 15, title: "Windows", theme: themeObservable.theme, selected: !vm.isMacOSSelected) {
+            TabBarButton(icon: .winLogo, iconSize: 15, title: "Windows", theme: themeManager.theme, selected: !vm.isMacOSSelected) {
                 if self.vm.isMacOSSelected {
                     self.vm.isMacOSSelected = false
                 }
             }
 
-            TabBarButton(icon: .appleLogo, iconSize: 15, title: "MacOS", theme: themeObservable.theme, selected: vm.isMacOSSelected) {
+            TabBarButton(icon: .appleLogo, iconSize: 15, title: "MacOS", theme: themeManager.theme, selected: vm.isMacOSSelected) {
                 if !self.vm.isMacOSSelected {
                     vm.isMacOSSelected = true
                 }

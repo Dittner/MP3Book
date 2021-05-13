@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class UITestDocumentsAppService: DocumentsAppServiceProtocol {
+class UITestDocumentsAppService: IDocumentsAppService {
     func read() throws -> DocumentsContent {
         return createTestContent()
     }

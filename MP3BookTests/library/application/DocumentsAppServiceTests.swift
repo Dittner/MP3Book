@@ -21,8 +21,13 @@ class DocumentsAppServiceTests: XCTestCase {
 
     func testCopyDemoFileToDocuments() throws {
         let destDemoFolderURL = URLS.documentsURL.appendingPathComponent(destFolderName)
-        let copyService = DemoFileAppService()
-        try copyService.copyDemoFile(srcFileName: srcFolderName, to: destDemoFolderURL)
+        let storageURL = URLS.libraryURL.appendingPathComponent("Test/book")
+        let dispatcher = PlaylistDispatcher()
+        let serializer = BookSerializer(dispatcher: dispatcher)
+        let repo = JSONBookRepository(serializer: serializer, dispatcher: dispatcher, storeTo: storageURL)
+        let documentsService = DocumentsAppService()
+        let service = DemoFileAppService(bookRepository: repo, documentsAppService: documentsService, dispatcher: dispatcher)
+        try service.copyDemoFile(srcFileName: srcFolderName, to: destDemoFolderURL)
 
         let docsService = DocumentsAppService()
         let content = try docsService.readFrom(dirUrl: destDemoFolderURL)

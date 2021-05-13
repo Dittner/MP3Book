@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct LibraryView: View {
-    @ObservedObject var themeObservable = ThemeObservable.shared
-    @ObservedObject var vm = LibraryVM.shared
+    @ObservedObject var vm: LibraryVM
+    @EnvironmentObject var themeManager: ThemeManager
 
     var body: some View {
         VStack(alignment: .center, spacing: -20) {
             NavigationBar { navigationBarSideWidth in
-                TextButton(text: "Cancel", textColor: themeObservable.theme.navigation.color, font: Constants.font.r14) {
+                TextButton(text: "Cancel", textColor: themeManager.theme.navigation.color, font: Constants.font.r14) {
                     vm.cancel()
                 }
                 .accessibilityIdentifier("cancel")
@@ -23,17 +23,17 @@ struct LibraryView: View {
 
                 Text("Library")
                     .font(Constants.font.b16)
-                    .foregroundColor(themeObservable.theme.tint.color)
+                    .foregroundColor(themeManager.theme.tint.color)
                     .navigationBarTitle(navigationBarSideWidth)
 
-                TextButton(text: "Done", textColor: themeObservable.theme.navigation.color, font: Constants.font.b14) {
+                TextButton(text: "Done", textColor: themeManager.theme.navigation.color, font: Constants.font.b14) {
                     vm.apply()
                 }
                 .padding(.horizontal)
                 .navigationBarTrailing(navigationBarSideWidth)
             }.navigationBarShadow()
 
-            LibraryContent()
+            LibraryContent(vm: vm)
                 .frame(maxWidth: .infinity)
                 .edgesIgnoringSafeArea(.bottom)
         }
@@ -41,8 +41,8 @@ struct LibraryView: View {
 }
 
 struct LibraryContent: View {
-    @ObservedObject var vm = LibraryVM.shared
-    @ObservedObject var themeObservable = ThemeObservable.shared
+    @ObservedObject var vm: LibraryVM
+    @EnvironmentObject var themeManager: ThemeManager
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
@@ -58,7 +58,7 @@ struct LibraryContent: View {
                             Text("App Data")
                                 .font(Constants.font.r11)
                                 .lineLimit(1)
-                                .foregroundColor(themeObservable.theme.text.color)
+                                .foregroundColor(themeManager.theme.text.color)
                                 .frame(height: 20, alignment: .center)
 
                             HSeparatorView(horizontalPadding: 0)
@@ -71,7 +71,7 @@ struct LibraryContent: View {
                                 Text("Media Library")
                                     .font(Constants.font.r11)
                                     .lineLimit(1)
-                                    .foregroundColor(themeObservable.theme.text.color)
+                                    .foregroundColor(themeManager.theme.text.color)
                                     .frame(height: 20, alignment: .center)
 
                                 HSeparatorView(horizontalPadding: 0)
@@ -89,11 +89,11 @@ struct LibraryContent: View {
                 .clipped()
 
                 if !vm.isManualHidden {
-                    TextButton(text: "howToAddFiles", textColor: themeObservable.theme.navigation.color, font: Constants.font.b14, height: 100) {
+                    TextButton(text: "howToAddFiles", textColor: themeManager.theme.navigation.color, font: Constants.font.b14, height: 100) {
                         vm.openManual()
                     }.frame(maxWidth: .infinity)
                         .background(Rectangle()
-                            .fill(LinearGradient(gradient: Gradient(colors: themeObservable.theme.playerColors), startPoint: .top, endPoint: .bottom))
+                            .fill(LinearGradient(gradient: Gradient(colors: themeManager.theme.playerColors), startPoint: .top, endPoint: .bottom))
                             .cornerRadius(radius: 20, corners: [.topLeft, .topRight]))
                 }
             }
@@ -123,7 +123,6 @@ struct WrapperPlaylistCell: View {
     @ObservedObject var wrappedFolder: Wrapper<Playlist>
     let title: String
     let subTitle: String
-
     init(w: Wrapper<Playlist>) {
         wrappedFolder = w
         title = w.data.title
@@ -136,7 +135,7 @@ struct WrapperPlaylistCell: View {
 }
 
 struct ListCell: View {
-    @ObservedObject var themeObservable = ThemeObservable.shared
+    @EnvironmentObject var themeManager: ThemeManager
 
     let title: String
     let subTitle: String
@@ -182,8 +181,8 @@ struct ListCell: View {
                 .frame(width: Constants.size.actionBtnSize)
         }
         .frame(height: Constants.size.folderListCellHeight)
-        .background(selected ? themeObservable.theme.listCellBg.color : themeObservable.theme.transparent.color)
-        .foregroundColor(selected ? themeObservable.theme.selectedText.color : themeObservable.theme.text.color)
+        .background(selected ? themeManager.theme.listCellBg.color : themeManager.theme.transparent.color)
+        .foregroundColor(selected ? themeManager.theme.selectedText.color : themeManager.theme.text.color)
         .onTapGesture {
             selected.toggle()
         }

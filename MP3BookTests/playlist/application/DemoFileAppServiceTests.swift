@@ -26,7 +26,12 @@ class DemoFileAppServiceTests: XCTestCase {
 
         XCTAssertFalse(fileManager.fileExists(atPath: destDemoFileUrl.path))
 
-        let service = DemoFileAppService()
+        let storageURL = URLS.libraryURL.appendingPathComponent("Test/book")
+        let dispatcher = PlaylistDispatcher()
+        let serializer = BookSerializer(dispatcher: dispatcher)
+        let repo = JSONBookRepository(serializer: serializer, dispatcher: dispatcher, storeTo: storageURL)
+        let documentsService = DocumentsAppService()
+        let service = DemoFileAppService(bookRepository: repo, documentsAppService: documentsService, dispatcher: dispatcher)
         try service.copyDemoFile(srcFileName: srcFileName, to: destDemoFolderURL)
         XCTAssertTrue(fileManager.fileExists(atPath: destDemoFileUrl.path))
     }

@@ -41,8 +41,6 @@ struct Screen {
 }
 
 class Navigator: ObservableObject {
-    static var shared = Navigator()
-
     @Published var screenPosition: ScreenPosition
     @Published var screen: Screen
 

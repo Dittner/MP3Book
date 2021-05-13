@@ -11,8 +11,6 @@ import SwiftUI
 class SystemVolume: ObservableObject {
     @Published var value: Int
 
-    static var shared: SystemVolume = SystemVolume()
-
     private let session = AVAudioSession.sharedInstance()
     private var progressObserver: NSKeyValueObservation!
 

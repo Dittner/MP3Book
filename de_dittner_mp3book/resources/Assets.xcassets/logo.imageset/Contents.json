@@ -1,8 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "logoLihghtTheme.pdf",
-      "idiom" : "iphone"
+      "filename" : "darkLogo.pdf",
+      "idiom" : "universal"
     },
     {
       "appearances" : [
@@ -12,21 +12,7 @@
         }
       ],
       "filename" : "logo.pdf",
-      "idiom" : "iphone"
-    },
-    {
-      "filename" : "darkLogo.pdf",
-      "idiom" : "ipad"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "lightLogo.pdf",
-      "idiom" : "ipad"
+      "idiom" : "universal"
     }
   ],
   "info" : {
@@ -34,6 +20,6 @@
     "version" : 1
   },
   "properties" : {
-    "preserves-vector-representation" : true
+    "template-rendering-intent" : "original"
   }
 }

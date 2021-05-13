@@ -12,9 +12,9 @@ class ViewModel {
     private(set) var navigator: Navigator
     private var navigatorSubscription: AnyCancellable?
 
-    init(id: ScreenID) {
+    init(id: ScreenID, navigator: Navigator) {
         screenID = id
-        navigator = Navigator.shared
+        self.navigator = navigator
 
         navigatorSubscription = navigator.$screen
             .sink { screen in

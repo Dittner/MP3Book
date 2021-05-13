@@ -10,79 +10,78 @@ import SwiftUI
 
 @main
 struct MP3BookApp: App {
-    @ObservedObject var themeObservable = ThemeObservable.shared
+    let context: MP3BookContextProtocol
+    @ObservedObject var themeManager: ThemeManager
 
     private var disposeBag: Set<AnyCancellable> = []
     init() {
-        MP3BookContext.shared.run()
+        logAbout()
 
-        UITableView.appearance().backgroundColor = .clear
-        UITableViewCell.appearance().backgroundColor = .clear
-        UIScrollView.appearance().backgroundColor = .clear
-        // set backgroundColor to clear makes unable to use background in child views
-        // UIView.appearance().backgroundColor = .clear
+        #if UITESTING
+            context = StubMP3BookContext()
+        #else
+            context = MP3BookContext()
+            context.app.demoFileService.addDemoFilesIfNeeded()
+        #endif
 
-        ThemeObservable.shared.$theme
-            .sink { theme in
-                let coloredAppearance = UINavigationBarAppearance()
-                coloredAppearance.configureWithTransparentBackground()
-                coloredAppearance.backgroundColor = .clear
-                coloredAppearance.titleTextAttributes = [.foregroundColor: theme.tint]
-                coloredAppearance.largeTitleTextAttributes = [.foregroundColor: theme.tint]
-
-                UINavigationBar.appearance().standardAppearance = coloredAppearance
-                UINavigationBar.appearance().compactAppearance = coloredAppearance
-                UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
-                // set tintColor to theme.tint kill toolbar custom buttons after a model sheet is dismissed
-                // UINavigationBar.appearance().tintColor = theme.tint
-            }
-            .store(in: &disposeBag)
+        themeManager = context.ui.themeManager
     }
 
     var body: some Scene {
         WindowGroup {
-            ContentView().accentColor(themeObservable.theme.tint.color)
+            ContentView(context: context)
+                .environmentObject(themeManager)
+                .environmentObject(context.ui.systemVolume)
+                .accentColor(themeManager.theme.tint.color)
         }
     }
 }
 
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var navigator = Navigator.shared
-    @ObservedObject var alertBox = AlertBox.shared
+    @EnvironmentObject var themeManager: ThemeManager
+    @ObservedObject var navigator: Navigator
+    @ObservedObject var alertBox: AlertBox
     let debugLineColor = UIColor(rgb: 0x00C3FF, alpha: 0.5)
+    let viewModels: MP3BookContext.UI.VM
+
+    init(context: MP3BookContextProtocol) {
+        viewModels = context.ui.viewModels
+        navigator = context.ui.navigator
+        alertBox = context.app.alertBox
+    }
 
     var body: some View {
         if colorScheme == .dark {
-            ThemeObservable.shared.selectDarkTheme()
+            themeManager.selectDarkTheme()
         } else {
-            ThemeObservable.shared.selectLightTheme()
+            themeManager.selectLightTheme()
         }
         return GeometryReader { geo in
             ZStack {
                 if let pos = navigator.screenPosition.xPosition(id: .bookList) {
-                    BookListView()
+                    BookListView(vm: viewModels.bookListVM)
                         .background(AppBG())
                         .offset(x: pos, y: 0)
                         .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
                 }
 
                 if let pos = navigator.screenPosition.xPosition(id: .audioFileList) {
-                    AudioFileListView()
+                    AudioFileListView(vm: viewModels.fileListVM)
                         .background(AppBG())
                         .offset(x: pos, y: 0)
                         .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
                 }
 
                 if let pos = navigator.screenPosition.xPosition(id: .library) {
-                    LibraryView()
+                    LibraryView(vm: viewModels.libraryVM)
                         .background(AppBG())
                         .offset(x: pos, y: 0)
                         .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
                 }
 
                 if let pos = navigator.screenPosition.xPosition(id: .manual) {
-                    ManualView()
+                    ManualView(vm: viewModels.manualVM)
                         .background(AppBG())
                         .offset(x: pos, y: 0)
                         .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
@@ -108,10 +107,10 @@ struct ContentView: View {
 }
 
 struct AppBG: View {
-    @ObservedObject var themeObservable = ThemeObservable.shared
+    @EnvironmentObject var themeManager: ThemeManager
 
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: themeObservable.theme.appBgColors), startPoint: .top, endPoint: .bottom)
+        LinearGradient(gradient: Gradient(colors: themeManager.theme.appBgColors), startPoint: .top, endPoint: .bottom)
             .ignoresSafeArea()
     }
 }

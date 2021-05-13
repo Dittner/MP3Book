@@ -19,11 +19,11 @@ struct DocumentsContent {
     var totalDuration: Int
 }
 
-protocol DocumentsAppServiceProtocol {
+protocol IDocumentsAppService {
     func read() throws -> DocumentsContent
 }
 
-class DocumentsAppService: DocumentsAppServiceProtocol {
+class DocumentsAppService: IDocumentsAppService {
     func read() throws -> DocumentsContent {
         return try readFrom(dirUrl: URLS.documentsURL)
     }

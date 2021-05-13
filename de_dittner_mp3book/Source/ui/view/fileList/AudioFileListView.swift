@@ -9,15 +9,14 @@ import Combine
 import SwiftUI
 
 struct AudioFileListView: View {
-    @Environment(\.presentationMode) var presentation
-    @ObservedObject var themeObservable = ThemeObservable.shared
-    @ObservedObject var vm = AudioFileListVM.shared
+    @EnvironmentObject var themeManager: ThemeManager
+    @ObservedObject var vm: AudioFileListVM
 
     var body: some View {
         ZStack {
             VStack(alignment: .center, spacing: -20) {
                 NavigationBar { navigationBarSideWidth in
-                    IconButton(name: .back, size: 18, color: themeObservable.theme.navigation.color) {
+                    IconButton(name: .back, size: 18, color: themeManager.theme.navigation.color) {
                         self.vm.goBack()
                     }
                     .accessibilityIdentifier("back")
@@ -26,12 +25,12 @@ struct AudioFileListView: View {
                     Text(vm.selectedBook?.title ?? "")
                         .lineLimit(2)
                         .font(Constants.font.b16)
-                        .foregroundColor(themeObservable.theme.tint.color)
+                        .foregroundColor(themeManager.theme.tint.color)
                         .multilineTextAlignment(.center)
                         .navigationBarTitle(navigationBarSideWidth)
 
                     if vm.selectedBook?.source == .iPodLibrary {
-                        IconButton(name: .sort, size: 18, color: themeObservable.theme.navigation.color) {
+                        IconButton(name: .sort, size: 18, color: themeManager.theme.navigation.color) {
                             vm.resortFiles()
                         }.navigationBarTrailing(navigationBarSideWidth)
                     }
@@ -60,6 +59,7 @@ struct AudioFileListView: View {
 
 struct FileListContent: View {
     @ObservedObject var vm: AudioFileListVM
+    @EnvironmentObject var themeManager: ThemeManager
 
     init(vm: AudioFileListVM) {
         print("FileListContent")
@@ -95,7 +95,7 @@ struct FileListContent: View {
 }
 
 struct PlayModeTabBar: View {
-    @ObservedObject private var themeObservable = ThemeObservable.shared
+    @EnvironmentObject var themeManager: ThemeManager
     @ObservedObject var book: Book
     @ObservedObject private var bookmarkColl: BookmarkColl
 
@@ -115,13 +115,13 @@ struct PlayModeTabBar: View {
 
     var body: some View {
         HStack(alignment: .bottom, spacing: 0) {
-            TabBarButton(icon: .bookmark, iconSize: 15, title: getBookmarksTitle(), theme: themeObservable.theme, selected: book.playMode == .bookmark) {
+            TabBarButton(icon: .bookmark, iconSize: 15, title: getBookmarksTitle(), theme: themeManager.theme, selected: book.playMode == .bookmark) {
                 if self.book.playMode != .bookmark {
                     self.book.playMode = .bookmark
                 }
             }
 
-            TabBarButton(icon: .audioFile, iconSize: 15, title: getAudioFilesTitle(), theme: themeObservable.theme, selected: book.playMode == .audioFile) {
+            TabBarButton(icon: .audioFile, iconSize: 15, title: getAudioFilesTitle(), theme: themeManager.theme, selected: book.playMode == .audioFile) {
                 if self.book.playMode != .audioFile {
                     self.book.playMode = .audioFile
                 }
@@ -138,7 +138,6 @@ struct FileList: View {
     @ObservedObject private var book: Book
     @ObservedObject private var audioFileColl: AudioFileColl
     @ObservedObject private var bookmarkColl: BookmarkColl
-
     private let vm: AudioFileListVM
 
     init(book: Book, vm: AudioFileListVM) {
@@ -178,9 +177,9 @@ struct FileList: View {
 }
 
 struct FileCell: View {
-    @ObservedObject private var themeObservable = ThemeObservable.shared
     @ObservedObject private var file: AudioFile
     @ObservedObject private var notifier = Notifier()
+    @EnvironmentObject var themeManager: ThemeManager
 
     class Notifier: ObservableObject {
         @Published var playState: PlayState = .stopped
@@ -240,8 +239,8 @@ struct FileCell: View {
             HSeparatorView(horizontalPadding: -Constants.size.actionBtnSize)
         }
         .frame(height: Constants.size.fileListCellHeight)
-        .background(themeObservable.theme.transparent.color)
-        .foregroundColor(notifier.playState == .stopped ? themeObservable.theme.text.color : themeObservable.theme.play.color)
+        .background(themeManager.theme.transparent.color)
+        .foregroundColor(notifier.playState == .stopped ? themeManager.theme.text.color : themeManager.theme.play.color)
         .onTapGesture {
             selectAction()
         }
@@ -254,7 +253,7 @@ enum BookmarkCellAction {
 }
 
 struct BookmarkCell: View {
-    @ObservedObject private var themeObservable = ThemeObservable.shared
+    @EnvironmentObject var themeManager: ThemeManager
     @ObservedObject private var file: AudioFile
     @ObservedObject private var notifier = Notifier()
     @State var offset = CGSize.zero
@@ -327,16 +326,16 @@ struct BookmarkCell: View {
                     HSeparatorView(horizontalPadding: -Constants.size.actionBtnSize)
                 }.frame(width: geometry.size.width)
 
-                IconButton(name: .delete, size: 18, color: themeObservable.theme.deleteBtnIcon.color) {
+                IconButton(name: .delete, size: 18, color: themeManager.theme.deleteBtnIcon.color) {
                     self.action(.delete)
                 }.frame(width: 70, height: Constants.size.fileListCellHeight)
-                    .background(themeObservable.theme.deleteBtnBg.color)
+                    .background(themeManager.theme.deleteBtnBg.color)
 
-                themeObservable.theme.deleteBtnBg.color.frame(width: -self.offset.width)
+                themeManager.theme.deleteBtnBg.color.frame(width: -self.offset.width)
             }
 
-            .background(themeObservable.theme.transparent.color)
-            .foregroundColor(notifier.playState == .stopped ? themeObservable.theme.text.color : themeObservable.theme.play.color)
+            .background(themeManager.theme.transparent.color)
+            .foregroundColor(notifier.playState == .stopped ? themeManager.theme.text.color : themeManager.theme.play.color)
             .onTapGesture {
                 self.action(.select)
             }

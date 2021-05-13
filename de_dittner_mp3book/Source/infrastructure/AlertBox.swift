@@ -9,8 +9,6 @@ import Combine
 import SwiftUI
 
 class AlertBox: ObservableObject {
-    static var shared = AlertBox()
-
     @Published var message: AlertMessage?
 
     func show(title: LocalizedStringKey, details: LocalizedStringKey) {

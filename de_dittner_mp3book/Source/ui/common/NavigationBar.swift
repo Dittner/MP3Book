@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NavigationBar<Content: View>: View {
-    @ObservedObject var themeObservable = ThemeObservable.shared
+    @EnvironmentObject var themeManager: ThemeManager
     @State private var textMinWidth: CGFloat?
     private let content: (Binding<CGFloat?>) -> Content
 
@@ -23,7 +23,7 @@ struct NavigationBar<Content: View>: View {
                 .frame(maxWidth: .infinity, maxHeight: Constants.size.navigationBarHeight)
 
         }.background(Rectangle()
-            .fill(LinearGradient(gradient: Gradient(colors: themeObservable.theme.toolbarColors), startPoint: .top, endPoint: .bottom))
+            .fill(LinearGradient(gradient: Gradient(colors: themeManager.theme.toolbarColors), startPoint: .top, endPoint: .bottom))
             .cornerRadius(radius: 20, corners: [.bottomLeft, .bottomRight])
             .edgesIgnoringSafeArea(.top))
             .frame(maxWidth: .infinity, maxHeight: Constants.size.navigationBarHeight)

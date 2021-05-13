@@ -35,7 +35,11 @@ class BookRepositoryTests: XCTestCase {
         try removeTestFiles()
 
         let destDemoFolderURL = URLS.documentsURL.appendingPathComponent(destFolderName)
-        let service = DemoFileAppService()
+        let dispatcher = PlaylistDispatcher()
+        let serializer = BookSerializer(dispatcher: dispatcher)
+        let repo = JSONBookRepository(serializer: serializer, dispatcher: dispatcher, storeTo: storageURL)
+        let documentsService = DocumentsAppService()
+        let service = DemoFileAppService(bookRepository: repo, documentsAppService: documentsService, dispatcher: dispatcher)
         try service.copyDemoFile(srcFileName: srcFileName, to: destDemoFolderURL)
 
         let file = FolderFile(filePath: destFolderName + "/" + srcFileName, name: srcFileName, duration: 60)

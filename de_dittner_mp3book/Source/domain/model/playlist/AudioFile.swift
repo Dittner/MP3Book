@@ -17,7 +17,7 @@ class AudioFile: PlaylistDomainEntity, ObservableObject, Identifiable {
     let name: String
     let index: Int
     let duration: Int
-    var book: Book!
+    weak var book: Book!
 
     init(uid: UID, id: ID, name: String, path: String, duration: Int, index: Int, dispatcher: PlaylistDispatcher) {
         self.uid = uid

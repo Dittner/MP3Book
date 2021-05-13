@@ -14,6 +14,36 @@ enum DemoFileIOError: DetailedError {
 }
 
 class DemoFileAppService {
+    let bookRepository: IBookRepository
+    let documentsAppService: IDocumentsAppService
+    let dispatcher: PlaylistDispatcher
+
+    init(bookRepository: IBookRepository, documentsAppService: IDocumentsAppService, dispatcher: PlaylistDispatcher) {
+        self.bookRepository = bookRepository
+        self.documentsAppService = documentsAppService
+        self.dispatcher = dispatcher
+    }
+
+    func addDemoFilesIfNeeded() {
+        guard !UserDefaults.standard.bool(forKey: Constants.keys.demoFileShown) else { return }
+
+        let demoBook = "Demo – Three Laws of Robotics"
+
+        do {
+            try copyDemoFile(srcFileName: demoBook, to: URLS.documentsURL)
+
+            guard let docsContent = try? documentsAppService.read() else { return }
+            let folderToBook = FolderToBookMapper(repo: bookRepository, dispatcher: dispatcher)
+            let books = folderToBook.convert(from: docsContent.folders)
+
+            UserDefaults.standard.set(true, forKey: Constants.keys.demoFileShown)
+            try bookRepository.write(books)
+
+        } catch {
+            logErr(msg: error.localizedDescription)
+        }
+    }
+
     // Move the folder with demo record from bundle to documents (folder)
     func copyDemoFile(srcFileName: String, to: URL) throws {
         let destFolderURL = to

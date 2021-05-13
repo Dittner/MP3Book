@@ -17,9 +17,11 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
     private var fileColl: FileCollection?
 
     private let api: MediaAPI
+    private let context: MP3BookContextProtocol
 
-    init(api: MediaAPI) {
+    init(api: MediaAPI, context: MP3BookContextProtocol) {
         self.api = api
+        self.context = context
         api.delegate = self
     }
 
@@ -185,12 +187,12 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
         case .fileNotPlayable:
             logErr(msg: "MediaAPIError: fileNotPlayable, url: \(b.coll.curFile?.path ?? "Unknown")")
             b.isDamaged = true
-            MP3BookContext.shared.recoverBook(b)
+            context.app.persistenceValidationService.recoverBook(b)
 
         case let .fileDecodingFailed(details):
             logErr(msg: "MediaAPIError: fileDecodingFailed, url: \(b.coll.curFile?.path ?? "Unknown"), details: \(details)")
             b.isDamaged = true
-            MP3BookContext.shared.recoverBook(b)
+            context.app.persistenceValidationService.recoverBook(b)
         }
     }
 }

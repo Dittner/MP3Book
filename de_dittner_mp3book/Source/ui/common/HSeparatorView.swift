@@ -9,7 +9,7 @@ import Combine
 import SwiftUI
 
 struct HSeparatorView: View {
-    @ObservedObject var themeObservable = ThemeObservable.shared
+    @EnvironmentObject var themeManager: ThemeManager
 
     let horizontalPadding: CGFloat
 
@@ -18,7 +18,7 @@ struct HSeparatorView: View {
     }
 
     var body: some View {
-        themeObservable.theme.separator.color
+        themeManager.theme.separator.color
             .padding(.horizontal, horizontalPadding)
             .frame(height: 0.5)
             .frame(maxWidth: .infinity)

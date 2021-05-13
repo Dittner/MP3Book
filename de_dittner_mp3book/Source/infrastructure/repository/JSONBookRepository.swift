@@ -89,11 +89,12 @@ class JSONBookRepository: IBookRepository {
         }
     }
 
+    private let iPodService = IPodAppService()
     private func bookSourceExists(_ b: Book) -> Bool {
         if let url = b.getURL() {
             if b.source == .documents {
                 return url.fileExists()
-            } else if let id = b.playlistID, MP3BookContext.shared.iPodAppService.playlistExists(persistentID: id) {
+            } else if let id = b.playlistID, iPodService.playlistExists(persistentID: id) {
                 return true
             }
         }
