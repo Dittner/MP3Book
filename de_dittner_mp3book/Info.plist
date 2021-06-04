@@ -15,9 +15,9 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.4</string>
+	<string>2.5</string>
 	<key>CFBundleVersion</key>
-	<string>12</string>
+	<string>13</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<string>ipod-library</string>
 	<key>LSRequiresIPhoneOS</key>
