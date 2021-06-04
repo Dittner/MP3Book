@@ -55,7 +55,7 @@ class PlayerAppService: MediaAPINotificationDelegate, ObservableObject {
             }
         }
 
-        if let url = curFile.getURL() {
+        if let url = coll.curFile?.getURL() {
             api.play(url: url, position: coll.curFileProgress, duration: curFile.duration)
         } else {
             logErr(msg: "fileURLNotFound, book: " + b.title + ", file: " + curFile.description)
