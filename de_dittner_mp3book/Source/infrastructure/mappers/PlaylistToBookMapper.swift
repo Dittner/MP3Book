@@ -20,6 +20,9 @@ class PlaylistToBookMapper: PlaylistToBookMapperProtocol {
         var newBooks: [Book] = []
         for playlist in from {
             if let b = repo.read(playlist.id) {
+                if playlist.totalDuration != b.totalDuration || b.audioFileColl.count != playlist.files.count{
+                    b.updateFiles(files: convert(playlist.files))
+                }
                 newBooks.append(b)
             } else {
                 let files = convert(playlist.files)

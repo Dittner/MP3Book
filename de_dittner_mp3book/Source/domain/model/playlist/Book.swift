@@ -165,7 +165,6 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
     let folderPath: String?
     let playlistID: UInt64?
     let title: String
-    let totalDuration: Int
     let source: AudioFileSource
 
     @Published private(set) var bookmarkColl: BookmarkColl
@@ -179,6 +178,7 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
     @Published var playMode: PlayMode = .audioFile
 
     var destroyed: Bool = false
+    private(set) var totalDuration: Int = 0
     private(set) var totalDurationAt: [Int: Int] = [:]
 
     private(set) var sortType: AudioFilesSortType = .none
@@ -342,6 +342,35 @@ class Book: PlaylistDomainEntity, ObservableObject, Identifiable {
         } else {
             audioFileColl.files = audioFileColl.files.sorted { $0.name < $1.name }
         }
+    }
+
+    func updateFiles(files: [AudioFile]) {
+        var bookmarks: [Bookmark] = []
+        if bookmarkColl.count > 0 {
+            var fileHash: [String: AudioFile] = [:]
+            files.forEach { fileHash[$0.name] = $0 }
+            for bm in bookmarkColl.bookmarks {
+                if let f = fileHash[bm.file.name] {
+                    let updatedBookmark: Bookmark = Bookmark(uid: UID(), file: f, time: bm.time, comment: bm.comment)
+                    bookmarks.append(updatedBookmark)
+                }
+            }
+        }
+        totalDuration = files.reduce(0, { $0 + $1.duration })
+
+        let afc = AudioFileColl(files: files)
+        audioFileColl = afc
+        bookmarkColl = BookmarkColl(bookmarks: bookmarks)
+        coll = afc
+
+        for f in files {
+            f.book = self
+        }
+
+        isDamaged = false
+        sortFiles()
+        countTotalDurationAt()
+        notifyStateChanged()
     }
 }
 

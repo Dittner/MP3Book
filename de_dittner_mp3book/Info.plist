@@ -15,9 +15,9 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.5</string>
+	<string>2.8</string>
 	<key>CFBundleVersion</key>
-	<string>13</string>
+	<string>18</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<string>ipod-library</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -56,7 +56,6 @@
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 </dict>
 </plist>

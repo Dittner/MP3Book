@@ -20,15 +20,14 @@ struct ScreenPosition {
     let center: ScreenID
     let trailing: ScreenID?
     let goBack: Bool
-    let appWidth: CGFloat
 
     func xPosition(id: ScreenID) -> CGFloat? {
         if let leadingScreenID = leading, leadingScreenID == id {
-            return -appWidth
+            return -1
         } else if center == id {
             return 0
         } else if let trailingScreenID = trailing, trailingScreenID == id {
-            return appWidth
+            return 1
         } else {
             return nil
         }
@@ -44,24 +43,22 @@ class Navigator: ObservableObject {
     @Published var screenPosition: ScreenPosition
     @Published var screen: Screen
 
-    var appWidth: CGFloat = 0
-
     init() {
         screen = Screen(activated: .bookList, deactivated: nil)
-        screenPosition = ScreenPosition(leading: nil, center: .bookList, trailing: nil, goBack: false, appWidth: appWidth)
+        screenPosition = ScreenPosition(leading: nil, center: .bookList, trailing: nil, goBack: false)
     }
 
     func goBack(to: ScreenID) {
         screen = Screen(activated: to, deactivated: screen.activated)
         withAnimation {
-            screenPosition = ScreenPosition(leading: nil, center: to, trailing: screenPosition.center, goBack: true, appWidth: appWidth)
+            screenPosition = ScreenPosition(leading: nil, center: to, trailing: screenPosition.center, goBack: true)
         }
     }
 
     func navigate(to: ScreenID) {
         screen = Screen(activated: to, deactivated: screen.activated)
         withAnimation {
-            screenPosition = ScreenPosition(leading: screenPosition.center, center: to, trailing: nil, goBack: false, appWidth: appWidth)
+            screenPosition = ScreenPosition(leading: screenPosition.center, center: to, trailing: nil, goBack: false)
         }
     }
 }

@@ -71,7 +71,7 @@ class Fastfile: LaneFile {
 
     //
     // Uploading to TestFlight
-    // fastlane beta appVersion:3.2.13
+    // fastlane beta appVersion: 3.2.13
     // fastlane beta bumpType:major
     // fastlane beta bumpType:minor
     // fastlane beta bumpType:patch
@@ -103,6 +103,47 @@ class Fastfile: LaneFile {
     // $ fastlane deliver download_screenshots --app_version 1.3
     // $ fastlane deliver download_screenshots --use_live_version true
 
+    func uploadOnlyScreenshotsLane() {
+        desc("Upload only screenshots to cur edit version")
+        deliver(username: appleID,
+                appIdentifier: appIdentifier,
+                skipBinaryUpload: true,
+                skipScreenshots: true,
+                skipMetadata: false,
+                skipAppVersionUpdate: true,
+                force: true,
+                overwriteScreenshots: false,
+                submitForReview: false,
+                rejectIfPossible: true,
+                automaticRelease: true,
+                teamId: teamID,
+                ignoreLanguageDirectoryValidation: true,
+                precheckIncludeInAppPurchases: false,
+                app: appIdentifier)
+    }
+    
+    //change appVersion!
+    //fastlane beta2release
+    func beta2releaseLane() {
+        desc("Publish last beta build to AppStore")
+        //incrementBuildNumber(xcodeproj: project)
+        //buildApp(project: project, scheme: scheme, includeBitcode: true)
+        uploadToAppStore(username: appleID,
+                         appIdentifier: appIdentifier,
+                         appVersion: "2.8",
+                         skipBinaryUpload: true,
+                         skipScreenshots: true,
+                         skipMetadata: false,
+                         force: true, // skip html review
+                         overwriteScreenshots: false,
+                         submitForReview: false,
+                         rejectIfPossible: true,
+                         automaticRelease: true,
+                         resetRatings: false,
+                         teamId: teamID,
+                         app: appIdentifier)
+    }
+    
     func releaseLane() {
         desc("Upload a new release build to AppStore")
         incrementBuildNumber(xcodeproj: project)

@@ -19,6 +19,9 @@ class FolderToBookMapper: FolderToBookMapperProtocol {
         var newBooks: [Book] = []
         for folder in from {
             if let b = repo.read(folder.id) {
+                if b.totalDuration != folder.totalDuration || b.audioFileColl.count != folder.files.count {
+                    b.updateFiles(files: convert(folder.files))
+                }
                 newBooks.append(b)
             } else {
                 let files = convert(folder.files)

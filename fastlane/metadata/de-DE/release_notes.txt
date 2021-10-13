@@ -1,1 +1,1 @@
-Aktualisierte Benutzeroberfläche. Sprachen: En, De, Ru
+Korrigiert: Der Content wird nicht aktualisiert, nachdem Dateien zum Ordner/Playlist hinzugefügt wurden.

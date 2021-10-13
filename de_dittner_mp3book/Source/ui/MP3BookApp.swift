@@ -62,28 +62,28 @@ struct ContentView: View {
                 if let pos = navigator.screenPosition.xPosition(id: .bookList) {
                     BookListView(vm: viewModels.bookListVM)
                         .background(AppBG())
-                        .offset(x: pos, y: 0)
+                        .offset(x: pos * geo.size.width, y: 0)
                         .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
                 }
 
                 if let pos = navigator.screenPosition.xPosition(id: .audioFileList) {
                     AudioFileListView(vm: viewModels.fileListVM)
                         .background(AppBG())
-                        .offset(x: pos, y: 0)
+                        .offset(x: pos * geo.size.width, y: 0)
                         .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
                 }
 
                 if let pos = navigator.screenPosition.xPosition(id: .library) {
                     LibraryView(vm: viewModels.libraryVM)
                         .background(AppBG())
-                        .offset(x: pos, y: 0)
+                        .offset(x: pos * geo.size.width, y: 0)
                         .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
                 }
 
                 if let pos = navigator.screenPosition.xPosition(id: .manual) {
                     ManualView(vm: viewModels.manualVM)
                         .background(AppBG())
-                        .offset(x: pos, y: 0)
+                        .offset(x: pos * geo.size.width, y: 0)
                         .transition(.move(edge: navigator.screenPosition.goBack ? .leading : .trailing))
                 }
 
@@ -91,9 +91,6 @@ struct ContentView: View {
 //                Color(debugLineColor).frame(width: 0.5).offset(x: geo.size.width / 2 - Constants.size.actionBtnSize / 2)
 //                Color(debugLineColor).frame(width: 0.5).offset(x: 0)
 //                Color(debugLineColor).frame(height: 0.5).offset(x: 0)
-            }
-            .onAppear {
-                navigator.appWidth = geo.size.width
             }
             .alert(item: $alertBox.message) { msg in
                 Alert(
